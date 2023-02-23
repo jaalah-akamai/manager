@@ -2,6 +2,7 @@ import _Button from '@mui/material/Button';
 import { keyframes } from 'tss-react';
 import { styled } from '@mui/material/styles';
 import { Props } from './Button';
+import { isPropValid } from '../../utilities/isPropValid';
 
 const rotate = keyframes`
   from {
@@ -14,10 +15,8 @@ const rotate = keyframes`
 
 export const BaseButton = styled(_Button, {
   shouldForwardProp: (prop) =>
-    prop !== 'buttonType' &&
-    prop !== 'compactX' &&
-    prop !== 'compactY' &&
-    prop !== 'loading',
+    isPropValid(['compactX', 'compactY', 'loading'], prop),
+  name: 'BaseButton',
 })<Props>(({ theme, ...props }) => ({
   ...(props.buttonType === 'secondary' &&
     props.compactX && {
