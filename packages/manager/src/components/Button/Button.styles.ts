@@ -1,17 +1,8 @@
 import _Button from '@mui/material/Button';
-import { keyframes } from 'tss-react';
 import { styled } from '@mui/material/styles';
 import { Props } from './Button';
 import { isPropValid } from '../../utilities/isPropValid';
-
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
+import { rotate360 } from '../../styles/keyframes';
 
 export const BaseButton = styled(_Button, {
   shouldForwardProp: (prop) =>
@@ -32,7 +23,7 @@ export const BaseButton = styled(_Button, {
     }),
   ...(props.loading && {
     '& svg': {
-      animation: `${rotate} 2s linear infinite`,
+      animation: `${rotate360} 2s linear infinite`,
       margin: '0 auto',
       height: `${theme.spacing(2)}`,
       width: `${theme.spacing(2)}`,

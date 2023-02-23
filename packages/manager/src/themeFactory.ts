@@ -511,6 +511,7 @@ export const base: ThemeOptions = {
             color: '#c9cacb',
           },
           '&.loading': {
+            // TODO: We can remove this after migration since we can define variants
             color: primaryColors.text,
           },
         },
@@ -530,13 +531,17 @@ export const base: ThemeOptions = {
         {
           props: { loading: true, color: 'primary' } as ButtonProps,
           style: {
-            backgroundColor: primaryColors.text,
+            '&:disabled': {
+              backgroundColor: primaryColors.text,
+            },
           },
         },
         {
           props: { loading: true, color: 'secondary' } as ButtonProps,
           style: {
-            color: primaryColors.text,
+            '&:disabled': {
+              color: primaryColors.text,
+            },
           },
         },
       ],
