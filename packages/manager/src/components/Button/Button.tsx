@@ -29,6 +29,7 @@ export const Button = ({
 }: Props) => {
   const theme = useTheme();
   const color = buttonType === 'primary' ? 'primary' : 'secondary';
+  const sxHelpIcon = { marginLeft: `-${theme.spacing()}` };
 
   const variant =
     buttonType === 'primary' || buttonType === 'secondary'
@@ -36,10 +37,6 @@ export const Button = ({
       : buttonType === 'outlined'
       ? 'outlined'
       : 'text';
-
-  const sxHelpIcon = {
-    marginLeft: `-${theme.spacing()}`,
-  };
 
   return (
     <React.Fragment>
