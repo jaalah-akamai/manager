@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Reload from 'src/assets/icons/reload.svg';
-import _Button, { ButtonProps } from '@mui/material/Button';
-import { keyframes } from 'tss-react';
-import { styled, useTheme } from '@mui/material/styles';
+import { ButtonProps } from '@mui/material/Button';
+import { useTheme } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 import HelpIcon from 'src/components/HelpIcon';
+import { BaseButton, Span } from './Button.styles';
 
 export interface Props extends ButtonProps {
   buttonType?: 'primary' | 'secondary' | 'outlined';
@@ -15,48 +15,10 @@ export interface Props extends ButtonProps {
   tooltipText?: string;
 }
 
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const BaseButton = styled(_Button, {
-  shouldForwardProp: (prop) =>
-    prop !== 'buttonType' &&
-    prop !== 'compactX' &&
-    prop !== 'compactY' &&
-    prop !== 'loading',
-})<Props>(({ theme, buttonType, compactX, compactY, loading }) => ({
-  ...(buttonType === 'secondary' &&
-    compactX && { minWidth: 50, paddingRight: 0, paddingLeft: 0 }),
-  ...(buttonType === 'secondary' &&
-    compactY && { minHeight: 20, paddingTop: 0, paddingBottom: 0 }),
-  ...(loading && {
-    '& svg': {
-      animation: `${rotate} 2s linear infinite`,
-      margin: '0 auto',
-      height: `${theme.spacing(2)}`,
-      width: `${theme.spacing(2)}`,
-    },
-  }),
-}));
-
-const Span = styled('span')({
-  display: 'flex',
-  alignItems: 'center',
-  '@supports (-moz-appearance: none)': {
-    /* Fix text alignment for Firefox */
-    marginTop: 2,
-  },
-});
-
 export const Button = ({
   buttonType,
   children,
+  className,
   compactX,
   compactY,
   disabled,
@@ -67,10 +29,14 @@ export const Button = ({
 }: Props) => {
   const theme = useTheme();
   const color = buttonType === 'primary' ? 'primary' : 'secondary';
+
   const variant =
     buttonType === 'primary' || buttonType === 'secondary'
       ? 'contained'
-      : 'outlined';
+      : buttonType === 'outlined'
+      ? 'outlined'
+      : 'text';
+
   const sxHelpIcon = {
     marginLeft: `-${theme.spacing()}`,
   };
@@ -79,10 +45,12 @@ export const Button = ({
     <React.Fragment>
       <BaseButton
         {...rest}
+        className={className}
         color={color}
         compactX={compactX}
         compactY={compactY}
         disabled={disabled || loading}
+        loading={loading}
         sx={sx}
         variant={variant}
       >

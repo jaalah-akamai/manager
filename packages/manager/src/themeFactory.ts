@@ -1,6 +1,7 @@
 import { ThemeOptions } from '@mui/material/styles';
 import createBreakpoints from '@mui/system/createTheme/createBreakpoints';
 import { customDarkModeOptions } from './themes';
+import { ButtonProps } from '@mui/material/Button';
 
 type ThemeName = 'lightTheme' | 'darkTheme';
 
@@ -525,6 +526,20 @@ export const base: ThemeOptions = {
           },
         },
       },
+      variants: [
+        {
+          props: { loading: true, color: 'primary' } as ButtonProps,
+          style: {
+            backgroundColor: primaryColors.text,
+          },
+        },
+        {
+          props: { loading: true, color: 'secondary' } as ButtonProps,
+          style: {
+            color: primaryColors.text,
+          },
+        },
+      ],
     },
     MuiButtonBase: {
       styleOverrides: {
