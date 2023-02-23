@@ -1,9 +1,10 @@
-import classNames from 'classnames';
 import { always, cond, propEq } from 'ramda';
 import * as React from 'react';
 import Reload from 'src/assets/icons/reload.svg';
-import _Button, { ButtonProps } from 'src/components/core/Button';
-import { makeStyles, Theme } from 'src/components/core/styles';
+import _Button, { ButtonProps } from '@mui/material/Button';
+import { makeStyles } from 'tss-react/mui';
+import { keyframes } from 'tss-react';
+import { Theme } from '@mui/material/styles';
 import HelpIcon from 'src/components/HelpIcon';
 
 export interface Props extends ButtonProps {
@@ -15,18 +16,17 @@ export interface Props extends ButtonProps {
   tooltipText?: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-  '@keyframes rotate': {
-    from: {
-      transform: 'rotate(0deg)',
-    },
-    to: {
-      transform: 'rotate(360deg)',
-    },
-  },
+const useStyles = makeStyles()((theme: Theme) => ({
   loading: {
     '& svg': {
-      animation: '$rotate 2s linear infinite',
+      animation: `${keyframes`
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    `} 2s linear infinite`,
       margin: '0 auto',
       height: `${theme.spacing(2)} !important`,
       width: `${theme.spacing(2)} !important`,
@@ -73,7 +73,7 @@ const getColor = cond([
 ]);
 
 export const Button: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const {
     buttonType,
@@ -89,7 +89,7 @@ export const Button: React.FC<CombinedProps> = (props) => {
     <React.Fragment>
       <_Button
         {...rest}
-        className={classNames(
+        className={cx(
           buttonType,
           {
             [classes.compactX]: buttonType === 'secondary' ? compactX : false,
@@ -105,7 +105,7 @@ export const Button: React.FC<CombinedProps> = (props) => {
         variant={getVariant(props)}
       >
         <span
-          className={classNames({
+          className={cx({
             [classes.reg]: true,
           })}
           data-qa-loading={loading}
