@@ -8,6 +8,7 @@ import { BaseButton, Span } from './Button.styles';
 
 export interface Props extends ButtonProps {
   buttonType?: 'primary' | 'secondary' | 'outlined';
+  className?: string;
   sx?: SxProps;
   compactX?: boolean;
   compactY?: boolean;

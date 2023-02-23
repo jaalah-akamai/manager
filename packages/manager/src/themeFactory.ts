@@ -1,7 +1,7 @@
 import { ThemeOptions } from '@mui/material/styles';
 import createBreakpoints from '@mui/system/createTheme/createBreakpoints';
 import { customDarkModeOptions } from './themes';
-import { ButtonProps } from '@mui/material/Button';
+import type {} from '@mui/material/Button';
 
 type ThemeName = 'lightTheme' | 'darkTheme';
 
@@ -66,6 +66,12 @@ declare module '@mui/material/styles/createTheme' {
     applyLinkStyles?: any;
     applyStatusPillStyles?: any;
     applyTableHeaderStyles?: any;
+  }
+}
+
+declare module '@mui/material/Button' {
+  interface ButtonPropsOverrides {
+    loading: true;
   }
 }
 
@@ -476,7 +482,7 @@ export const base: ThemeOptions = {
           textTransform: 'capitalize',
           transition: 'none',
         },
-        containedPrimary: {
+        containedPrimary: ({ ownerState }) => ({
           backgroundColor: primaryColors.main,
           color: '#fff',
           padding: '2px 20px',
@@ -492,8 +498,13 @@ export const base: ThemeOptions = {
           '&.loading': {
             backgroundColor: primaryColors.text,
           },
-        },
-        containedSecondary: {
+          // ...(ownerState.loading && {
+          //   '&:disabled': {
+          //     backgroundColor: primaryColors.text,
+          //   },
+          // }),
+        }),
+        containedSecondary: ({ ownerState }) => ({
           backgroundColor: 'transparent',
           color: textColors.linkActiveLight,
           '&:hover, &:focus': {
@@ -514,7 +525,12 @@ export const base: ThemeOptions = {
             // TODO: We can remove this after migration since we can define variants
             color: primaryColors.text,
           },
-        },
+          // ...(ownerState.loading && {
+          //   '&:disabled': {
+          //     color: primaryColors.text,
+          //   },
+          // }),
+        }),
         outlined: {
           backgroundColor: 'transparent',
           border: `1px solid ${primaryColors.main}`,
@@ -527,24 +543,24 @@ export const base: ThemeOptions = {
           },
         },
       },
-      variants: [
-        {
-          props: { loading: true, color: 'primary' } as ButtonProps,
-          style: {
-            '&:disabled': {
-              backgroundColor: primaryColors.text,
-            },
-          },
-        },
-        {
-          props: { loading: true, color: 'secondary' } as ButtonProps,
-          style: {
-            '&:disabled': {
-              color: primaryColors.text,
-            },
-          },
-        },
-      ],
+      // variants: [
+      //   {
+      //     props: { loading: true, color: 'primary' },
+      //     style: {
+      //       '&:disabled': {
+      //         backgroundColor: primaryColors.text,
+      //       },
+      //     },
+      //   },
+      //   {
+      //     props: { loading: true, color: 'secondary' },
+      //     style: {
+      //       '&:disabled': {
+      //         color: primaryColors.text,
+      //       },
+      //     },
+      //   },
+      // ],
     },
     MuiButtonBase: {
       styleOverrides: {
