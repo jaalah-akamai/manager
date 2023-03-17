@@ -1,8 +1,7 @@
 import * as React from 'react';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import Paper from 'src/components/core/Paper';
-import { withStyles } from 'tss-react/mui';
-import { WithStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ExternalLink from 'src/components/ExternalLink';
@@ -10,9 +9,7 @@ import Grid from 'src/components/Grid';
 import Notice from 'src/components/Notice';
 import Toggle from 'src/components/Toggle';
 
-type ClassNames = 'root' | 'header' | 'toggleLabel' | 'toggleLabelText';
-
-const styles = (theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     backgroundColor: theme.bg.offWhite,
     padding: theme.spacing(1),
@@ -30,7 +27,7 @@ const styles = (theme: Theme) => ({
   toggleLabelText: {
     marginTop: theme.spacing(1) + theme.spacing(0.5),
   },
-});
+}));
 
 interface Props {
   enabled: boolean;
@@ -38,10 +35,12 @@ interface Props {
   toggle: () => void;
 }
 
-type CombinedProps = Props & WithStyles<ClassNames>;
+type CombinedProps = Props;
 
 export const AutoEnroll: React.FC<CombinedProps> = (props) => {
-  const { classes, enabled, error, toggle } = props;
+  const { enabled, error, toggle } = props;
+
+  const { classes } = useStyles();
 
   return (
     <Paper className={classes.root}>
@@ -85,4 +84,4 @@ export const AutoEnroll: React.FC<CombinedProps> = (props) => {
   );
 };
 
-export default withStyles(AutoEnroll, styles);
+export default AutoEnroll;

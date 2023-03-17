@@ -22,12 +22,7 @@ const linode2: ExtendedLinode = {
 
 import { BackupLinodes, displayPrice } from './BackupLinodes';
 
-const component = shallow(
-  <BackupLinodes
-    linodes={[linode1, linode2]}
-    classes={{ root: '', error: '' }}
-  />
-);
+const component = shallow(<BackupLinodes linodes={[linode1, linode2]} />);
 
 describe('BackupLinodes component', () => {
   describe('helper functions', () => {
