@@ -1,31 +1,27 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { compose } from 'recompose';
 import Paper from 'src/components/core/Paper';
-import { withStyles } from 'tss-react/mui';
-import { WithStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import TagsPanel from 'src/components/TagsPanel';
-import summaryPanelStyles, {
-  StyleProps,
-} from 'src/containers/SummaryPanels.styles';
 import IPAddress from 'src/features/linodes/LinodesLanding/IPAddress';
 import { ExtendedNodeBalancer } from 'src/features/NodeBalancers/types';
 import { formatRegion } from 'src/utilities';
 import { convertMegabytesTo } from 'src/utilities/unitConversions';
 import { NodeBalancerConsumer } from '../context';
 
-type ClassNames =
-  | 'NBsummarySection'
-  | 'IPgrouping'
-  | 'nodeTransfer'
-  | 'hostName';
-
-const styles = (theme: Theme) => ({
-  ...summaryPanelStyles(theme),
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     paddingTop: theme.spacing(),
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: theme.spacing(1),
+      paddingTop: 0,
+    },
+    [theme.breakpoints.up('lg')]: {
+      padding: theme.spacing(1),
+      paddingRight: 0,
+    },
   },
   NBsummarySection: {
     [theme.breakpoints.up('md')]: {
@@ -43,16 +39,67 @@ const styles = (theme: Theme) => ({
   hostName: {
     wordBreak: 'break-word',
   },
-});
+  region: {
+    [theme.breakpoints.between('sm', 'lg')]: {
+      flexBasis: '100%',
+      maxWidth: '100%',
+      display: 'flex',
+    },
+  },
+  regionInner: {
+    [theme.breakpoints.only('xs')]: {
+      padding: '0 8px !important',
+    },
+    [theme.breakpoints.up('lg')]: {
+      '&:first-of-type': {
+        padding: '8px 8px 0 8px !important',
+      },
+      '&:last-of-type': {
+        padding: '0 8px !important',
+      },
+    },
+  },
+  volumeLink: {
+    color: theme.palette.primary.main,
+    fontSize: '1rem',
+    '&:hover, &:focus': {
+      textDecoration: 'underline',
+    },
+  },
+  title: {
+    marginBottom: theme.spacing(2),
+  },
+  summarySection: {
+    padding: theme.spacing(2.5),
+    marginBottom: theme.spacing(2),
+    minHeight: '160px',
+    height: '93%',
+  },
+  section: {
+    marginBottom: theme.spacing(1),
+    fontSize: '0.875rem',
+    lineHeight: '1.125rem',
+    color: theme.typography.body1.color,
+    '& .dif': {
+      position: 'relative',
+      width: 'auto',
+      '& .chip': {
+        position: 'absolute',
+        top: '-4px',
+        right: -10,
+      },
+    },
+  },
+}));
 
 interface Props {
   nodeBalancer: ExtendedNodeBalancer;
 }
 
-type CombinedProps = Props & StyleProps & WithStyles<ClassNames>;
+const SummaryPanel = (props: Props) => {
+  const { nodeBalancer } = props;
 
-const SummaryPanel: React.FC<CombinedProps> = (props) => {
-  const { nodeBalancer, classes } = props;
+  const { classes } = useStyles();
 
   return (
     <NodeBalancerConsumer>
@@ -136,8 +183,4 @@ const SummaryPanel: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const localStyles = withStyles(SummaryPanel, styles);
-
-const enhanced = compose<CombinedProps, Props>(localStyles);
-
-export default enhanced(SummaryPanel);
+export default SummaryPanel;

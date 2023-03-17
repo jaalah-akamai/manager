@@ -12,11 +12,9 @@ import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
-import styled from 'src/containers/SummaryPanels.styles';
 import BillingContactDrawer from './EditBillingContactDrawer';
 
 const useStyles = makeStyles()((theme: Theme) => ({
-  ...styled(theme),
   wordWrap: {
     wordBreak: 'break-all',
   },
@@ -46,6 +44,67 @@ const useStyles = makeStyles()((theme: Theme) => ({
       backgroundColor: 'transparent',
       color: theme.palette.primary.main,
       textDecoration: 'underline',
+    },
+  },
+  region: {
+    [theme.breakpoints.between('sm', 'lg')]: {
+      flexBasis: '100%',
+      maxWidth: '100%',
+      display: 'flex',
+    },
+  },
+  regionInner: {
+    [theme.breakpoints.only('xs')]: {
+      padding: '0 8px !important',
+    },
+    [theme.breakpoints.up('lg')]: {
+      '&:first-of-type': {
+        padding: '8px 8px 0 8px !important',
+      },
+      '&:last-of-type': {
+        padding: '0 8px !important',
+      },
+    },
+  },
+  volumeLink: {
+    color: theme.palette.primary.main,
+    fontSize: '1rem',
+    '&:hover, &:focus': {
+      textDecoration: 'underline',
+    },
+  },
+  root: {
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: theme.spacing(1),
+      paddingTop: 0,
+    },
+    [theme.breakpoints.up('lg')]: {
+      padding: theme.spacing(1),
+      paddingRight: 0,
+    },
+  },
+  title: {
+    marginBottom: theme.spacing(2),
+  },
+  summarySection: {
+    padding: theme.spacing(2.5),
+    marginBottom: theme.spacing(2),
+    minHeight: '160px',
+    height: '93%',
+  },
+  section: {
+    marginBottom: theme.spacing(1),
+    fontSize: '0.875rem',
+    lineHeight: '1.125rem',
+    color: theme.typography.body1.color,
+    '& .dif': {
+      position: 'relative',
+      width: 'auto',
+      '& .chip': {
+        position: 'absolute',
+        top: '-4px',
+        right: -10,
+      },
     },
   },
 }));

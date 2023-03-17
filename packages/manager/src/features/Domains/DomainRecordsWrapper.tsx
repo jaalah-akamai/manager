@@ -1,16 +1,12 @@
 import { Domain, DomainRecord } from '@linode/api-v4/lib/domains';
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
-import { compose } from 'recompose';
 import Paper from 'src/components/core/Paper';
-import { makeStyles, withStyles } from 'tss-react/mui';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
 import TagsPanel from 'src/components/TagsPanel';
-import summaryPanelStyles, {
-  StyleProps,
-} from 'src/containers/SummaryPanels.styles';
 import { useUpdateDomainMutation } from 'src/queries/domains';
 import DeleteDomain from './DeleteDomain';
 import DomainRecords from './DomainRecords';
@@ -21,6 +17,14 @@ const useStyles = makeStyles()((theme: Theme) => ({
     marginLeft: 0,
     marginRight: 0,
     marginBottom: theme.spacing(3),
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: theme.spacing(1),
+      paddingTop: 0,
+    },
+    [theme.breakpoints.up('lg')]: {
+      padding: theme.spacing(1),
+      paddingRight: 0,
+    },
   },
   main: {
     '&.MuiGrid-item': {
@@ -45,6 +49,57 @@ const useStyles = makeStyles()((theme: Theme) => ({
       marginLeft: theme.spacing(),
     },
   },
+  region: {
+    [theme.breakpoints.between('sm', 'lg')]: {
+      flexBasis: '100%',
+      maxWidth: '100%',
+      display: 'flex',
+    },
+  },
+  regionInner: {
+    [theme.breakpoints.only('xs')]: {
+      padding: '0 8px !important',
+    },
+    [theme.breakpoints.up('lg')]: {
+      '&:first-of-type': {
+        padding: '8px 8px 0 8px !important',
+      },
+      '&:last-of-type': {
+        padding: '0 8px !important',
+      },
+    },
+  },
+  volumeLink: {
+    color: theme.palette.primary.main,
+    fontSize: '1rem',
+    '&:hover, &:focus': {
+      textDecoration: 'underline',
+    },
+  },
+  title: {
+    marginBottom: theme.spacing(2),
+  },
+  summarySection: {
+    padding: theme.spacing(2.5),
+    marginBottom: theme.spacing(2),
+    minHeight: '160px',
+    height: '93%',
+  },
+  section: {
+    marginBottom: theme.spacing(1),
+    fontSize: '0.875rem',
+    lineHeight: '1.125rem',
+    color: theme.typography.body1.color,
+    '& .dif': {
+      position: 'relative',
+      width: 'auto',
+      '& .chip': {
+        position: 'absolute',
+        top: '-4px',
+        right: -10,
+      },
+    },
+  },
 }));
 
 interface Props {
@@ -54,17 +109,15 @@ interface Props {
   handleUpdateTags: (tagList: string[]) => Promise<Domain>;
 }
 
-type CombinedProps = Props & StyleProps;
-
-const DomainRecordsWrapper: React.FC<CombinedProps> = (props) => {
-  const { domain, records, updateRecords, handleUpdateTags, classes } = props;
-  const { classes: hookClasses } = useStyles();
+const DomainRecordsWrapper = (props: Props) => {
+  const { domain, records, updateRecords, handleUpdateTags } = props;
+  const { classes } = useStyles();
   const history = useHistory();
   const { mutateAsync: updateDomain } = useUpdateDomainMutation();
 
   return (
-    <Grid container className={hookClasses.root}>
-      <Grid item xs={12} className={hookClasses.main}>
+    <Grid container className={classes.root}>
+      <Grid item xs={12} className={classes.main}>
         <DomainRecords
           domain={domain}
           updateDomain={updateDomain}
@@ -75,7 +128,7 @@ const DomainRecordsWrapper: React.FC<CombinedProps> = (props) => {
       <Grid
         item
         xs={12}
-        className={hookClasses.tagsSection}
+        className={classes.tagsSection}
         id="domains-tag-section"
       >
         <Paper className={classes.summarySection}>
@@ -84,7 +137,7 @@ const DomainRecordsWrapper: React.FC<CombinedProps> = (props) => {
           </Typography>
           <TagsPanel tags={domain.tags} updateTags={handleUpdateTags} />
         </Paper>
-        <div className={hookClasses.delete}>
+        <div className={classes.delete}>
           <DeleteDomain
             domainId={domain.id}
             domainLabel={domain.domain}
@@ -96,9 +149,4 @@ const DomainRecordsWrapper: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const styled = withStyles(DomainRecordsWrapper, summaryPanelStyles);
-
-export default compose<CombinedProps, Props>(
-  React.memo,
-  styled
-)(DomainRecordsWrapper);
+export default React.memo(DomainRecordsWrapper);
