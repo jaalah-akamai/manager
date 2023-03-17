@@ -236,7 +236,6 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = (
 const connected = connect(undefined, mapDispatchToProps);
 
 const enhanced = compose<CombinedProps, Props>(
-  styled,
   connected,
   withTypes,
   withLinodeDetailContext<ContextProps>(({ linode }) => ({
@@ -248,7 +247,7 @@ const enhanced = compose<CombinedProps, Props>(
   withSnackbar
 );
 
-export default enhanced(MutationNotification);
+export default enhanced(withStyles(MutationNotification, styles));
 
 // Hack solution to determine if a type is moving from shared CPU cores to dedicated.
 const isMovingFromSharedToDedicated = (typeA: string, typeB: string) => {
