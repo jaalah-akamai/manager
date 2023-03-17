@@ -1,26 +1,23 @@
 import * as React from 'react';
-import { withStyles } from 'tss-react/mui';
-import { WithStyles } from '@mui/styles';
-import { Theme } from '@mui/material/styles';
 import TableHead from 'src/components/core/TableHead';
 import { OrderByProps } from 'src/components/OrderBy';
 import TableCell from 'src/components/TableCell';
 import TableRow from 'src/components/TableRow';
 import TableSortCell from 'src/components/TableSortCell';
+import { makeStyles } from 'tss-react/mui';
 
-type ClassNames = 'root' | 'label';
-
-const styles = (theme: Theme) => ({
-  root: {},
+const useStyles = makeStyles()(() => ({
   label: {
     paddingLeft: 65,
   },
-});
+}));
 
-type combinedProps = Omit<OrderByProps, 'data'> & WithStyles<ClassNames>;
+type CombinedProps = Omit<OrderByProps, 'data'>;
 
-const SortableTableHead: React.FC<combinedProps> = (props) => {
-  const { order, orderBy, handleOrderChange, classes } = props;
+const SortableTableHead = (props: CombinedProps) => {
+  const { order, orderBy, handleOrderChange } = props;
+
+  const { classes } = useStyles();
 
   const isActive = (label: string) => label === orderBy;
 
@@ -70,4 +67,4 @@ const SortableTableHead: React.FC<combinedProps> = (props) => {
   );
 };
 
-export default withStyles(SortableTableHead, styles);
+export default SortableTableHead;

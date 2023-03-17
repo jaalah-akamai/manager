@@ -1,31 +1,27 @@
 import * as React from 'react';
 import Paper from 'src/components/core/Paper';
-import { withStyles } from 'tss-react/mui';
-import { WithStyles } from '@mui/styles';
 import Grid from 'src/components/Grid';
 import { OrderByProps } from 'src/components/OrderBy';
 import Table from 'src/components/Table';
+import { makeStyles } from 'tss-react/mui';
 import SortableTableHead from './SortableTableHead';
 
-type ClassNames = 'root' | 'paperWrapper';
-
-const styles = () => ({
-  root: {},
+const useStyles = makeStyles()(() => ({
   paperWrapper: {
     backgroundColor: 'transparent',
   },
-});
+}));
 
 interface Props {
   dataLength: number;
 }
 
-type CombinedProps = Omit<OrderByProps, 'data'> &
-  WithStyles<ClassNames> &
-  Props;
+type CombinedProps = Omit<OrderByProps, 'data'> & Props;
 
 const DomainsTableWrapper: React.FC<CombinedProps> = (props) => {
-  const { order, orderBy, handleOrderChange, classes, dataLength } = props;
+  const { order, orderBy, handleOrderChange, dataLength } = props;
+
+  const { classes } = useStyles();
 
   return (
     <Paper className={classes.paperWrapper}>
@@ -49,4 +45,4 @@ const DomainsTableWrapper: React.FC<CombinedProps> = (props) => {
   );
 };
 
-export default withStyles(DomainsTableWrapper, styles);
+export default DomainsTableWrapper;
