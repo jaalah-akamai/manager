@@ -34,10 +34,8 @@ const getPrice = (type?: LinodeType) =>
   pathOr('Unavailable', ['addons', 'backups', 'price', 'monthly'], type);
 
 export const BackupLinodes = (props: Props) => {
-  const { linodes } = props;
-
   const { classes } = useStyles();
-
+  const { linodes } = props;
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>

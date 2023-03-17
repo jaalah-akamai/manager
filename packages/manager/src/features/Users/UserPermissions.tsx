@@ -746,4 +746,4 @@ class UserPermissions extends React.Component<CombinedProps, State> {
   }
 }
 
-export default withSnackbar(styled(UserPermissions));
+export default withSnackbar(withStyles(UserPermissions, styles));

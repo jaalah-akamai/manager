@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withStyles } from 'tss-react/mui';
-import { WithStyles } from '@mui/styles';
+import { WithStyles } from 'src/types/WithStyles';
 import { Theme } from '@mui/material/styles';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
 import OtherWays from './Panels/OtherWays';
@@ -24,7 +24,7 @@ export class HelpLanding extends React.Component<CombinedProps, {}> {
     const { classes } = this.props;
 
     return (
-      <div className={classes.root}>
+      <div className={classes?.root}>
         <DocumentTitleSegment segment="Get Help" />
         <SearchPanel />
         <PopularPosts />
