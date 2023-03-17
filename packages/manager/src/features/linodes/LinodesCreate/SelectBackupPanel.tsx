@@ -7,7 +7,8 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import CircleProgress from 'src/components/CircleProgress';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -23,23 +24,22 @@ export interface LinodeWithBackups extends Linode {
 
 type ClassNames = 'root' | 'panelBody' | 'wrapper';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-      width: '100%',
-      backgroundColor: theme.color.white,
-      marginTop: theme.spacing(3),
-    },
-    panelBody: {
-      width: '100%',
-      padding: `${theme.spacing(2)} 0 0`,
-    },
-    wrapper: {
-      padding: theme.spacing(1),
-      minHeight: 120,
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {
+    flexGrow: 1,
+    width: '100%',
+    backgroundColor: theme.color.white,
+    marginTop: theme.spacing(3),
+  },
+  panelBody: {
+    width: '100%',
+    padding: `${theme.spacing(2)} 0 0`,
+  },
+  wrapper: {
+    padding: theme.spacing(1),
+    minHeight: 120,
+  },
+});
 
 interface BackupInfo {
   title: string;
@@ -151,8 +151,6 @@ class SelectBackupPanel extends React.Component<CombinedProps, State> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 export default compose<CombinedProps, Props & RenderGuardProps>(
   RenderGuard,

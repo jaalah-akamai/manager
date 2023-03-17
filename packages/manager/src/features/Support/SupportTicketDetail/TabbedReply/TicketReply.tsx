@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import TextField from 'src/components/TextField';
 
 type ClassNames = 'replyField';
 
-const styles = () =>
-  createStyles({
-    replyField: {
-      marginTop: 0,
-      '& > div': {
-        maxWidth: '100% !important',
-      },
+const styles = () => ({
+  replyField: {
+    marginTop: 0,
+    '& > div': {
+      maxWidth: '100% !important',
     },
-  });
+  },
+});
 
 export interface Props {
   error?: string;
@@ -46,6 +46,4 @@ class TicketReply extends React.Component<CombinedProps> {
   }
 }
 
-const styled = withStyles(styles);
-
-export default styled(TicketReply);
+export default withStyles(TicketReply, styles);

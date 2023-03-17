@@ -10,7 +10,8 @@ import TabList from 'src/components/core/ReachTabList';
 import TabPanel from 'src/components/core/ReachTabPanel';
 import TabPanels from 'src/components/core/ReachTabPanels';
 import Tabs from 'src/components/core/ReachTabs';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
 import Grid from 'src/components/Grid';
@@ -26,20 +27,19 @@ import TicketList from './TicketList';
 
 type ClassNames = 'title' | 'openTicketButton';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    title: {
-      [theme.breakpoints.down('sm')]: {
-        marginLeft: theme.spacing(),
-      },
+const styles = (theme: Theme) => ({
+  title: {
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: theme.spacing(),
     },
-    openTicketButton: {
-      minWidth: 150,
-      [theme.breakpoints.down('md')]: {
-        marginRight: theme.spacing(),
-      },
+  },
+  openTicketButton: {
+    minWidth: 150,
+    [theme.breakpoints.down('md')]: {
+      marginRight: theme.spacing(),
     },
-  });
+  },
+});
 
 interface Props {
   history: RouteComponentProps['history'];
@@ -237,8 +237,6 @@ export class SupportTicketsLanding extends React.PureComponent<
     );
   }
 }
-
-const styled = withStyles(styles);
 
 export default compose<CombinedProps, Props>(
   withRouter,

@@ -2,7 +2,8 @@ import { Event } from '@linode/api-v4/lib/account';
 import * as React from 'react';
 import { compose } from 'recompose';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import LinearProgress from 'src/components/LinearProgress';
@@ -11,16 +12,15 @@ import { withLinodeDetailContext } from '../linodeDetailContext';
 
 type ClassNames = 'root' | 'status';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      padding: theme.spacing(3),
-      marginTop: theme.spacing(2),
-    },
-    status: {
-      marginBottom: theme.spacing(1),
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {
+    padding: theme.spacing(3),
+    marginTop: theme.spacing(2),
+  },
+  status: {
+    marginBottom: theme.spacing(1),
+  },
+});
 
 interface LinodeDetailContextProps {
   status: string;
@@ -52,8 +52,6 @@ const LinodeBusyStatus: React.FC<CombinedProps> = (props) => {
     </Paper>
   );
 };
-
-const styled = withStyles(styles);
 
 const enhanced = compose<CombinedProps, {}>(
   styled,

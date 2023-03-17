@@ -17,7 +17,7 @@ import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import CircleProgress from 'src/components/CircleProgress';
 import Divider from 'src/components/core/Divider';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Dialog from 'src/components/Dialog';
@@ -35,7 +35,7 @@ import { useIpv6RangesQuery } from 'src/queries/networking';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 import { debounce } from 'throttle-debounce';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   sourceIPWrapper: {
     display: 'flex',
     alignItems: 'center',
@@ -150,7 +150,7 @@ const LinodeNetworkingIPTransferPanel: React.FC<CombinedProps> = (props) => {
     onClose,
     readOnly,
   } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [ips, setIPs] = React.useState<IPRowState>(
     props.ipAddresses.reduce(
       (acc, ip) => ({

@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
 import DetailsIcon from 'src/assets/icons/code-file.svg';
 import DownloadIcon from 'src/assets/icons/lke-download.svg';
 import ResetIcon from 'src/assets/icons/reset.svg';
-import classNames from 'classnames';
 import {
   useAllKubernetesClusterAPIEndpointsQuery,
   useKubenetesKubeConfigQuery,
@@ -23,7 +22,7 @@ interface Props {
   setResetKubeConfigDialogOpen: (open: boolean) => void;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   label: {
     fontWeight: 'bold',
     marginBottom: `calc(${theme.spacing(1)} - 3px)`,
@@ -93,7 +92,7 @@ export const KubeConfigDisplay = (props: Props) => {
   } = props;
 
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const { refetch } = useKubenetesKubeConfigQuery(clusterId);
 
@@ -175,13 +174,13 @@ export const KubeConfigDisplay = (props: Props) => {
             className={classes.kubeconfigElement}
           >
             <ResetIcon
-              className={classNames({
+              className={cx({
                 [classes.kubeconfigIcons]: true,
                 [classes.disabled]: isResettingKubeConfig,
               })}
             />
             <Typography
-              className={classNames({
+              className={cx({
                 [classes.kubeconfigFileText]: true,
                 [classes.disabled]: isResettingKubeConfig,
               })}

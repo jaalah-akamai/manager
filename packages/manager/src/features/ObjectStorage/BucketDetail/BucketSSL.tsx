@@ -10,7 +10,7 @@ import Button from 'src/components/Button';
 import CircleProgress from 'src/components/CircleProgress';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ErrorState from 'src/components/ErrorState';
@@ -21,7 +21,7 @@ import TextField from 'src/components/TextField';
 import { useAPIRequest } from 'src/hooks/useAPIRequest';
 import { getErrorMap } from 'src/utilities/errorUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: theme.spacing(3),
   },
@@ -65,7 +65,7 @@ interface Props {
 
 export const BucketSSL: React.FC<Props> = (props) => {
   const { bucketName, clusterId } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Paper className={classes.root}>
@@ -131,7 +131,7 @@ export const AddCertForm: React.FC<FormProps> = (props) => {
 
   const errorMap = getErrorMap(['certificate', 'private_key'], error);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const onSubmit = () => {
     setSubmitting(true);

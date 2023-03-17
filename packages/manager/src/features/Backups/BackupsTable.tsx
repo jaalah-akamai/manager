@@ -1,6 +1,6 @@
 import { isEmpty } from 'ramda';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
 import Table from 'src/components/Table';
@@ -10,7 +10,7 @@ import { TableRowLoading } from 'src/components/TableRowLoading/TableRowLoading'
 import BackupLinodes from './BackupLinodes';
 import { ExtendedLinode } from './types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   root: {
     width: '100%',
   },
@@ -30,7 +30,7 @@ interface Props {
 type CombinedProps = Props;
 
 export const BackupsTable: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { linodes, loading } = props;
 

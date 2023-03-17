@@ -2,7 +2,7 @@ import { GrantLevel } from '@linode/api-v4/lib/account';
 import * as React from 'react';
 import { compose } from 'recompose';
 import AccessPanel, { UserSSHKeyObject } from 'src/components/AccessPanel';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { Item } from 'src/components/EnhancedSelect/Select';
 import { ImageSelect } from 'src/features/Images';
@@ -11,7 +11,7 @@ import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 import { withLinodeDetailContext } from '../linodeDetailContext';
 import LinodePermissionsError from '../LinodePermissionsError';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     margin: `${theme.spacing(3)} 0 ${theme.spacing(3)} 0`,
     padding: 0,
@@ -50,7 +50,7 @@ export const ImageAndPassword: React.FC<CombinedProps> = (props) => {
     permissions,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { data: imagesData, error: imagesError } = useAllImagesQuery();
   const _imagesError = imagesError

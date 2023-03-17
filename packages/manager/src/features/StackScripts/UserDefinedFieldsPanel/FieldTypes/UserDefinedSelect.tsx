@@ -2,7 +2,8 @@ import { UserDefinedField } from '@linode/api-v4/lib/stackscripts';
 import * as React from 'react';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import InputLabel from 'src/components/core/InputLabel';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import MenuItem from 'src/components/MenuItem';
 import Notice from 'src/components/Notice';
@@ -12,15 +13,14 @@ import TextField from 'src/components/TextField';
 
 type ClassNames = 'root' | 'radioGroupLabel';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      margin: `${theme.spacing(3)} 0 0`,
-    },
-    radioGroupLabel: {
-      display: 'block',
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {
+    margin: `${theme.spacing(3)} 0 0`,
+  },
+  radioGroupLabel: {
+    display: 'block',
+  },
+});
 
 interface Props {
   updateFormState: (key: string, value: any) => void;
@@ -112,6 +112,7 @@ class UserDefinedSelect extends React.Component<CombinedProps, State> {
   }
 }
 
-const styled = withStyles(styles);
-
-export default styled(RenderGuard<CombinedProps>(UserDefinedSelect));
+export default withStyles(
+  RenderGuard<CombinedProps>(UserDefinedSelect),
+  styles
+);

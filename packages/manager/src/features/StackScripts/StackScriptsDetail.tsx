@@ -10,7 +10,7 @@ import { compose } from 'recompose';
 import Breadcrumb from 'src/components/Breadcrumb';
 import Button from 'src/components/Button';
 import CircleProgress from 'src/components/CircleProgress';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import setDocs, { SetDocsProps } from 'src/components/DocsSidebar/setDocs';
 import DocsLink from 'src/components/DocsLink';
@@ -34,7 +34,7 @@ type RouteProps = RouteComponentProps<MatchProps>;
 
 type CombinedProps = RouteProps & SetDocsProps;
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     margin: 0,
     [theme.breakpoints.down('md')]: {
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const StackScriptsDetail: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { _isRestrictedUser, _hasGrant, profile } = useAccountManagement();
   const { data: grants } = useGrants();
   const { history } = props;

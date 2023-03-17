@@ -8,7 +8,7 @@ import CircleProgress from 'src/components/CircleProgress';
 import Paper from 'src/components/core/Paper';
 import TabPanels from 'src/components/core/ReachTabPanels';
 import Tabs from 'src/components/core/ReachTabs';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DocsLink from 'src/components/DocsLink';
 import ErrorState from 'src/components/ErrorState';
@@ -39,7 +39,7 @@ import NetworkLanding from './DetailTabs/Network';
 import NGINX from './DetailTabs/NGINX';
 import ProcessesLanding from './DetailTabs/Processes/ProcessesLanding';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   tabList: {
     marginBottom: `calc(${theme.spacing(3)} + 6px)`,
   },
@@ -78,7 +78,7 @@ export const LongviewDetail: React.FC<CombinedProps> = (props) => {
 
   const timezone = profile?.timezone || 'US/Eastern';
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   React.useEffect(() => {
     /** request clients if they haven't already been requested */

@@ -22,7 +22,7 @@ import FormGroup from 'src/components/core/FormGroup';
 import FormHelperText from 'src/components/core/FormHelperText';
 import FormLabel from 'src/components/core/FormLabel';
 import RadioGroup from 'src/components/core/RadioGroup';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Dialog from 'src/components/Dialog';
@@ -63,7 +63,7 @@ import {
 import InterfaceSelect, { ExtendedInterface } from './InterfaceSelect';
 import KernelSelect from './KernelSelect';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   button: {
     marginTop: theme.spacing(),
     marginLeft: 1,
@@ -236,7 +236,7 @@ const LinodeConfigDialog: React.FC<CombinedProps> = (props) => {
     readOnly,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const regions = useRegionsQuery().data ?? [];
 
   const { data: account } = useAccount();

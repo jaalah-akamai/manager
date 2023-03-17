@@ -1,16 +1,15 @@
 import { Event } from '@linode/api-v4/lib/account';
 import { LinodeBackups, LinodeStatus } from '@linode/api-v4/lib/linodes';
-import classNames from 'classnames';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import HelpIcon from 'src/components/HelpIcon';
 import Notice from 'src/components/Notice';
 import TableCell from 'src/components/TableCell';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   link: {
     display: 'block',
     fontSize: '.875rem',
@@ -97,7 +96,7 @@ const LinodeRowHeadCell: React.FC<CombinedProps> = (props) => {
     isDashboard,
   } = props;
 
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const style = width ? { width: `${width}%` } : {};
   const dateTime = maintenance && maintenance.split(' ');
@@ -112,7 +111,7 @@ const LinodeRowHeadCell: React.FC<CombinedProps> = (props) => {
 
   return (
     <TableCell
-      className={classNames({
+      className={cx({
         [classes.root]: true,
       })}
       style={style}

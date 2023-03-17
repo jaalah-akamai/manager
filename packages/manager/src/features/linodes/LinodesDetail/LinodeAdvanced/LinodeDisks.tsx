@@ -8,7 +8,8 @@ import AddNewLink from 'src/components/AddNewLink';
 import Button from 'src/components/Button';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
 import Hidden from 'src/components/core/Hidden';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -42,29 +43,28 @@ import LinodeDiskRow from './LinodeDiskRow';
 
 type ClassNames = 'root' | 'headline' | 'addNewWrapper' | 'emptyCell';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      backgroundColor: theme.color.white,
-      margin: 0,
-      width: '100%',
+const styles = (theme: Theme) => ({
+  root: {
+    backgroundColor: theme.color.white,
+    margin: 0,
+    width: '100%',
+  },
+  headline: {
+    marginTop: 8,
+    marginBottom: 8,
+    marginLeft: 15,
+    lineHeight: '1.5rem',
+  },
+  addNewWrapper: {
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: `-${theme.spacing(1.5)}`,
+      marginTop: `-${theme.spacing(1)}`,
     },
-    headline: {
-      marginTop: 8,
-      marginBottom: 8,
-      marginLeft: 15,
-      lineHeight: '1.5rem',
+    '&.MuiGrid-item': {
+      padding: 5,
     },
-    addNewWrapper: {
-      [theme.breakpoints.down('sm')]: {
-        marginLeft: `-${theme.spacing(1.5)}`,
-        marginTop: `-${theme.spacing(1)}`,
-      },
-      '&.MuiGrid-item': {
-        padding: 5,
-      },
-    },
-  });
+  },
+});
 
 interface ConfirmDeleteState {
   open: boolean;
@@ -574,8 +574,6 @@ class LinodeDisks extends React.Component<CombinedProps, State> {
     );
   };
 }
-
-const styled = withStyles(styles);
 
 export const addUsedDiskSpace = (disks: Disk[]) => {
   return disks.reduce((accum, eachDisk) => eachDisk.size + accum, 0);

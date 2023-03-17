@@ -1,6 +1,5 @@
-import classNames from 'classnames';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import ExternalLink from 'src/components/ExternalLink';
 import Grid from 'src/components/Grid';
@@ -10,7 +9,7 @@ interface Props {
   desktopMenuIsOpen: boolean;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   container: {
     width: '100%',
     backgroundColor: theme.bg.main,
@@ -71,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const FEEDBACK_LINK = 'https://www.linode.com/feedback/';
 
 export const Footer: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const { desktopMenuIsOpen } = props;
 
@@ -81,7 +80,7 @@ export const Footer: React.FC<Props> = (props) => {
         container
         spacing={4}
         alignItems="center"
-        className={classNames({
+        className={cx({
           [classes.container]: true,
           [classes.desktopMenuIsOpen]: desktopMenuIsOpen,
         })}
@@ -91,7 +90,7 @@ export const Footer: React.FC<Props> = (props) => {
         </Grid>
         <Grid
           item
-          className={classNames({
+          className={cx({
             [classes.linkContainer]: true,
           })}
         >
@@ -107,7 +106,7 @@ export const Footer: React.FC<Props> = (props) => {
         </Grid>
         <Grid
           item
-          className={classNames({
+          className={cx({
             [classes.linkContainer]: true,
             [classes.feedbackLink]: true,
           })}

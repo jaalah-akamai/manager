@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   header: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(),
@@ -23,7 +23,7 @@ interface Props {
 type CombinedProps = Props;
 
 const MarkdownReference: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <div className={props.rootClass}>

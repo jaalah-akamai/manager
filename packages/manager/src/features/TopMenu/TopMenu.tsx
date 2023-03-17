@@ -3,7 +3,7 @@ import * as React from 'react';
 import AppBar from 'src/components/core/AppBar';
 import Hidden from 'src/components/core/Hidden';
 import IconButton from 'src/components/core/IconButton';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Toolbar from 'src/components/core/Toolbar';
 import Typography from 'src/components/core/Typography';
@@ -15,7 +15,7 @@ import SearchBar from './SearchBar';
 import TopMenuIcon from './TopMenuIcon';
 import UserMenu from './UserMenu';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   appBar: {
     height: 50,
     color: theme.palette.text.primary,
@@ -57,7 +57,7 @@ const TopMenu: React.FC<PropsWithStyles> = (props) => {
     desktopMenuToggle,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const navHoverText = isSideMenuOpen
     ? 'Collapse side menu'

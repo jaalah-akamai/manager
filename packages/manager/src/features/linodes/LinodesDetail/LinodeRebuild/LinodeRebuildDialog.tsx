@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Dialog from 'src/components/Dialog';
@@ -11,7 +11,7 @@ import LinodePermissionsError from '../LinodePermissionsError';
 import RebuildFromImage from './RebuildFromImage';
 import RebuildFromStackScript from './RebuildFromStackScript';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     paddingBottom: theme.spacing(2),
     '& + div': {
@@ -69,7 +69,7 @@ const LinodeRebuildDialog: React.FC<CombinedProps> = (props) => {
   const unauthorized = permissions === 'read_only';
   const disabled = hostMaintenance || unauthorized;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [mode, setMode] = React.useState<MODES>('fromImage');
   const [rebuildError, setRebuildError] = React.useState<string>('');

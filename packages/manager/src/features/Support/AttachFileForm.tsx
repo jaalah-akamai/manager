@@ -3,7 +3,8 @@ import { equals, remove } from 'ramda';
 import * as React from 'react';
 import { compose } from 'recompose';
 import Button from 'src/components/Button';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import AttachFileListItem from './AttachFileListItem';
 import { FileAttachment } from './index';
@@ -11,13 +12,12 @@ import { reshapeFiles } from './ticketUtils';
 
 type ClassNames = 'attachFileButton';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    attachFileButton: {
-      marginTop: theme.spacing(2),
-      marginBottom: 4,
-    },
-  });
+const styles = (theme: Theme) => ({
+  attachFileButton: {
+    marginTop: theme.spacing(2),
+    marginBottom: 4,
+  },
+});
 
 interface Props {
   files: FileAttachment[];
@@ -102,7 +102,5 @@ export class AttachFileForm extends React.Component<CombinedProps, {}> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 export default compose<CombinedProps, Props>(styled)(AttachFileForm);

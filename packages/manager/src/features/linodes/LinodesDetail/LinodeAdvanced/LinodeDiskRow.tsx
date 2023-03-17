@@ -2,7 +2,7 @@ import { Disk } from '@linode/api-v4/lib/linodes';
 import * as React from 'react';
 import BarPercent from 'src/components/BarPercent';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DateTimeDisplay from 'src/components/DateTimeDisplay';
 import TableCell from 'src/components/TableCell';
@@ -10,7 +10,7 @@ import TableRow from 'src/components/TableRow';
 import useEvents from 'src/hooks/useEvents';
 import LinodeDiskActionMenu from './LinodeDiskActionMenu';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   diskLabel: {
     width: '20%',
   },
@@ -46,7 +46,7 @@ interface Props {
 }
 
 export const LinodeDiskRow: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { inProgressEvents } = useEvents();
   const {
     disk,

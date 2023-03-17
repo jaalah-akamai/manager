@@ -5,7 +5,7 @@ import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import FormHelperText from 'src/components/core/FormHelperText';
 
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 
 import Typography from 'src/components/core/Typography';
@@ -15,7 +15,7 @@ import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 import getAPIErrorsFor from 'src/utilities/getAPIErrorFor';
 import scrollErrorIntoView from 'src/utilities/scrollErrorIntoView';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   section: {
     marginTop: theme.spacing(2),
     borderTop: `1px solid ${theme.palette.divider}`,
@@ -61,7 +61,7 @@ export const ViewRangeDrawer: React.FC<CombinedProps> = (props) => {
 
   const [mounted, setMounted] = React.useState<boolean>(false);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   let timer: number = 0;
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableHead from 'src/components/core/TableHead';
 import { OrderByProps } from 'src/components/OrderBy';
@@ -7,7 +7,7 @@ import TableCell from 'src/components/TableCell';
 import TableRow from 'src/components/TableRow';
 import TableSortCell from 'src/components/TableSortCell';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   borderRight: {
     borderRight: `1px solid ${theme.palette.divider}`,
   },
@@ -21,7 +21,7 @@ type CombinedProps = SortableVolumesTableHeaderProps &
   Omit<OrderByProps, 'data'>;
 
 const SortableTableHeader: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { order, orderBy, handleOrderChange, isVolumesLanding } = props;
 
   const isActive = (label: string) => label === orderBy;

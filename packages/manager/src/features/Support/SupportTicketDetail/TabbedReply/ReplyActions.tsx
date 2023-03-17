@@ -2,9 +2,9 @@ import * as React from 'react';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import CloseTicketLink from '../CloseTicketLink';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   actions: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -23,7 +23,7 @@ interface Props {
 type CombinedProps = Props;
 
 const ReplyActions: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     isSubmitting,

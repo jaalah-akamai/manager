@@ -2,7 +2,8 @@ import { deleteUser, User } from '@linode/api-v4/lib/account';
 import { useSnackbar } from 'notistack';
 import * as React from 'react';
 import AddNewLink from 'src/components/AddNewLink';
-import { makeStyles, useTheme } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
+import { useTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import TableBody from 'src/components/core/TableBody';
@@ -25,7 +26,7 @@ import CreateUserDrawer from './CreateUserDrawer';
 import UserDeleteConfirmationDialog from './UserDeleteConfirmationDialog';
 import ActionMenu from './UsersActionMenu';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   userLandingHeader: {
     margin: 0,
     width: '100%',
@@ -103,7 +104,7 @@ const UsersLanding: React.FC<Props> = (props) => {
     string | undefined
   >('');
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const theme = useTheme<Theme>();
   const matchesSmDown = useMediaQuery(theme.breakpoints.down('md'));
 

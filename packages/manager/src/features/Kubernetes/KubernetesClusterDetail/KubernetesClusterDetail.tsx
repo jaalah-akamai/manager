@@ -4,7 +4,7 @@ import Breadcrumb from 'src/components/Breadcrumb';
 import Button from 'src/components/Button';
 import CircleProgress from 'src/components/CircleProgress';
 import Grid from 'src/components/core/Grid';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DocsLink from 'src/components/DocsLink';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
@@ -21,7 +21,7 @@ import { NodePoolsDisplay } from './NodePoolsDisplay/NodePoolsDisplay';
 import { UpgradeKubernetesClusterToHADialog } from './UpgradeClusterDialog';
 import UpgradeKubernetesVersionBanner from './UpgradeKubernetesVersionBanner';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     [theme.breakpoints.down('md')]: {
       paddingRight: theme.spacing(),
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const KubernetesClusterDetail = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data: account } = useAccount();
   const { clusterID } = useParams<{ clusterID: string }>();
   const id = Number(clusterID);

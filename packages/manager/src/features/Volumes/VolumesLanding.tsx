@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { compose } from 'recompose';
 import { bindActionCreators, Dispatch } from 'redux';
 import VolumeIcon from 'src/assets/icons/entityIcons/volume.svg';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
 import Typography from 'src/components/core/Typography';
@@ -78,7 +78,8 @@ interface DispatchProps {
 
 type CombinedProps = Props & DispatchProps;
 
-export const useStyles = makeStyles(() => ({
+// TODO jss-to-tss-react codemod: usages of this hook outside of this file will not be converted.
+export const useStyles = makeStyles()(() => ({
   empty: {
     '& svg': {
       transform: 'scale(0.75)',
@@ -89,7 +90,7 @@ export const useStyles = makeStyles(() => ({
 const preferenceKey = 'volumes';
 
 export const VolumesLanding: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const history = useHistory();
 
   const pagination = usePagination(1, preferenceKey);

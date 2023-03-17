@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
 
@@ -7,7 +7,7 @@ import Paper from 'src/components/core/Paper';
 
 import Instructions from '../../shared/InstallationInstructions';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: theme.spacing(3),
   },
@@ -21,7 +21,7 @@ interface Props {
 type CombinedProps = Props;
 
 const Installation: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <>

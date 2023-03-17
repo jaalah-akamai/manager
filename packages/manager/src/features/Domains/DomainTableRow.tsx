@@ -2,7 +2,7 @@ import { Domain, DomainStatus } from '@linode/api-v4/lib/domains';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DateTimeDisplay from 'src/components/DateTimeDisplay';
 import StatusIcon from 'src/components/StatusIcon';
@@ -11,7 +11,7 @@ import TableRow from 'src/components/TableRow';
 import ActionMenu, { Handlers } from './DomainActionMenu';
 import { getDomainDisplayType } from './domainUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   button: {
     ...theme.applyLinkStyles,
   },
@@ -28,7 +28,7 @@ type CombinedProps = { domain: Domain } & Handlers;
 const DomainTableRow: React.FC<CombinedProps> = (props) => {
   const { domain, onDisableOrEnable, onClone, onRemove, onEdit } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <TableRow

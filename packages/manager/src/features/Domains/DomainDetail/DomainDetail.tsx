@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import Breadcrumb from 'src/components/Breadcrumb';
 import CircleProgress from 'src/components/CircleProgress';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DocsLink from 'src/components/DocsLink';
 import ErrorState from 'src/components/ErrorState';
@@ -14,7 +14,7 @@ import { useDomainQuery, useUpdateDomainMutation } from 'src/queries/domains';
 import { getAllWithArguments } from 'src/utilities/getAll';
 import DomainRecords from '../DomainRecordsWrapper';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   ...summaryPanelStyles(theme),
   root: {
     margin: 0,
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const DomainDetail = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const params = useParams<{ domainId: string }>();
   const domainId = Number(params.domainId);
 

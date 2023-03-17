@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import Drawer from 'src/components/Drawer';
 import UpdateContactInformationForm from './UpdateContactInformationForm';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   drawer: {
     '& .MuiDrawer-paper': {
       overflowX: 'hidden',
@@ -25,7 +25,7 @@ type CombinedProps = Props;
 export const BillingContactDrawer: React.FC<CombinedProps> = (props) => {
   const { open, onClose, focusEmail } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Drawer

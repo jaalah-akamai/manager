@@ -8,7 +8,7 @@ import * as React from 'react';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { compose } from 'recompose';
 import Form from 'src/components/core/Form';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import TagsInput, { Tag as _Tag } from 'src/components/TagsInput';
@@ -39,7 +39,7 @@ import PricePanel from './PricePanel';
 import SizeField from './SizeField';
 import VolumesActionsPanel from './VolumesActionsPanel';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   textWrapper: {
     marginBottom: theme.spacing(1.25),
   },
@@ -60,7 +60,7 @@ interface Props {
 type CombinedProps = Props & StateProps & DispatchProps;
 
 const CreateVolumeForm: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const {
     onClose,
     onSuccess,

@@ -10,7 +10,8 @@ import CircleProgress from 'src/components/CircleProgress';
 import Paper from 'src/components/core/Paper';
 import TabPanels from 'src/components/core/ReachTabPanels';
 import Tabs from 'src/components/core/ReachTabs';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import CreateLinodeDisabled from 'src/components/CreateLinodeDisabled';
@@ -81,50 +82,49 @@ type ClassNames =
   | 'messageGroupMaxWidth'
   | 'createButton';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    form: {
-      width: '100%',
+const styles = (theme: Theme) => ({
+  form: {
+    width: '100%',
+  },
+  stackScriptWrapper: {
+    '& [role="tablist"]': {
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(),
     },
-    stackScriptWrapper: {
-      '& [role="tablist"]': {
-        marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(),
-      },
+  },
+  imageSelect: {
+    '& .MuiPaper-root': {
+      padding: 0,
     },
-    imageSelect: {
-      '& .MuiPaper-root': {
-        padding: 0,
-      },
+  },
+  buttonGroup: {
+    marginTop: theme.spacing(3),
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'flex-end',
     },
-    buttonGroup: {
-      marginTop: theme.spacing(3),
-      [theme.breakpoints.down('sm')]: {
-        justifyContent: 'flex-end',
-      },
+  },
+  messageGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(2),
+    flexGrow: 1,
+    [(theme.breakpoints.down('sm'), theme.breakpoints.down('md'))]: {
+      margin: theme.spacing(1),
     },
-    messageGroup: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: theme.spacing(2),
-      flexGrow: 1,
-      [(theme.breakpoints.down('sm'), theme.breakpoints.down('md'))]: {
-        margin: theme.spacing(1),
-      },
+  },
+  messageGroupMaxWidth: {
+    maxWidth: '70%',
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 'unset',
     },
-    messageGroupMaxWidth: {
-      maxWidth: '70%',
-      [theme.breakpoints.down('sm')]: {
-        maxWidth: 'unset',
-      },
+  },
+  createButton: {
+    [theme.breakpoints.down('md')]: {
+      marginRight: theme.spacing(1),
     },
-    createButton: {
-      [theme.breakpoints.down('md')]: {
-        marginRight: theme.spacing(1),
-      },
-      marginLeft: theme.spacing(1),
-    },
-  });
+    marginLeft: theme.spacing(1),
+  },
+});
 interface Props {
   history: any;
   createType: CreateTypes;
@@ -870,8 +870,6 @@ const updateCond = (
 ) => {
   return prevProps.selectedStackScriptID !== nextProps.selectedStackScriptID;
 };
-
-const styled = withStyles(styles);
 
 const connected = connect(mapStateToProps, mapDispatchToProps);
 

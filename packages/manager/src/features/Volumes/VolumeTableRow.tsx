@@ -3,7 +3,7 @@ import { Event } from '@linode/api-v4/lib/account';
 import { Status } from 'src/components/StatusIcon/StatusIcon';
 import { Link } from 'react-router-dom';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import Typography from 'src/components/core/Typography';
 import StatusIcon from 'src/components/StatusIcon';
 import Grid from 'src/components/Grid';
@@ -14,7 +14,8 @@ import VolumesActionMenu, { ActionHandlers } from './VolumesActionMenu';
 import { Volume } from '@linode/api-v4/lib/volumes/types';
 // import useEvents from 'src/hooks/useEvents';
 
-export const useStyles = makeStyles({
+// TODO jss-to-tss-react codemod: usages of this hook outside of this file will not be converted.
+export const useStyles = makeStyles()({
   volumePath: {
     width: '35%',
     wordBreak: 'break-all',
@@ -63,7 +64,7 @@ export const volumeStatusIconMap: Record<Volume['status'], Status> = {
 };
 
 export const VolumeTableRow = (props: CombinedProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const {
     isDetailsPageRow,
     openForClone,

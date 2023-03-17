@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import countryData from 'country-region-data';
 import * as React from 'react';
 import {
@@ -9,14 +8,14 @@ import {
 import { compose } from 'recompose';
 import Button from 'src/components/Button';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
 import styled from 'src/containers/SummaryPanels.styles';
 import BillingContactDrawer from './EditBillingContactDrawer';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   ...styled(theme),
   wordWrap: {
     wordBreak: 'break-all',
@@ -84,7 +83,7 @@ const ContactInformation: React.FC<CombinedProps> = (props) => {
     taxId,
   } = props;
 
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const history = useHistory<{
     contactDrawerOpen?: boolean;
@@ -204,7 +203,7 @@ const ContactInformation: React.FC<CombinedProps> = (props) => {
 
           <Grid
             item
-            className={classNames({
+            className={cx({
               [classes.switchWrapper]: true,
               [classes.switchWrapperFlex]:
                 taxId !== undefined && taxId !== null && taxId !== '',

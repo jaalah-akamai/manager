@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import { NotificationSeverity } from '@linode/api-v4/lib/account';
 import * as React from 'react';
 import IconButton from 'src/components/core/IconButton';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 
 type ClassNames =
@@ -14,49 +15,48 @@ type ClassNames =
   | 'isCritical'
   | 'smaller';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      order: 5,
-      marginRight: `-${theme.spacing(2)}`,
-      position: 'relative',
-      '&.active $icon': {
-        backgroundColor: theme.palette.text.primary,
-      },
+const styles = (theme: Theme) => ({
+  root: {
+    order: 5,
+    marginRight: `-${theme.spacing(2)}`,
+    position: 'relative',
+    '&.active $icon': {
+      backgroundColor: theme.palette.text.primary,
     },
-    icon: {
-      position: 'relative',
-      top: 0,
-      width: 28,
-      height: 28,
-      transition: theme.transitions.create(['background-color']),
-      color: theme.color.white,
-      borderRadius: '50%',
-      backgroundColor: theme.color.grey3,
-      fontSize: 17,
-      fontFamily: 'LatoWebBold',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      lineHeight: 1.1,
-      '&:hover': {
-        backgroundColor: theme.palette.text.primary,
-      },
+  },
+  icon: {
+    position: 'relative',
+    top: 0,
+    width: 28,
+    height: 28,
+    transition: theme.transitions.create(['background-color']),
+    color: theme.color.white,
+    borderRadius: '50%',
+    backgroundColor: theme.color.grey3,
+    fontSize: 17,
+    fontFamily: 'LatoWebBold',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    lineHeight: 1.1,
+    '&:hover': {
+      backgroundColor: theme.palette.text.primary,
     },
-    isCritical: {
-      backgroundColor: theme.palette.error.dark,
-    },
-    isMajor: {
-      backgroundColor: theme.palette.warning.dark,
-    },
-    isMinor: {
-      backgroundColor: theme.palette.primary.main,
-    },
-    smaller: {
-      fontSize: 15,
-    },
-    hasNoNotifications: {},
-  });
+  },
+  isCritical: {
+    backgroundColor: theme.palette.error.dark,
+  },
+  isMajor: {
+    backgroundColor: theme.palette.warning.dark,
+  },
+  isMinor: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  smaller: {
+    fontSize: 15,
+  },
+  hasNoNotifications: {},
+});
 
 interface Props {
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
@@ -97,6 +97,4 @@ const userNotificationButton: React.FC<CombinedProps> = ({
   );
 };
 
-const styled = withStyles(styles);
-
-export default styled(userNotificationButton);
+export default withStyles(userNotificationButton, styles);

@@ -3,7 +3,7 @@ import { ObjectStorageBucket } from '@linode/api-v4/lib/object-storage';
 import { CreateBucketSchema } from '@linode/validation/lib/buckets.schema';
 import * as React from 'react';
 import Form from 'src/components/core/Form';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Notice from 'src/components/Notice';
 import TextField from 'src/components/TextField';
@@ -32,7 +32,7 @@ import {
   useObjectStorageClusters,
 } from 'src/queries/objectStorage';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   textWrapper: {
     marginBottom: theme.spacing(1.25),
   },
@@ -56,7 +56,7 @@ export const CreateBucketForm: React.FC<Props> = (props) => {
     refetch: requestAccountSettings,
   } = useAccountSettings();
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
   const [hasSignedAgreement, setHasSignedAgreement] = React.useState<boolean>(
     false

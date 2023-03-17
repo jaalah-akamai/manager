@@ -6,12 +6,12 @@ import DiscoverIcon from 'src/assets/icons/payment/discover.svg';
 import JCBIcon from 'src/assets/icons/payment/jcb.svg';
 import MastercardIcon from 'src/assets/icons/payment/mastercard.svg';
 import VisaIcon from 'src/assets/icons/payment/visa.svg';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import isCreditCardExpired, { formatExpiry } from 'src/utilities/creditCard';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
@@ -68,7 +68,7 @@ export const CreditCard: React.FC<CombinedProps> = (props) => {
     showIcon = true,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const Icon = type ? getIcon(type) : GenericCardIcon;
 
   return (

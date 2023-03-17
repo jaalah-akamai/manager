@@ -9,7 +9,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { compose } from 'recompose';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Search from 'src/components/DebouncedSearchTextField';
@@ -32,7 +32,7 @@ import DeleteDialog from './LongviewDeleteDialog';
 import LongviewList from './LongviewList';
 import SubscriptionDialog from './SubscriptionDialog';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   headingWrapper: {
     marginBottom: theme.spacing(),
     [theme.breakpoints.down('lg')]: {
@@ -150,7 +150,7 @@ export const LongviewClients: React.FC<CombinedProps> = (props) => {
     setSubscriptionDialogOpen,
   ] = React.useState<boolean>(false);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   React.useEffect(() => {
     getLongviewClients();

@@ -1,9 +1,8 @@
 import { APIWarning } from '@linode/api-v4/lib/types';
-import classNames from 'classnames';
 import * as React from 'react';
 import GooglePayIcon from 'src/assets/icons/payment/gPayButton.svg';
 import CircleProgress from 'src/components/CircleProgress';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Tooltip from 'src/components/core/Tooltip';
 import Grid from 'src/components/Grid';
@@ -18,7 +17,7 @@ import { useAccount } from 'src/queries/account';
 import { useClientToken } from 'src/queries/accountPayment';
 import { SetSuccess } from './types';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     position: 'relative',
   },
@@ -72,7 +71,7 @@ interface Props {
 }
 
 export const GooglePayButton: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const status = useScript('https://pay.google.com/gp/p/js/pay.js');
   const { data, isLoading, error: clientTokenError } = useClientToken();
   const [initializationError, setInitializationError] = React.useState<boolean>(
@@ -154,7 +153,7 @@ export const GooglePayButton: React.FC<Props> = (props) => {
         </Tooltip>
       )}
       <button
-        className={classNames({
+        className={cx({
           [classes.button]: true,
           [classes.disabled]: disabledDueToPrice || disabledDueToProcessing,
         })}

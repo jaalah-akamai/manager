@@ -10,7 +10,7 @@ import Button from 'src/components/Button';
 import CheckBox from 'src/components/CheckBox';
 import CircleProgress from 'src/components/CircleProgress';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ErrorState from 'src/components/ErrorState';
@@ -29,7 +29,7 @@ import { sendEntityTransferReceiveEvent } from 'src/utilities/ga';
 import { pluralize } from 'src/utilities/pluralize';
 import { countByEntity } from '../utilities';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   transferSummary: {
     marginBottom: theme.spacing(),
   },
@@ -62,7 +62,7 @@ export interface Props {
 
 export const ConfirmTransferDialog: React.FC<Props> = (props) => {
   const { onClose, open, token } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const { data, isLoading, isError, error } = useTransferQuery(
     token ?? '',
@@ -192,7 +192,7 @@ export const DialogContent: React.FC<ContentProps> = React.memo((props) => {
     isLoading,
     submissionErrors,
   } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   if (isLoading) {
     return (

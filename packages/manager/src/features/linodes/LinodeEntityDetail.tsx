@@ -1,6 +1,5 @@
 import { Config, LinodeBackups } from '@linode/api-v4/lib/linodes';
 import { Linode } from '@linode/api-v4/lib/linodes/types';
-import classNames from 'classnames';
 import { useSnackbar } from 'notistack';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
@@ -11,7 +10,8 @@ import CopyTooltip from 'src/components/CopyTooltip';
 import Box from 'src/components/core/Box';
 import Chip from 'src/components/core/Chip';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles, useTheme } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
+import { useTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Table from 'src/components/core/Table';
@@ -205,7 +205,7 @@ export interface HeaderProps {
   transitionText?: string;
 }
 
-const useHeaderStyles = makeStyles((theme: Theme) => ({
+const useHeaderStyles = makeStyles()((theme: Theme) => ({
   root: {
     backgroundColor: theme.bg.bgPaper,
   },
@@ -297,7 +297,7 @@ const useHeaderStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Header: React.FC<HeaderProps> = (props) => {
-  const classes = useHeaderStyles();
+  const { classes, cx } = useHeaderStyles();
 
   const {
     variant,
@@ -362,7 +362,7 @@ const Header: React.FC<HeaderProps> = (props) => {
             >
               <Chip
                 data-qa-linode-status
-                className={classNames({
+                className={cx({
                   [classes.statusChip]: true,
                   [classes.statusChipLandingDetailView]: isDetailLanding,
                   [classes.statusRunning]: isRunning,
@@ -474,7 +474,7 @@ export interface BodyProps {
   numVolumes: number;
 }
 
-const useBodyStyles = makeStyles((theme: Theme) => ({
+const useBodyStyles = makeStyles()((theme: Theme) => ({
   body: {
     flexWrap: 'nowrap',
     justifyContent: 'space-between',
@@ -508,7 +508,7 @@ const useBodyStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const Body: React.FC<BodyProps> = React.memo((props) => {
-  const classes = useBodyStyles();
+  const { classes } = useBodyStyles();
   const {
     numCPUs,
     gbRAM,
@@ -605,101 +605,103 @@ export const Body: React.FC<BodyProps> = React.memo((props) => {
 // =============================================================================
 // @todo: Maybe move this component somewhere to its own file? Could potentially
 // be used elsewhere.
-const useAccessTableStyles = makeStyles((theme: Theme) => ({
-  columnLabel: {
-    color: theme.textColors.headlineStatic,
-    fontFamily: theme.font.bold,
-  },
-  accessTableContent: {
-    '&.MuiGrid-item': {
+const useAccessTableStyles = makeStyles<void, 'copy'>()(
+  (theme: Theme, _params, classes) => ({
+    columnLabel: {
+      color: theme.textColors.headlineStatic,
+      fontFamily: theme.font.bold,
+    },
+    accessTableContent: {
+      '&.MuiGrid-item': {
+        padding: 0,
+        paddingLeft: theme.spacing(),
+      },
+    },
+    accessTable: {
+      tableLayout: 'fixed',
+      '& tr': {
+        height: 32,
+      },
+      '& th': {
+        backgroundColor: theme.bg.app,
+        borderBottom: `1px solid ${theme.bg.bgPaper}`,
+        color: theme.textColors.textAccessTable,
+        fontSize: '0.875rem',
+        fontWeight: 'bold',
+        lineHeight: 1,
+        padding: theme.spacing(),
+        textAlign: 'left',
+        whiteSpace: 'nowrap',
+        width: 170,
+      },
+      '& td': {
+        border: 'none',
+        borderBottom: `1px solid ${theme.bg.bgPaper}`,
+        fontSize: '0.875rem',
+        lineHeight: 1,
+        whiteSpace: 'nowrap',
+      },
+    },
+    code: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: theme.bg.bgAccessRow,
+      color: theme.textColors.tableStatic,
+      fontFamily: '"UbuntuMono", monospace, sans-serif',
+      padding: '4px 8px',
+      position: 'relative',
+      '& div': {
+        fontSize: 15,
+      },
+    },
+    row: {
+      [`&:hover .${classes.copy} > svg, & .${classes.copy}:focus > svg`]: {
+        opacity: 1,
+      },
+    },
+    copyCell: {
+      backgroundColor: theme.bg.lightBlue2,
+      height: 33,
+      width: 36,
       padding: 0,
-      paddingLeft: theme.spacing(),
-    },
-  },
-  accessTable: {
-    tableLayout: 'fixed',
-    '& tr': {
-      height: 32,
-    },
-    '& th': {
-      backgroundColor: theme.bg.app,
-      borderBottom: `1px solid ${theme.bg.bgPaper}`,
-      color: theme.textColors.textAccessTable,
-      fontSize: '0.875rem',
-      fontWeight: 'bold',
-      lineHeight: 1,
-      padding: theme.spacing(),
-      textAlign: 'left',
-      whiteSpace: 'nowrap',
-      width: 170,
-    },
-    '& td': {
-      border: 'none',
-      borderBottom: `1px solid ${theme.bg.bgPaper}`,
-      fontSize: '0.875rem',
-      lineHeight: 1,
-      whiteSpace: 'nowrap',
-    },
-  },
-  code: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: theme.bg.bgAccessRow,
-    color: theme.textColors.tableStatic,
-    fontFamily: '"UbuntuMono", monospace, sans-serif',
-    padding: '4px 8px',
-    position: 'relative',
-    '& div': {
-      fontSize: 15,
-    },
-  },
-  row: {
-    '&:hover $copy > svg, & $copy:focus > svg': {
-      opacity: 1,
-    },
-  },
-  copyCell: {
-    backgroundColor: theme.bg.lightBlue2,
-    height: 33,
-    width: 36,
-    padding: 0,
-    '& svg': {
-      height: 16,
-      width: 16,
-      '& path': {
-        fill: theme.textColors.linkActiveLight,
+      '& svg': {
+        height: 16,
+        width: 16,
+        '& path': {
+          fill: theme.textColors.linkActiveLight,
+        },
+      },
+      '&:hover': {
+        backgroundColor: '#3683dc',
+        '& svg path': {
+          fill: '#fff',
+        },
       },
     },
-    '&:hover': {
-      backgroundColor: '#3683dc',
-      '& svg path': {
-        fill: '#fff',
+    copy: {
+      '& svg': {
+        height: `12px`,
+        width: `12px`,
+        opacity: 0,
       },
     },
-  },
-  copy: {
-    '& svg': {
-      height: `12px`,
-      width: `12px`,
-      opacity: 0,
+    gradient: {
+      overflowY: 'hidden', // For Edge
+      overflowX: 'auto',
+      paddingRight: 15,
+      '&:after': {
+        content: '""',
+        width: 30,
+        height: '100%',
+        position: 'absolute',
+        right: 0,
+        bottom: 0,
+        backgroundImage: `linear-gradient(to right,  ${theme.bg.bgAccessRowTransparentGradient}, ${theme.bg.bgAccessRow});`,
+      },
     },
-  },
-  gradient: {
-    overflowY: 'hidden', // For Edge
-    overflowX: 'auto',
-    paddingRight: 15,
-    '&:after': {
-      content: '""',
-      width: 30,
-      height: '100%',
-      position: 'absolute',
-      right: 0,
-      bottom: 0,
-      backgroundImage: `linear-gradient(to right,  ${theme.bg.bgAccessRowTransparentGradient}, ${theme.bg.bgAccessRow});`,
-    },
-  },
-}));
+  })
+);
 
 interface AccessTableRow {
   text: string | null;
@@ -714,7 +716,7 @@ interface AccessTableProps {
 }
 
 export const AccessTable: React.FC<AccessTableProps> = React.memo((props) => {
-  const classes = useAccessTableStyles();
+  const { classes } = useAccessTableStyles();
   return (
     <Grid container item md={6} direction="column" {...props.gridProps}>
       <Grid item className={classes.columnLabel}>
@@ -760,7 +762,7 @@ interface FooterProps {
   openDialog: OpenDialog;
 }
 
-const useFooterStyles = makeStyles((theme: Theme) => ({
+const useFooterStyles = makeStyles()((theme: Theme) => ({
   details: {
     flexWrap: 'nowrap',
     '&.MuiGrid-item': {
@@ -830,7 +832,7 @@ const useFooterStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const Footer: React.FC<FooterProps> = React.memo((props) => {
-  const classes = useFooterStyles();
+  const { classes, cx } = useFooterStyles();
   const theme = useTheme<Theme>();
   const matchesSmDown = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -882,7 +884,7 @@ export const Footer: React.FC<FooterProps> = React.memo((props) => {
           )}
           {linodeRegionDisplay && (
             <Typography
-              className={classNames({
+              className={cx({
                 [classes.listItem]: true,
                 [classes.listItemLast]: matchesSmDown,
               })}

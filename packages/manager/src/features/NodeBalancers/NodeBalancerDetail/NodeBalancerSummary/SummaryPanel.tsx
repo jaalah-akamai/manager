@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import TagsPanel from 'src/components/TagsPanel';
@@ -21,29 +22,28 @@ type ClassNames =
   | 'nodeTransfer'
   | 'hostName';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    ...summaryPanelStyles(theme),
-    root: {
-      paddingTop: theme.spacing(),
+const styles = (theme: Theme) => ({
+  ...summaryPanelStyles(theme),
+  root: {
+    paddingTop: theme.spacing(),
+  },
+  NBsummarySection: {
+    [theme.breakpoints.up('md')]: {
+      marginTop: theme.spacing(6),
     },
-    NBsummarySection: {
-      [theme.breakpoints.up('md')]: {
-        marginTop: theme.spacing(6),
-      },
-    },
-    IPgrouping: {
-      margin: '-2px 0 0 2px',
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    nodeTransfer: {
-      marginTop: 12,
-    },
-    hostName: {
-      wordBreak: 'break-word',
-    },
-  });
+  },
+  IPgrouping: {
+    margin: '-2px 0 0 2px',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  nodeTransfer: {
+    marginTop: 12,
+  },
+  hostName: {
+    wordBreak: 'break-word',
+  },
+});
 
 interface Props {
   nodeBalancer: ExtendedNodeBalancer;
@@ -136,7 +136,7 @@ const SummaryPanel: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const localStyles = withStyles(styles);
+const localStyles = withStyles(SummaryPanel, styles);
 
 const enhanced = compose<CombinedProps, Props>(localStyles);
 

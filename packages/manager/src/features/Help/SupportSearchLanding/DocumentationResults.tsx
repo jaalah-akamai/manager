@@ -2,12 +2,12 @@ import OpenInNew from '@mui/icons-material/OpenInNew';
 import * as React from 'react';
 import ListItem from 'src/components/core/ListItem';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ExternalLink from 'src/components/ExternalLink';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   noResultsContainer: {
     padding: `${theme.spacing(2)} ${theme.spacing(3)}`,
   },
@@ -54,7 +54,7 @@ interface Props {
 type CombinedProps = Props;
 
 const DocumentationResults: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { results, sectionTitle, target } = props;
 
   const renderResults = () => {

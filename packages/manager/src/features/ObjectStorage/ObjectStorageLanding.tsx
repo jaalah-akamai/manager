@@ -10,7 +10,7 @@ import { compose } from 'recompose';
 import { Dispatch } from 'redux';
 import TabPanels from 'src/components/core/ReachTabPanels';
 import Tabs from 'src/components/core/ReachTabs';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import DismissibleBanner from 'src/components/DismissibleBanner';
@@ -41,7 +41,7 @@ const AccessKeyLanding = React.lazy(
   () => import('./AccessKeyLanding/AccessKeyLanding')
 );
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   promo: {
     marginBottom: theme.spacing(0.5),
   },
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 type CombinedProps = DispatchProps & RouteComponentProps<{}>;
 
 export const ObjectStorageLanding: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { replace } = props.history;
   const [mode, setMode] = React.useState<MODE>('creating');
 
@@ -212,7 +212,7 @@ export default enhanced(ObjectStorageLanding);
 // =============================================================================
 // <BillingNotice/>
 // ============================================================================
-const useBillingNoticeStyles = makeStyles((theme: Theme) => ({
+const useBillingNoticeStyles = makeStyles()((theme: Theme) => ({
   button: {
     ...theme.applyLinkStyles,
   },
@@ -221,7 +221,7 @@ const useBillingNoticeStyles = makeStyles((theme: Theme) => ({
 const NOTIFICATION_KEY = 'obj-billing-notification';
 
 export const BillingNotice: React.FC<{}> = React.memo(() => {
-  const classes = useBillingNoticeStyles();
+  const { classes } = useBillingNoticeStyles();
 
   const dispatch: Dispatch = useDispatch();
   const openDrawer = () => dispatch(openBucketDrawer());

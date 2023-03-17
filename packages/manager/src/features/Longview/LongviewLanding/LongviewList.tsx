@@ -4,7 +4,7 @@ import { compose } from 'recompose';
 import CircleProgress from 'src/components/CircleProgress';
 import Box from 'src/components/core/Box';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ErrorState from 'src/components/ErrorState';
@@ -13,7 +13,7 @@ import PaginationFooter from 'src/components/PaginationFooter';
 import { Props as LVProps } from 'src/containers/longview.container';
 import LongviewRows from './LongviewListRows';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   empty: {
     height: '20em',
     display: 'flex',
@@ -65,7 +65,7 @@ const LongviewList: React.FC<CombinedProps> = (props) => {
     userCanCreateLongviewClient,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   // Empty state and a new client is being created
   const newClientIsLoading = loading && longviewClientsResults === 0;

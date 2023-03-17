@@ -3,7 +3,8 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import AddNewLink from 'src/components/AddNewLink';
 import Hidden from 'src/components/core/Hidden';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -27,25 +28,24 @@ import SSHKeyCreationDrawer from './SSHKeyCreationDrawer';
 
 type ClassNames = 'sshKeysHeader' | 'addNewWrapper' | 'createdCell';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    sshKeysHeader: {
-      margin: 0,
-      width: '100%',
+const styles = (theme: Theme) => ({
+  sshKeysHeader: {
+    margin: 0,
+    width: '100%',
+  },
+  addNewWrapper: {
+    '&.MuiGrid-item': {
+      paddingTop: 0,
+      paddingRight: 0,
     },
-    addNewWrapper: {
-      '&.MuiGrid-item': {
-        paddingTop: 0,
-        paddingRight: 0,
-      },
-      [theme.breakpoints.down('md')]: {
-        marginRight: theme.spacing(),
-      },
+    [theme.breakpoints.down('md')]: {
+      marginRight: theme.spacing(),
     },
-    createdCell: {
-      width: '16%',
-    },
-  });
+  },
+  createdCell: {
+    width: '16%',
+  },
+});
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props extends PaginationProps<ExtendedSSHKey> {}
@@ -261,8 +261,6 @@ const updatedRequest = (ownProps: any, params: any, filters: any) =>
     ...response,
     data: updateResponseData(response.data),
   }));
-
-const styled = withStyles(styles);
 
 const paginated = paginate(updatedRequest);
 

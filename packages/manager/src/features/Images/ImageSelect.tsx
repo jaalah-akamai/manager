@@ -1,7 +1,7 @@
 import { Image } from '@linode/api-v4/lib/images';
 import { clone, propOr } from 'ramda';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Select, { GroupType, Item } from 'src/components/EnhancedSelect/Select';
 import Grid from 'src/components/Grid';
@@ -10,7 +10,7 @@ import { useAllImagesQuery } from 'src/queries/images';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 import { groupImages } from 'src/utilities/images';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     width: '100%',
   },
@@ -57,7 +57,7 @@ export const ImageSelect: React.FC<CombinedProps> = (props) => {
     anyAllOption,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { isLoading: imagesLoading, isError, error } = useAllImagesQuery(
     {},

@@ -2,7 +2,8 @@ import { Notification } from '@linode/api-v4/lib/account';
 import { compose, path } from 'ramda';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { dcDisplayNames } from 'src/constants';
@@ -11,13 +12,12 @@ import UserNotificationListItem from './UserNotificationListItem';
 
 type ClassNames = 'emptyText';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    emptyText: {
-      padding: `${theme.spacing(2)} ${theme.spacing(3)}`,
-      fontFamily: theme.font.bold,
-    },
-  });
+const styles = (theme: Theme) => ({
+  emptyText: {
+    padding: `${theme.spacing(2)} ${theme.spacing(3)}`,
+    fontFamily: theme.font.bold,
+  },
+});
 
 interface Props {
   notifications: Notification[];
@@ -141,8 +141,6 @@ const createClickHandlerForNotification = (
       return;
   }
 };
-
-const styled = withStyles(styles);
 
 const enhanced = compose<any, any, any>(styled, withRouter);
 

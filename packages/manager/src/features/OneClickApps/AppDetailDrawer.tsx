@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { sanitizeHTML } from 'src/utilities/sanitize-html';
 import { oneClickApps } from './FakeSpec';
@@ -11,7 +11,7 @@ import Typography from 'src/components/core/Typography';
 import ExternalLink from 'src/components/ExternalLink';
 import useFlags from 'src/hooks/useFlags';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   logoContainer: {
     height: 225,
     padding: theme.spacing(2),
@@ -80,7 +80,7 @@ interface Props {
 
 export const AppDetailDrawer: React.FunctionComponent<Props> = (props) => {
   const { stackScriptLabel, open, onClose } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { oneClickAppsDocsOverride } = useFlags();
 
   const app = oneClickApps.find((app) => {

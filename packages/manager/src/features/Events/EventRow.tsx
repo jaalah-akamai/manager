@@ -3,7 +3,7 @@ import { pathOr } from 'ramda';
 import * as React from 'react';
 import { compose } from 'recompose';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DateTimeDisplay from 'src/components/DateTimeDisplay';
 import HighlightedMarkdown from 'src/components/HighlightedMarkdown';
@@ -17,7 +17,7 @@ import getEventsActionLink from 'src/utilities/getEventsActionLink';
 import { GravatarByUsername } from '../../components/GravatarByUsername';
 import { formatEventWithUsername } from './Event.helpers';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   row: {
     '&:hover': {
       backgroundColor:
@@ -79,7 +79,7 @@ export interface RowProps {
 }
 
 export const Row: React.FC<RowProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { action, message, created, username } = props;
 

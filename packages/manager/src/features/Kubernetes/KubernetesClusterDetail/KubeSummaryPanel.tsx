@@ -11,7 +11,7 @@ import Grid from 'src/components/Grid';
 import TagsPanel from 'src/components/TagsPanel';
 import KubeClusterSpecs from 'src/features/Kubernetes/KubernetesClusterDetail/KubeClusterSpecs';
 import useFlags from 'src/hooks/useFlags';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { getErrorStringOrDefault } from 'src/utilities/errorUtils';
 import { KubeConfigDisplay } from './KubeConfigDisplay';
@@ -23,7 +23,7 @@ import {
   useResetKubeConfigMutation,
 } from 'src/queries/kubernetes';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginBottom: theme.spacing(3),
     padding: `${theme.spacing(2.5)} ${theme.spacing(2.5)} ${theme.spacing(3)}`,
@@ -92,7 +92,7 @@ interface Props {
 
 export const KubeSummaryPanel = (props: Props) => {
   const { cluster } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const flags = useFlags();
   const { enqueueSnackbar } = useSnackbar();
   const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false);

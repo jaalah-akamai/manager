@@ -3,7 +3,7 @@ import { useSnackbar } from 'notistack';
 import * as React from 'react';
 import AddNewLink from 'src/components/AddNewLink';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -29,7 +29,7 @@ import { ManagedContactGroup, Mode } from './common';
 import ContactDrawer from './ContactsDrawer';
 import ContactTableContact from './ContactsTableContent';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   copy: {
     fontSize: '0.875rem',
     marginBottom: theme.spacing(2),
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Contacts = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
   const {

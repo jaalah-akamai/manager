@@ -1,6 +1,6 @@
 import { Disk, getLinodeDisks, Linode } from '@linode/api-v4/lib/linodes';
 import { APIError } from '@linode/api-v4/lib/types';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useSnackbar } from 'notistack';
 import { equals } from 'ramda';
 import * as React from 'react';
@@ -21,7 +21,7 @@ import { useGrants, useProfile } from 'src/queries/profile';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 import getAPIErrorFor from 'src/utilities/getAPIErrorFor';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   container: {
     padding: theme.spacing(3),
     paddingTop: theme.spacing(2),
@@ -66,7 +66,7 @@ export interface Props {
 export const CreateImageTab: React.FC<Props> = (props) => {
   const { label, description, changeLabel, changeDescription } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const { push } = useHistory();
 

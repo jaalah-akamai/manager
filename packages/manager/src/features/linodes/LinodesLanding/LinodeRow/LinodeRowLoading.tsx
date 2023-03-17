@@ -1,7 +1,8 @@
 import { Event } from '@linode/api-v4/lib/account';
 import { LinodeStatus } from '@linode/api-v4/lib/linodes';
 import * as React from 'react';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import LinearProgress from 'src/components/LinearProgress';
 import TableCell from 'src/components/TableCell';
@@ -13,25 +14,24 @@ import {
 
 type ClassNames = 'bodyRow' | 'status' | 'bodyCell';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    bodyRow: {
-      height: 'auto',
-      '&:before': {
-        borderBottomColor: 'transparent',
-      },
+const styles = (theme: Theme) => ({
+  bodyRow: {
+    height: 'auto',
+    '&:before': {
+      borderBottomColor: 'transparent',
     },
-    bodyCell: {
-      border: 0,
-      paddingBottom: 0,
-    },
-    status: {
-      textTransform: 'capitalize',
-      marginBottom: theme.spacing(1),
-      color: theme.palette.text.primary,
-      fontSize: '.92rem',
-    },
-  });
+  },
+  bodyCell: {
+    border: 0,
+    paddingBottom: 0,
+  },
+  status: {
+    textTransform: 'capitalize',
+    marginBottom: theme.spacing(1),
+    color: theme.palette.text.primary,
+    fontSize: '.92rem',
+  },
+});
 
 interface Props {
   linodeId: number;
@@ -67,9 +67,7 @@ const LinodeRowLoading: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const styled = withStyles(styles);
-
-export default styled(LinodeRowLoading);
+export default withStyles(LinodeRowLoading, styles);
 
 const ProgressDisplay: React.FC<{
   progress: null | number;

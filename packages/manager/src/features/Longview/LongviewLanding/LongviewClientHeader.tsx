@@ -3,7 +3,7 @@ import { pathOr } from 'ramda';
 import * as React from 'react';
 import { compose } from 'recompose';
 import Button from 'src/components/Button';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import EditableEntityLabel from 'src/components/EditableEntityLabel';
@@ -20,7 +20,7 @@ import { LongviewPackage } from '../request.types';
 import { getPackageNoticeText } from '../shared/utilities';
 import RestrictedUserLabel from './RestrictedUserLabel';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     '& a': {
       color: theme.textColors.linkActiveLight,
@@ -82,7 +82,7 @@ export const LongviewClientHeader: React.FC<CombinedProps> = (props) => {
     updateLongviewClient,
     userCanModifyClient,
   } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [updating, setUpdating] = React.useState<boolean>(false);
 
   const handleUpdateLabel = (newLabel: string) => {

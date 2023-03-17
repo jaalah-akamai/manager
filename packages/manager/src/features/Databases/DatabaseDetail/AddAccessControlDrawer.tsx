@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as React from 'react';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Drawer from 'src/components/Drawer';
@@ -18,7 +18,7 @@ import {
   validateIPs,
 } from 'src/utilities/ipUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   instructions: {
     marginBottom: '2rem',
   },
@@ -43,7 +43,7 @@ type CombinedProps = Props;
 const AddAccessControlDrawer: React.FC<CombinedProps> = (props) => {
   const { open, onClose, updateDatabase, allowList } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [error, setError] = React.useState<string | undefined>('');
   const [allowListErrors, setAllowListErrors] = React.useState<APIError[]>();

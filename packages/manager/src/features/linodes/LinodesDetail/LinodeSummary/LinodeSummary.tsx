@@ -3,7 +3,8 @@ import * as React from 'react';
 import { useParams } from 'react-router-dom';
 import PendingIcon from 'src/assets/icons/pending.svg';
 import Paper from 'src/components/core/Paper';
-import { createStyles, makeStyles, useTheme } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
+import { useTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Select, { Item } from 'src/components/EnhancedSelect/Select';
@@ -32,52 +33,56 @@ import { StatsPanel } from './StatsPanel';
 
 setUpCharts();
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
+const useStyles = makeStyles()((theme: Theme) => ({
+  root: {
+    width: '100%',
+  },
+
+  chartSelect: {
+    maxWidth: 150,
+  },
+
+  graphControls: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginBottom: theme.spacing(),
+  },
+
+  graphGrids: {
+    flexWrap: 'nowrap',
+    margin: 0,
+    [theme.breakpoints.down(1100)]: {
+      flexWrap: 'wrap',
     },
-    chartSelect: {
-      maxWidth: 150,
+  },
+
+  grid: {
+    backgroundColor: theme.bg.offWhite,
+    border: `solid 1px ${theme.borderColors.divider}`,
+    marginBottom: theme.spacing(2),
+    '&.MuiGrid-item': {
+      padding: theme.spacing(2),
     },
-    graphControls: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      marginBottom: theme.spacing(),
-    },
-    graphGrids: {
-      flexWrap: 'nowrap',
-      margin: 0,
-      [theme.breakpoints.down(1100)]: {
-        flexWrap: 'wrap',
-      },
-    },
-    grid: {
-      backgroundColor: theme.bg.offWhite,
-      border: `solid 1px ${theme.borderColors.divider}`,
-      marginBottom: theme.spacing(2),
-      '&.MuiGrid-item': {
-        padding: theme.spacing(2),
-      },
-      '& h2': {
-        fontSize: '1rem',
-      },
-      [theme.breakpoints.up(1100)]: {
-        '&:first-of-type': {
-          marginRight: theme.spacing(2),
-        },
-      },
-    },
-    labelRangeSelect: {
+    '& h2': {
       fontSize: '1rem',
-      paddingRight: theme.spacing(2),
     },
-    emptyText: {
-      textAlign: 'center',
-      marginTop: theme.spacing(),
+    [theme.breakpoints.up(1100)]: {
+      '&:first-of-type': {
+        marginRight: theme.spacing(2),
+      },
     },
-  })
-);
+  },
+
+  labelRangeSelect: {
+    fontSize: '1rem',
+    paddingRight: theme.spacing(2),
+  },
+
+  emptyText: {
+    textAlign: 'center',
+    marginTop: theme.spacing(),
+  },
+}));
 
 interface Props {
   isBareMetalInstance: boolean;
@@ -91,7 +96,7 @@ const LinodeSummary: React.FC<Props> = (props) => {
   const { linodeId } = useParams<{ linodeId: string }>();
   const id = Number(linodeId);
   const theme = useTheme<Theme>();
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { data: profile } = useProfile();
   const timezone = profile?.timezone || DateTime.local().zoneName;

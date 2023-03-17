@@ -2,7 +2,7 @@ import { ManagedServiceMonitor } from '@linode/api-v4/lib/managed';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import TicketIcon from 'src/assets/icons/ticket.svg';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Tooltip from 'src/components/core/Tooltip';
 import Typography from 'src/components/core/Typography';
@@ -13,7 +13,7 @@ import { ExtendedIssue } from 'src/queries/managed/types';
 import ActionMenu from './MonitorActionMenu';
 import { statusIconMap, statusTextMap } from './monitorMaps';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   label: {
     fontFamily: theme.font.bold,
     width: '30%',
@@ -47,7 +47,7 @@ interface Props {
 }
 
 export const MonitorRow: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     monitor,

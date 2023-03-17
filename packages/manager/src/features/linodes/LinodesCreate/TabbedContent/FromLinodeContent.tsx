@@ -1,7 +1,7 @@
 import * as React from 'react';
 import VolumeIcon from 'src/assets/icons/entityIcons/volume.svg';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import Placeholder from 'src/components/Placeholder';
@@ -14,7 +14,7 @@ import {
 } from '../types';
 import { extendLinodes } from '../utilities';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   main: {
     [theme.breakpoints.up('md')]: {
       maxWidth: '100%',
@@ -34,7 +34,7 @@ export type CombinedProps = CloneFormStateHandlers &
   WithLinodesTypesRegionsAndImages;
 
 export const FromLinodeContent: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     errors,

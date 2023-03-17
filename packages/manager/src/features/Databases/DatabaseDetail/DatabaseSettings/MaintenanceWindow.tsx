@@ -9,7 +9,7 @@ import Button from 'src/components/Button';
 import FormControl from 'src/components/core/FormControl';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import RadioGroup from 'src/components/core/RadioGroup';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Select, { Item } from 'src/components/EnhancedSelect/Select';
@@ -19,7 +19,7 @@ import Radio from 'src/components/Radio';
 import { useDatabaseMutation } from 'src/queries/databases';
 // import { updateDatabaseSchema } from '@linode/validation/src/databases.schema';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   topSection: {
     display: 'flex',
     alignItems: 'center',
@@ -82,7 +82,7 @@ export const MaintenanceWindow: React.FC<Props> = (props) => {
     setModifiedWeekSelectionMap,
   ] = React.useState<Item[]>([]);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
   const { mutateAsync: updateDatabase } = useDatabaseMutation(

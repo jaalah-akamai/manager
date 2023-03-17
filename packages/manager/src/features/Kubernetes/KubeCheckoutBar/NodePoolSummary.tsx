@@ -3,7 +3,7 @@ import Close from '@mui/icons-material/Close';
 import * as React from 'react';
 import Box from 'src/components/core/Box';
 import Divider from 'src/components/core/Divider';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import DisplayPrice from 'src/components/DisplayPrice';
@@ -11,7 +11,7 @@ import EnhancedNumberInput from 'src/components/EnhancedNumberInput';
 import IconButton from 'src/components/IconButton';
 import { pluralize } from 'src/utilities/pluralize';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     '& $textField': {
       width: 53,
@@ -55,7 +55,7 @@ export interface Props {
 }
 
 export const NodePoolSummary: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { nodeCount, onRemove, poolType, price, updateNodeCount } = props;
 
   // This should never happen but TS wants us to account for the situation

@@ -2,7 +2,8 @@ import copy from 'copy-to-clipboard';
 import { tail } from 'ramda';
 import * as React from 'react';
 import CopyTooltip from 'src/components/CopyTooltip';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import ShowMore from 'src/components/ShowMore';
 import { privateIPRegex } from 'src/utilities/ipUtils';
@@ -16,63 +17,62 @@ type CSSClasses =
   | 'ipLink'
   | 'hide';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      marginBottom: theme.spacing(0.5),
-      maxWidth: '100%',
-      width: '100%',
-      '&:last-child': {
-        marginBottom: 0,
-      },
-      '&:hover': {
-        '& $hide': {
-          opacity: 1,
-        },
-      },
+const styles = (theme: Theme) => ({
+  root: {
+    marginBottom: theme.spacing(0.5),
+    maxWidth: '100%',
+    width: '100%',
+    '&:last-child': {
+      marginBottom: 0,
     },
-    row: {
-      display: 'flex',
-      alignItems: 'flex-start',
-      width: '100%',
-    },
-    multipleAddresses: {
-      '&:not(:last-child)': {
-        marginBottom: theme.spacing(0.5),
-      },
-    },
-    right: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginLeft: theme.spacing(0.5),
-    },
-    icon: {
-      '& svg': {
-        height: 12,
-        width: 12,
-        top: 1,
-      },
-    },
-    ipLink: {
-      display: 'inline-block',
-      color: theme.palette.primary.main,
-      position: 'relative',
-      top: -1,
-      transition: theme.transitions.create(['color']),
-    },
-    hide: {
-      [theme.breakpoints.up('md')]: {
-        // Hide until the component is hovered,
-        // when props.showCopyOnHover is true (only on desktop)
-        opacity: 0,
-      },
-      transition: theme.transitions.create(['opacity']),
-      '&:focus': {
+    '&:hover': {
+      '& $hide': {
         opacity: 1,
       },
     },
-  });
+  },
+  row: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    width: '100%',
+  },
+  multipleAddresses: {
+    '&:not(:last-child)': {
+      marginBottom: theme.spacing(0.5),
+    },
+  },
+  right: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: theme.spacing(0.5),
+  },
+  icon: {
+    '& svg': {
+      height: 12,
+      width: 12,
+      top: 1,
+    },
+  },
+  ipLink: {
+    display: 'inline-block',
+    color: theme.palette.primary.main,
+    position: 'relative',
+    top: -1,
+    transition: theme.transitions.create(['color']),
+  },
+  hide: {
+    [theme.breakpoints.up('md')]: {
+      // Hide until the component is hovered,
+      // when props.showCopyOnHover is true (only on desktop)
+      opacity: 0,
+    },
+    transition: theme.transitions.create(['opacity']),
+    '&:focus': {
+      opacity: 1,
+    },
+  },
+});
 
 interface Props {
   ips: string[];
@@ -164,4 +164,4 @@ export class IPAddress extends React.Component<Props & WithStyles<CSSClasses>> {
   }
 }
 
-export default withStyles(styles)(IPAddress);
+export default withStyles(IPAddress, styles);

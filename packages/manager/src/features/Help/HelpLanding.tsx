@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
 import OtherWays from './Panels/OtherWays';
@@ -8,14 +9,13 @@ import SearchPanel from './Panels/SearchPanel';
 
 type ClassNames = 'root';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      [theme.breakpoints.up('lg')]: {
-        padding: `${theme.spacing(2)} ${theme.spacing(14)}`,
-      },
+const styles = (theme: Theme) => ({
+  root: {
+    [theme.breakpoints.up('lg')]: {
+      padding: `${theme.spacing(2)} ${theme.spacing(14)}`,
     },
-  });
+  },
+});
 
 type CombinedProps = WithStyles<ClassNames>;
 
@@ -34,6 +34,4 @@ export class HelpLanding extends React.Component<CombinedProps, {}> {
   }
 }
 
-const styled = withStyles(styles);
-
-export default styled(HelpLanding);
+export default withStyles(HelpLanding, styles);

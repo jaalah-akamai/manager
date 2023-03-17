@@ -5,7 +5,7 @@ import CheckBox from 'src/components/CheckBox';
 import Divider from 'src/components/core/Divider';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Currency from 'src/components/Currency';
@@ -15,7 +15,7 @@ import { useAccount } from 'src/queries/account';
 import { CreateTypes } from 'src/store/linodeCreate/linodeCreate.actions';
 import AttachVLAN from './AttachVLAN';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   vlan: {
     marginTop: theme.spacing(3),
   },
@@ -84,7 +84,7 @@ const AddonsPanel: React.FC<CombinedProps> = (props) => {
 
   const hidePrivateIP = createType === 'fromLinode';
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data: account } = useAccount();
 
   // Making this an && instead of the usual hasFeatureEnabled, which is || based.

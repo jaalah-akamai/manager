@@ -2,13 +2,13 @@ import * as React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import TicketIcon from 'src/assets/icons/ticket.svg';
 import Button from 'src/components/Button';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
 import { ExtendedIssue } from 'src/queries/managed/types';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: theme.spacing(),
     textAlign: 'center',
@@ -33,7 +33,7 @@ interface Props {
 
 export const MonitorTickets: React.FC<Props> = (props) => {
   const { issues } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const history = useHistory();
 
   const openIssues = issues.filter((thisIssue) => !thisIssue.dateClosed);

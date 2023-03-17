@@ -12,7 +12,8 @@ import { compose } from 'recompose';
 import Button from 'src/components/Button';
 import CircleProgress from 'src/components/CircleProgress';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Notice from 'src/components/Notice';
@@ -33,35 +34,34 @@ export interface ExtendedLinode extends Linode {
 
 type ClassNames = 'table' | 'selecting' | 'link' | 'panel' | 'inner';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    table: {
-      backgroundColor: theme.color.white,
-      flexGrow: 1,
-      width: '100%',
-    },
-    selecting: {
-      maxHeight: '1000px',
-      minHeight: '400px',
-      overflowY: 'scroll',
-      paddingTop: 0,
-    },
-    link: {
-      display: 'block',
-      marginBottom: 24,
-      marginTop: theme.spacing(),
-      textAlign: 'right',
-    },
-    panel: {
-      backgroundColor: theme.color.white,
-      flexGrow: 1,
-      marginBottom: theme.spacing(3),
-      width: '100%',
-    },
-    inner: {
-      padding: 0,
-    },
-  });
+const styles = (theme: Theme) => ({
+  table: {
+    backgroundColor: theme.color.white,
+    flexGrow: 1,
+    width: '100%',
+  },
+  selecting: {
+    maxHeight: '1000px',
+    minHeight: '400px',
+    overflowY: 'scroll',
+    paddingTop: 0,
+  },
+  link: {
+    display: 'block',
+    marginBottom: 24,
+    marginTop: theme.spacing(),
+    textAlign: 'right',
+  },
+  panel: {
+    backgroundColor: theme.color.white,
+    flexGrow: 1,
+    marginBottom: theme.spacing(3),
+    width: '100%',
+  },
+  inner: {
+    padding: 0,
+  },
+});
 
 interface Props extends RenderGuardProps {
   selectedId: number | undefined;
@@ -222,8 +222,6 @@ class SelectStackScriptPanel extends React.Component<CombinedProps, State> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 export default compose<CombinedProps, Props>(
   RenderGuard,

@@ -7,7 +7,7 @@ import TableCell from 'src/components/TableCell';
 import TableRow from 'src/components/TableRow';
 import ActionMenu from './ClusterActionMenu';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { dcDisplayNames } from 'src/constants';
 import { useAllLinodeTypesQuery } from 'src/queries/linodes';
@@ -21,7 +21,7 @@ import {
   useKubernetesVersionQuery,
 } from 'src/queries/kubernetes';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   link: {
     display: 'block',
     color: theme.textColors.linkActiveLight,
@@ -61,7 +61,7 @@ export interface Props {
 
 export const KubernetesClusterRow = (props: Props) => {
   const { cluster, openDeleteDialog, openUpgradeDialog } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { data: versions } = useKubernetesVersionQuery();
   const { data: pools } = useAllKubernetesNodePoolQuery(cluster.id);

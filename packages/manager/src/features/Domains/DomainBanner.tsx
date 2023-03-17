@@ -1,12 +1,12 @@
 import { DateTime } from 'luxon';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import DismissibleBanner from 'src/components/DismissibleBanner';
 import Link from 'src/components/Link';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   banner: {
     marginBottom: theme.spacing(),
   },
@@ -25,7 +25,7 @@ const KEY = 'domain-banner';
 
 export const DomainBanner: React.FC<Props> = (props) => {
   const { hidden } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   if (hidden) {
     return null;

@@ -2,9 +2,9 @@
 import * as React from 'react';
 import Check from 'src/assets/icons/monitor-ok.svg';
 import Radio from 'src/components/Radio';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   checkIcon: {
     display: 'flex',
     alignItems: 'center',
@@ -31,7 +31,7 @@ interface AccessCellProps {
 
 export const AccessCell: React.FC<AccessCellProps> = (props) => {
   const { active, disabled, onChange, scope, scopeDisplay, viewOnly } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   if (viewOnly) {
     if (!active) {

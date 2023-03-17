@@ -2,7 +2,7 @@ import * as React from 'react';
 import GridView from 'src/assets/icons/grid-view.svg';
 import Hidden from 'src/components/core/Hidden';
 import IconButton from 'src/components/core/IconButton';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableHead from 'src/components/core/TableHead';
 import Tooltip from 'src/components/core/Tooltip';
@@ -12,7 +12,7 @@ import TableCell from 'src/components/TableCell';
 import TableRow from 'src/components/TableRow';
 import TableSortCell from 'src/components/TableSortCell';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   controlHeader: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -78,7 +78,7 @@ interface Props {
 type CombinedProps = Props & Omit<OrderByProps, 'data'>;
 
 const SortableTableHead: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     handleOrderChange,

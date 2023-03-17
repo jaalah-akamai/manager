@@ -6,10 +6,10 @@ import TableCell from 'src/components/TableCell';
 import TableRow from 'src/components/TableRow';
 import { SupportTicket } from '@linode/api-v4/lib/support';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { getLinkTargets } from 'src/utilities/getEventsActionLink';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   regarding: {
     lineHeight: 1.1,
   },
@@ -38,7 +38,7 @@ const renderEntityLink = (ticket: SupportTicket) => {
 };
 
 const TicketRow: React.FC<Props> = ({ ticket }) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <TableRow

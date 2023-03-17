@@ -2,7 +2,7 @@ import { Grant } from '@linode/api-v4/lib/account';
 import * as React from 'react';
 import { compose } from 'recompose';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import withLongviewClients, {
@@ -23,7 +23,7 @@ import ActionMenu, { ActionHandlers } from './LongviewActionMenu';
 import LongviewClientHeader from './LongviewClientHeader';
 import LongviewClientInstructions from './LongviewClientInstructions';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginBottom: theme.spacing(4),
     padding: theme.spacing(3),
@@ -49,7 +49,7 @@ interface Props extends ActionHandlers {
 type CombinedProps = Props & LVDataProps & DispatchProps & GrantProps;
 
 const LongviewClientRow: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     clientID,

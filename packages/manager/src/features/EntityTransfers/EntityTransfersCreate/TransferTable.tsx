@@ -1,6 +1,6 @@
 import * as React from 'react';
 import CheckBox from 'src/components/CheckBox';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -11,7 +11,7 @@ import Table from 'src/components/Table';
 import TableCell from 'src/components/TableCell';
 import TableRow from 'src/components/TableRow';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(),
@@ -82,7 +82,7 @@ export const TransferTable: React.FC<Props> = (props) => {
     requestPage,
     toggleSelectAll,
   } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const handleToggleAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     return toggleSelectAll(e.target.checked);

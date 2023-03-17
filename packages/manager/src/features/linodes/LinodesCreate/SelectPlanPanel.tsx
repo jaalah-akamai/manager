@@ -6,7 +6,6 @@ import {
   LinodeType,
 } from '@linode/api-v4/lib/linodes';
 import { Capabilities } from '@linode/api-v4/lib/regions/types';
-import classNames from 'classnames';
 import { LDClient } from 'launchdarkly-js-client-sdk';
 import { isEmpty, pathOr } from 'ramda';
 import * as React from 'react';
@@ -14,7 +13,7 @@ import { compose } from 'recompose';
 import Chip from 'src/components/core/Chip';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -41,7 +40,7 @@ import { gpuPlanText } from './utilities';
 import { ExtendedType } from 'src/store/linodeType/linodeType.reducer';
 import { ApplicationState } from 'src/store';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginTop: theme.spacing(3),
     width: '100%',
@@ -179,7 +178,7 @@ export const SelectPlanPanel: React.FC<CombinedProps> = (props) => {
     return linodeID;
   });
 
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const onSelect = (id: string) => () => props.onSelect(id);
 
@@ -231,7 +230,7 @@ export const SelectPlanPanel: React.FC<CombinedProps> = (props) => {
               !isSamePlan && !isDisabledClass ? onSelect(type.id) : undefined
             }
             aria-disabled={isSamePlan || planTooSmall || isDisabledClass}
-            className={classNames(classes.focusedRow, {
+            className={cx(classes.focusedRow, {
               [classes.disabledRow]:
                 isSamePlan || planTooSmall || isDisabledClass,
             })}

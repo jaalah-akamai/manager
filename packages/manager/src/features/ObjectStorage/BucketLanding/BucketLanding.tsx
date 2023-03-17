@@ -3,12 +3,11 @@ import {
   ObjectStorageCluster,
 } from '@linode/api-v4/lib/object-storage';
 import { APIError } from '@linode/api-v4/lib/types';
-import classNames from 'classnames';
 import * as React from 'react';
 import { compose } from 'recompose';
 import BucketIcon from 'src/assets/icons/entityIcons/bucket.svg';
 import CircleProgress from 'src/components/CircleProgress';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
@@ -40,7 +39,7 @@ import CancelNotice from '../CancelNotice';
 import BucketDetailsDrawer from './BucketDetailsDrawer';
 import BucketTable from './BucketTable';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   copy: {
     marginTop: theme.spacing(),
   },
@@ -81,7 +80,7 @@ export const BucketLanding: React.FC<CombinedProps> = (props) => {
 
   const { mutateAsync: deleteBucket } = useDeleteBucketMutation();
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const removeBucketConfirmationDialog = useOpenClose();
   const [bucketToRemove, setBucketToRemove] = React.useState<
@@ -293,14 +292,14 @@ const RenderError: React.FC<{}> = () => {
 const RenderEmpty: React.FC<{
   onClick: () => void;
 }> = (props) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   return (
     <React.Fragment>
       <DocumentTitleSegment segment="Buckets" />
       <Placeholder
         title="Object Storage"
-        className={classNames({
+        className={cx({
           [classes.empty]: true,
           [classes.placeholderAdjustment]: true,
         })}

@@ -7,7 +7,7 @@ import {
 import { DateTime } from 'luxon';
 import * as React from 'react';
 import ExternalLinkIcon from 'src/assets/icons/external-link.svg';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -43,7 +43,7 @@ import formatDate from 'src/utilities/formatDate';
 import { getAllWithArguments } from 'src/utilities/getAll';
 import { getTaxID } from '../../billingUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: '8px 0',
   },
@@ -184,7 +184,7 @@ export const BillingActivityPanel: React.FC<Props> = (props) => {
   const { data: account } = useAccount();
   const isAkamaiCustomer = account?.billing_source === 'akamai';
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const flags = useFlags();
 
   const pdfErrors = useSet();
@@ -508,7 +508,7 @@ interface ActivityFeedItemProps extends ActivityFeedItem {
 
 export const ActivityFeedItem: React.FC<ActivityFeedItemProps> = React.memo(
   (props) => {
-    const classes = useStyles();
+    const { classes } = useStyles();
 
     const {
       date,

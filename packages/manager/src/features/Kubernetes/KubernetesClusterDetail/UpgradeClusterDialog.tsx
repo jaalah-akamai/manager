@@ -5,7 +5,7 @@ import CheckBox from 'src/components/CheckBox';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
 import Typography from 'src/components/core/Typography';
 import Notice from 'src/components/Notice';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { HIGH_AVAILABILITY_PRICE } from 'src/constants';
 import { useKubernetesClusterMutation } from 'src/queries/kubernetes';
@@ -16,7 +16,7 @@ import {
   nodesDeletionWarning,
 } from 'src/features/Kubernetes/kubeUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   noticeHeader: {
     fontSize: '0.875rem',
   },
@@ -48,7 +48,7 @@ export const UpgradeKubernetesClusterToHADialog = (props: Props) => {
   );
   const [error, setError] = React.useState<string | undefined>();
   const [submitting, setSubmitting] = React.useState(false);
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const onUpgrade = () => {
     setSubmitting(true);

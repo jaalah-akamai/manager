@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 import Divider from 'src/components/core/Divider';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import InputAdornment from 'src/components/core/InputAdornment';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -11,7 +11,7 @@ import RenderGuard from 'src/components/RenderGuard';
 import TextField from 'src/components/TextField';
 import Toggle from 'src/components/Toggle';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   '@keyframes fadeIn': {
     from: {
       opacity: 0,
@@ -86,7 +86,7 @@ interface Props {
 type CombinedProps = Props;
 
 export const AlertSection: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const {
     title,
     textTitle,

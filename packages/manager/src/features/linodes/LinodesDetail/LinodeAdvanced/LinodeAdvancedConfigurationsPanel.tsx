@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import { withLinodeDetailContext } from 'src/features/linodes/LinodesDetail/linodeDetailContext';
 import LinodeConfigs from './LinodeConfigs';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   title: {
     marginBottom: theme.spacing(2),
   },
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 type CombinedProps = LinodeContextProps;
 
 const LinodeAdvancedConfigurationsPanel: React.FC<CombinedProps> = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Grid container item className="m0" xs={12}>

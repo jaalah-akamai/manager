@@ -13,7 +13,7 @@ import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -48,7 +48,7 @@ import Box from 'src/components/core/Box';
 import { CreateFolderDrawer } from './CreateFolderDrawer';
 import { OBJECT_STORAGE_DELIMITER } from 'src/constants';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   objectTable: {
     marginTop: theme.spacing(2),
   },
@@ -82,7 +82,7 @@ interface MatchParams {
 }
 
 export const BucketDetail: React.FC = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const match = useRouteMatch<MatchParams>(
     '/object-storage/buckets/:clusterId/:bucketName'
   );

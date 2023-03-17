@@ -2,7 +2,7 @@ import { NodeBalancerWithConfigs } from '@linode/api-v4/lib/nodebalancers';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableCell from 'src/components/TableCell';
 import TableRow from 'src/components/TableRow';
@@ -11,7 +11,7 @@ import RegionIndicator from 'src/features/linodes/LinodesLanding/RegionIndicator
 import { convertMegabytesTo } from 'src/utilities/unitConversions';
 import NodeBalancerActionMenu from './NodeBalancerActionMenu';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   // @todo: temporary measure that will cause scroll for the 'Name' and 'Backend Status'
   // column until we implement a hideOnTablet prop for EntityTables to prevent the
   // ActionCell from being misaligned
@@ -61,7 +61,7 @@ interface Props {
 type CombinedProps = NodeBalancerWithConfigs & Props;
 
 const NodeBalancerTableRow: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { id, label, configs, transfer, ipv4, region, toggleDialog } = props;
 
   const nodesUp = configs.reduce(

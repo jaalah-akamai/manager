@@ -12,7 +12,7 @@ import Button from 'src/components/Button';
 import FormHelperText from 'src/components/core/FormHelperText';
 import InputAdornment from 'src/components/core/InputAdornment';
 import MenuItem from 'src/components/core/MenuItem';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Drawer from 'src/components/Drawer';
 import { Item } from 'src/components/EnhancedSelect/Select';
@@ -29,7 +29,7 @@ import { object, string } from 'yup';
 
 import ImageAndPassword from '../LinodeSettings/ImageAndPassword';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {},
   section: {},
   divider: {
@@ -133,7 +133,7 @@ export const DiskDrawer: React.FC<CombinedProps> = (props) => {
     }
   };
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [selectedMode, setSelectedMode] = React.useState<diskMode>(modes.EMPTY);
 
   const { resetForm, ...formik } = useFormik({

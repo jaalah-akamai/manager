@@ -1,9 +1,9 @@
 import ViewList from '@mui/icons-material/ViewList';
 import ViewModule from '@mui/icons-material/ViewModule';
 import * as React from 'react';
-import { compose } from 'redux';
 import Button from 'src/components/Button';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 
 type CSSClasses =
@@ -14,62 +14,59 @@ type CSSClasses =
   | 'buttonRight'
   | 'icon';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      margin: 8,
-    },
-    button: {
-      borderWidth: 1,
-      borderStyle: 'solid',
-      borderColor: theme.color.boxShadow,
-      borderRadius: 0,
-      fontFamily: theme.font.bold,
-      textTransform: 'inherit',
-      width: 80,
-      minWidth: 80,
-      padding: '6px 14px 5px 12px',
-      minHeight: 'inherit',
-      fontSize: '1rem',
-      lineHeight: '1.3em',
-      color: theme.palette.text.primary,
-      '&:focus': {
-        backgroundColor: theme.color.white,
-      },
-      '&:hover': {
-        backgroundColor: 'transparent',
-        '& $icon': {
-          opacity: 1,
-        },
-      },
-    },
-    buttonActive: {
+const styles = (theme: Theme) => ({
+  root: {
+    margin: 8,
+  },
+  button: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: theme.color.boxShadow,
+    borderRadius: 0,
+    fontFamily: theme.font.bold,
+    textTransform: 'inherit',
+    width: 80,
+    minWidth: 80,
+    padding: '6px 14px 5px 12px',
+    minHeight: 'inherit',
+    fontSize: '1rem',
+    lineHeight: '1.3em',
+    color: theme.palette.text.primary,
+    '&:focus': {
       backgroundColor: theme.color.white,
-      '&:hover': {
-        backgroundColor: theme.color.white,
+    },
+    '&:hover': {
+      backgroundColor: 'transparent',
+      '& $icon': {
+        opacity: 1,
       },
     },
-    buttonLeft: {
-      width: 79,
+  },
+  buttonActive: {
+    backgroundColor: theme.color.white,
+    '&:hover': {
+      backgroundColor: theme.color.white,
     },
-    buttonRight: {
-      borderLeftWidth: 0,
-    },
-    icon: {
-      marginRight: 6,
-      width: 18,
-      height: 18,
-      opacity: 0.4,
-      transition: 'opacity 400ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-    },
-  });
+  },
+  buttonLeft: {
+    width: 79,
+  },
+  buttonRight: {
+    borderLeftWidth: 0,
+  },
+  icon: {
+    marginRight: 6,
+    width: 18,
+    height: 18,
+    opacity: 0.4,
+    transition: 'opacity 400ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+  },
+});
 
 interface Props {
   handleClick: (v: 'grid' | 'list') => void;
   status: 'grid' | 'list';
 }
-
-const styled = withStyles(styles);
 
 type CombinedProps = Props & WithStyles<CSSClasses>;
 
@@ -106,4 +103,4 @@ export const ToggleBox: React.FC<CombinedProps> = (props) => {
   );
 };
 
-export default compose(styled)(ToggleBox);
+export default withStyles(ToggleBox, styles);

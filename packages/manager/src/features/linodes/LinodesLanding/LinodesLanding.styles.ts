@@ -1,41 +1,40 @@
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 
 type ClassNames = 'root' | 'CSVlinkContainer' | 'CSVlink' | 'CSVwrapper';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      margin: 0,
-      width: '100%',
-      '& > .MuiGrid-item': {
-        paddingLeft: 0,
-        paddingRight: 0,
-      },
+const styles = (theme: Theme) => ({
+  root: {
+    margin: 0,
+    width: '100%',
+    '& > .MuiGrid-item': {
+      paddingLeft: 0,
+      paddingRight: 0,
     },
-    CSVlink: {
-      color: theme.textColors.tableHeader,
-      fontSize: '.9rem',
-      '&:hover': {
-        textDecoration: 'underline',
-      },
-      [theme.breakpoints.down('md')]: {
-        marginRight: theme.spacing(),
-      },
+  },
+  CSVlink: {
+    color: theme.textColors.tableHeader,
+    fontSize: '.9rem',
+    '&:hover': {
+      textDecoration: 'underline',
     },
-    CSVlinkContainer: {
-      marginTop: theme.spacing(0.5),
-      '&.MuiGrid-item': {
-        paddingRight: 0,
-      },
+    [theme.breakpoints.down('md')]: {
+      marginRight: theme.spacing(),
     },
-    CSVwrapper: {
-      marginLeft: 0,
-      marginRight: 0,
-      width: '100%',
+  },
+  CSVlinkContainer: {
+    marginTop: theme.spacing(0.5),
+    '&.MuiGrid-item': {
+      paddingRight: 0,
     },
-  });
+  },
+  CSVwrapper: {
+    marginLeft: 0,
+    marginRight: 0,
+    width: '100%',
+  },
+});
 
 export type StyleProps = WithStyles<ClassNames>;
 
-export default withStyles(styles);
+export default styles;

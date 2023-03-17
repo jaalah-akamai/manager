@@ -1,7 +1,7 @@
 import { APIError } from '@linode/api-v4/lib/types';
 import * as React from 'react';
 import Box from 'src/components/core/Box';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
@@ -14,7 +14,7 @@ import TimeRangeSelect from '../../../shared/TimeRangeSelect';
 import { useGraphs } from '../OverviewGraphs/useGraphs';
 import NGINXGraphs from './NGINXGraphs';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     width: 250,
   },
@@ -34,7 +34,7 @@ interface Props {
 }
 
 export const NGINX: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { clientAPIKey, lastUpdated, lastUpdatedError, timezone } = props;
 

@@ -1,6 +1,6 @@
 import { deleteUser } from '@linode/api-v4/lib/account';
 import { APIError } from '@linode/api-v4/lib/types';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useSnackbar } from 'notistack';
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -19,7 +19,7 @@ import getAPIErrorsFor from 'src/utilities/getAPIErrorFor';
 import scrollErrorIntoView from 'src/utilities/scrollErrorIntoView';
 import UserDeleteConfirmationDialog from './UserDeleteConfirmationDialog';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   title: {
     marginTop: theme.spacing(2),
     [theme.breakpoints.down('md')]: {
@@ -57,7 +57,7 @@ interface Props {
 }
 
 const UserProfile: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { push } = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const {

@@ -1,7 +1,7 @@
 import { Config } from '@linode/api-v4/lib/linodes';
 import * as React from 'react';
 import CheckBox from 'src/components/CheckBox';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import TableBody from 'src/components/core/TableBody';
 import TableCell from 'src/components/core/TableCell';
 import Paginate from 'src/components/Paginate';
@@ -11,7 +11,7 @@ import TableRow from 'src/components/TableRow';
 import TableRowEmptyState from 'src/components/TableRowEmptyState';
 import { ConfigSelection } from './utilities';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   root: {
     '& td': {
       borderBottom: 'none',
@@ -29,7 +29,7 @@ export interface Props {
 export const Configs: React.FC<Props> = (props) => {
   const { configs, handleSelect, configSelection } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Paginate data={configs}>

@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { compose } from 'recompose';
 import Error from 'src/assets/icons/error.svg';
 import CircleProgress from 'src/components/CircleProgress';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -36,7 +36,7 @@ import './searchLanding.css';
 import { emptyResults } from './utils';
 import withStoreSearch, { SearchProps } from './withStoreSearch';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: 0,
     '&.MuiGrid-container': {
@@ -97,7 +97,7 @@ const splitWord = (word: any) => {
 export const SearchLanding: React.FC<CombinedProps> = (props) => {
   const { entities, errors, search, searchResultsByEntity } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { _isLargeAccount } = useAccountManagement();
 
   const {

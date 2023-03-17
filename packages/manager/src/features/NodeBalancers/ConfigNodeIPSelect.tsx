@@ -2,7 +2,8 @@ import { Linode } from '@linode/api-v4/lib/linodes';
 import * as React from 'react';
 import { compose } from 'recompose';
 
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 
 import { Props as TextFieldProps } from 'src/components/TextField';
 import LinodeSelect from 'src/features/linodes/LinodeSelect';
@@ -10,12 +11,11 @@ import { privateIPRegex } from 'src/utilities/ipUtils';
 
 type ClassNames = 'labelOuter';
 
-const styles = () =>
-  createStyles({
-    labelOuter: {
-      display: 'block',
-    },
-  });
+const styles = () => ({
+  labelOuter: {
+    display: 'block',
+  },
+});
 
 interface Props {
   selectedRegion?: string;
@@ -97,8 +97,6 @@ const ConfigNodeIPSelect: React.FC<CombinedProps> = (props) => {
     />
   );
 };
-
-const styled = withStyles(styles);
 
 export default compose<CombinedProps, Props>(
   React.memo,

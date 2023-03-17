@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import DisplayPrice from 'src/components/DisplayPrice';
 import { MAX_VOLUME_SIZE } from 'src/constants';
@@ -17,12 +18,11 @@ const getClampedPrice = (newSize: number, currentSize: number) =>
       : getPrice(MAX_VOLUME_SIZE)
     : getPrice(currentSize);
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      marginTop: theme.spacing(4),
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {
+    marginTop: theme.spacing(4),
+  },
+});
 
 interface Props {
   value: number;
@@ -45,6 +45,4 @@ const PricePanel: React.FC<CombinedProps> = ({
   );
 };
 
-const styled = withStyles(styles);
-
-export default styled(PricePanel);
+export default withStyles(PricePanel, styles);

@@ -2,7 +2,8 @@ import { Event } from '@linode/api-v4/lib/account';
 import * as React from 'react';
 import CircleProgress from 'src/components/CircleProgress';
 import Grid from 'src/components/core/Grid';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ErrorState from 'src/components/ErrorState';
@@ -11,13 +12,12 @@ import ActivityRow from './ActivityRow';
 
 type ClassNames = 'root' | 'emptyState';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {},
-    emptyState: {
-      padding: theme.spacing(2),
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {},
+  emptyState: {
+    padding: theme.spacing(2),
+  },
+});
 
 interface Props {
   error?: string;
@@ -75,6 +75,4 @@ export const ActivitySummaryContent: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const styled = withStyles(styles);
-
-export default styled(ActivitySummaryContent);
+export default withStyles(ActivitySummaryContent, styles);

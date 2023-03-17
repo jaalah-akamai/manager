@@ -28,7 +28,8 @@ import Accordion from 'src/components/Accordion';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
@@ -58,27 +59,26 @@ import {
 
 type ClassNames = 'title' | 'port' | 'nbStatuses' | 'button';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    title: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(2),
+const styles = (theme: Theme) => ({
+  title: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+  },
+  port: {
+    marginRight: theme.spacing(2),
+  },
+  nbStatuses: {
+    display: 'block',
+    [theme.breakpoints.up('sm')]: {
+      display: 'inline',
     },
-    port: {
-      marginRight: theme.spacing(2),
+  },
+  button: {
+    [theme.breakpoints.down('lg')]: {
+      marginLeft: theme.spacing(),
     },
-    nbStatuses: {
-      display: 'block',
-      [theme.breakpoints.up('sm')]: {
-        display: 'inline',
-      },
-    },
-    button: {
-      [theme.breakpoints.down('lg')]: {
-        marginLeft: theme.spacing(),
-      },
-    },
-  });
+  },
+});
 
 interface Props {
   nodeBalancerLabel: string;
@@ -1147,8 +1147,6 @@ class NodeBalancerConfigurations extends React.Component<CombinedProps, State> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 const preloaded = PromiseLoader<CombinedProps>({
   configs: (props) => {

@@ -13,7 +13,8 @@ import Breadcrumb from 'src/components/Breadcrumb';
 import CircleProgress from 'src/components/CircleProgress';
 import TabPanels from 'src/components/core/ReachTabPanels';
 import Tabs from 'src/components/core/ReachTabs';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import setDocs from 'src/components/DocsSidebar/setDocs';
 import DocsLink from 'src/components/DocsLink';
@@ -63,14 +64,13 @@ type CombinedProps = WithNodeBalancerActions &
 
 type ClassNames = 'root';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      [theme.breakpoints.down('sm')]: {
-        paddingLeft: theme.spacing(),
-      },
+const styles = (theme: Theme) => ({
+  root: {
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: theme.spacing(),
     },
-  });
+  },
+});
 
 class NodeBalancerDetail extends React.Component<CombinedProps, State> {
   state: State = {
@@ -368,8 +368,6 @@ class NodeBalancerDetail extends React.Component<CombinedProps, State> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 export default compose(
   setDocs(NodeBalancerDetail.docs),

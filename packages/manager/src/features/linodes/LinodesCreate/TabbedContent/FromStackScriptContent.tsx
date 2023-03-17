@@ -3,7 +3,8 @@ import { UserDefinedField } from '@linode/api-v4/lib/stackscripts';
 import { assocPath, equals } from 'ramda';
 import * as React from 'react';
 import { compose } from 'recompose';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import ImageSelect from 'src/components/ImageSelect';
@@ -23,21 +24,20 @@ import { filterUDFErrors } from './formUtilities';
 
 type ClassNames = 'main' | 'emptyImagePanel' | 'emptyImagePanelText';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    main: {
-      [theme.breakpoints.up('md')]: {
-        maxWidth: '100%',
-      },
+const styles = (theme: Theme) => ({
+  main: {
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '100%',
     },
-    emptyImagePanel: {
-      padding: theme.spacing(3),
-    },
-    emptyImagePanelText: {
-      marginTop: theme.spacing(1),
-      padding: `${theme.spacing(1)} 0`,
-    },
-  });
+  },
+  emptyImagePanel: {
+    padding: theme.spacing(3),
+  },
+  emptyImagePanelText: {
+    marginTop: theme.spacing(1),
+    padding: `${theme.spacing(1)} 0`,
+  },
+});
 
 interface Props {
   request: StackScriptsRequest;
@@ -202,8 +202,6 @@ export class FromStackScriptContent extends React.PureComponent<CombinedProps> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 export default compose<CombinedProps, InnerProps>(styled)(
   FromStackScriptContent

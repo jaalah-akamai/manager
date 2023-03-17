@@ -2,7 +2,7 @@ import { APIError } from '@linode/api-v4/lib/types';
 import * as React from 'react';
 import { compose } from 'recompose';
 
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 
@@ -13,7 +13,7 @@ import RAMGauge from '../../LongviewLanding/Gauges/RAM';
 import StorageGauge from '../../LongviewLanding/Gauges/Storage';
 import SwapGauge from '../../LongviewLanding/Gauges/Swap';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   gaugeContainer: {
     marginBottom: theme.spacing(6),
   },
@@ -33,7 +33,7 @@ interface Props {
 }
 
 const GaugesSection: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Grid container item xs={12} md={5} className={classes.gaugesOuter}>

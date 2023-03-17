@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 import Box from 'src/components/core/Box';
 import Divider from 'src/components/core/Divider';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ExternalLink from 'src/components/ExternalLink';
@@ -22,7 +22,7 @@ import withNotifications, {
 import { v4 } from 'uuid';
 import TimezoneForm from './TimezoneForm';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   profile: {
     marginTop: theme.spacing(),
     marginBottom: theme.spacing(4),
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const DisplaySettings: React.FC<WithNotifications> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { mutateAsync: updateProfile } = useMutateProfile();
   const { data: profile, refetch: requestProfile } = useProfile();

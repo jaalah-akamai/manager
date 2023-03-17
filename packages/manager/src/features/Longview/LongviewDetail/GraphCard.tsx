@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginBottom: theme.spacing(2),
     padding: theme.spacing(2),
@@ -24,7 +24,7 @@ interface Props {
 
 export const GraphCard: React.FC<Props> = (props) => {
   const { helperText, title } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Paper className={classes.root}>

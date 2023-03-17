@@ -6,7 +6,8 @@ import { Config, LinodeStatus } from '@linode/api-v4/lib/linodes';
 import * as React from 'react';
 import Button from 'src/components/Button';
 import Menu from 'src/components/core/Menu';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import EntityIcon from 'src/components/EntityIcon';
 import MenuItem from 'src/components/MenuItem';
@@ -24,83 +25,82 @@ type ClassNames =
   | 'buttonInner'
   | 'hidden';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    '@keyframes fadeIn': {
-      from: {
-        opacity: 0,
-      },
-      to: {
-        opacity: 1,
-      },
+const styles = (theme: Theme) => ({
+  '@keyframes fadeIn': {
+    from: {
+      opacity: 0,
     },
-    root: {
-      '& svg': {
-        transition: theme.transitions.create(['color']),
-      },
+    to: {
+      opacity: 1,
     },
-    button: {
-      position: 'relative',
-      transition: theme.transitions.create(['color', 'border-color']),
-      minWidth: 145,
-      padding: `calc(${theme.spacing(1)} - 2px) ${theme.spacing(1)}`,
-      '&:hover': {
-        textDecoration: 'underline',
-      },
-      '&:hover, &.active': {
-        borderColor: theme.palette.primary.light,
-        backgroundColor: 'transparent',
-      },
-    },
-    buttonText: {
-      marginLeft: theme.spacing(1),
-    },
-    caret: {
-      color: 'inherit',
+  },
+  root: {
+    '& svg': {
       transition: theme.transitions.create(['color']),
-      position: 'relative',
-      top: 2,
-      left: 2,
-      marginLeft: theme.spacing(0.5),
     },
-    caretDisabled: {
-      color: theme.color.disabledText,
+  },
+  button: {
+    position: 'relative',
+    transition: theme.transitions.create(['color', 'border-color']),
+    minWidth: 145,
+    padding: `calc(${theme.spacing(1)} - 2px) ${theme.spacing(1)}`,
+    '&:hover': {
+      textDecoration: 'underline',
     },
-    menuItem: {
-      color: theme.palette.primary.main,
-      padding: theme.spacing(2),
-      outline: 0,
-      borderBottom: `1px solid ${theme.palette.divider}`,
-      '&:not(.hasTooltip)': {
-        '&:hover': {
-          '& $buttonText': {
-            color: 'white',
-          },
-          '& svg': {
-            fill: '#FFF',
-          },
-          '& .insidePath *, ': {
-            stroke: '#fff',
-          },
-          '& svg:not(.loading) .outerCircle': {
-            stroke: '#fff',
-          },
+    '&:hover, &.active': {
+      borderColor: theme.palette.primary.light,
+      backgroundColor: 'transparent',
+    },
+  },
+  buttonText: {
+    marginLeft: theme.spacing(1),
+  },
+  caret: {
+    color: 'inherit',
+    transition: theme.transitions.create(['color']),
+    position: 'relative',
+    top: 2,
+    left: 2,
+    marginLeft: theme.spacing(0.5),
+  },
+  caretDisabled: {
+    color: theme.color.disabledText,
+  },
+  menuItem: {
+    color: theme.palette.primary.main,
+    padding: theme.spacing(2),
+    outline: 0,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    '&:not(.hasTooltip)': {
+      '&:hover': {
+        '& $buttonText': {
+          color: 'white',
+        },
+        '& svg': {
+          fill: '#FFF',
+        },
+        '& .insidePath *, ': {
+          stroke: '#fff',
+        },
+        '& svg:not(.loading) .outerCircle': {
+          stroke: '#fff',
         },
       },
     },
-    menuItemInner: {
-      display: 'flex',
-      alignItems: 'center',
-    },
-    buttonInner: {
-      display: 'flex',
-      animation: '$fadeIn .2s ease-in-out',
-      alignItems: 'center',
-    },
-    hidden: {
-      ...theme.visually.hidden,
-    },
-  });
+  },
+  menuItemInner: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  buttonInner: {
+    display: 'flex',
+    animation: '$fadeIn .2s ease-in-out',
+    alignItems: 'center',
+  },
+  hidden: {
+    ...theme.visually.hidden,
+  },
+});
 
 interface Props {
   id: number;
@@ -320,6 +320,4 @@ export class LinodePowerButton extends React.Component<CombinedProps, State> {
   }
 }
 
-const styled = withStyles(styles);
-
-export default styled(LinodePowerButton);
+export default withStyles(LinodePowerButton, styles);

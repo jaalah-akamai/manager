@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -17,7 +17,7 @@ import TableSortCell from 'src/components/TableSortCell';
 import { LongviewService } from 'src/features/Longview/request.types';
 import LongviewServiceRow from './LongviewServiceRow';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   title: {
     [theme.breakpoints.down('lg')]: {
       marginLeft: theme.spacing(),
@@ -32,7 +32,7 @@ export interface TableProps {
 }
 
 export const ListeningServices: React.FC<TableProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { services, servicesError, servicesLoading } = props;
 

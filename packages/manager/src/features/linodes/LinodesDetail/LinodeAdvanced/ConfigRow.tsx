@@ -1,7 +1,7 @@
 import { Config, Disk, Interface } from '@linode/api-v4/lib/linodes';
 import { isEmpty } from 'ramda';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableCell from 'src/components/TableCell';
 import TableRow from 'src/components/TableRow';
@@ -9,7 +9,7 @@ import { API_MAX_PAGE_SIZE } from 'src/constants';
 import { useLinodeVolumesQuery } from 'src/queries/volumes';
 import LinodeConfigActionMenu from '../LinodeSettings/LinodeConfigActionMenu';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   actionInner: {
     padding: '0 !important',
     '&.MuiTableCell-root': {
@@ -63,7 +63,7 @@ export const ConfigRow: React.FC<CombinedProps> = (props) => {
     page_size: API_MAX_PAGE_SIZE,
   });
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const interfaces = config?.interfaces ?? [];
   const validDevices = React.useMemo(
     () =>

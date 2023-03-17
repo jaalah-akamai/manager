@@ -1,6 +1,6 @@
 import { useSnackbar } from 'notistack';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Notice from 'src/components/Notice';
@@ -13,7 +13,7 @@ import {
 } from 'src/queries/volumes';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   warningCopy: {
     color: theme.color.red,
     marginBottom: theme.spacing(2),
@@ -31,7 +31,7 @@ interface Props {
 }
 
 export const DestructiveVolumeDialog = (props: Props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { volumeLabel: label, volumeId, linodeId, mode, open, onClose } = props;
 

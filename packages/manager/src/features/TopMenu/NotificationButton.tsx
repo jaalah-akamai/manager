@@ -1,7 +1,7 @@
 import { Menu, MenuButton, MenuItems, MenuPopover } from '@reach/menu-button';
 import * as React from 'react';
 import Bell from 'src/assets/icons/notification.svg';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { NotificationMenu } from 'src/features/NotificationCenter';
 import useNotificationData from 'src/features/NotificationCenter/NotificationData/useNotificationData';
@@ -9,7 +9,7 @@ import { menuId } from '../NotificationCenter/NotificationContext';
 import { useStyles } from './iconStyles';
 import TopMenuIcon from './TopMenuIcon';
 
-const useMenuStyles = makeStyles((theme: Theme) => ({
+const useMenuStyles = makeStyles()((theme: Theme) => ({
   menuButton: {
     '&[data-reach-menu-button]': {
       margin: 0,
@@ -52,7 +52,7 @@ const useMenuStyles = makeStyles((theme: Theme) => ({
 
 export const NotificationButton: React.FC<{}> = (_) => {
   const iconClasses = useStyles();
-  const classes = useMenuStyles();
+  const { classes } = useMenuStyles();
 
   const notificationData = useNotificationData();
 

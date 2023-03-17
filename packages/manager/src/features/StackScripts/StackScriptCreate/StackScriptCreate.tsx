@@ -16,7 +16,8 @@ import Breadcrumb from 'src/components/Breadcrumb';
 import Button from 'src/components/Button';
 import CircleProgress from 'src/components/CircleProgress';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import setDocs, { SetDocsProps } from 'src/components/DocsSidebar/setDocs';
@@ -46,20 +47,19 @@ import withProfile, { ProfileProps } from 'src/components/withProfile';
 
 type ClassNames = 'backButton' | 'createTitle';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    backButton: {
-      margin: '5px 0 0 -16px',
-      '& svg': {
-        width: 34,
-        height: 34,
-      },
+const styles = (theme: Theme) => ({
+  backButton: {
+    margin: '5px 0 0 -16px',
+    '& svg': {
+      width: 34,
+      height: 34,
     },
-    createTitle: {
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(2),
-    },
-  });
+  },
+  createTitle: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+});
 
 interface State {
   label: string;
@@ -559,8 +559,6 @@ export class StackScriptCreate extends React.Component<CombinedProps, State> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 const enhanced = compose<CombinedProps, Props>(
   setDocs(StackScriptCreate.docs),

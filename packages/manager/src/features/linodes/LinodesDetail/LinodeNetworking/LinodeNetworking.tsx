@@ -22,7 +22,8 @@ import CircleProgress from 'src/components/CircleProgress';
 import CopyTooltip from 'src/components/CopyTooltip';
 import Hidden from 'src/components/core/Hidden';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -62,46 +63,45 @@ type ClassNames =
   | 'ipAddress'
   | 'copy';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    action: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      padding: 0,
-      '& a': {
-        marginRight: theme.spacing(1),
-      },
-      paddingRight: `0px !important`,
+const styles = (theme: Theme) => ({
+  action: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: 0,
+    '& a': {
+      marginRight: theme.spacing(1),
     },
+    paddingRight: `0px !important`,
+  },
 
-    multipleRDNSButton: {
-      ...theme.applyLinkStyles,
+  multipleRDNSButton: {
+    ...theme.applyLinkStyles,
+  },
+  multipleRDNSText: {
+    color: theme.palette.primary.main,
+    '&:hover': {
+      color: theme.palette.primary.light,
     },
-    multipleRDNSText: {
-      color: theme.palette.primary.main,
-      '&:hover': {
-        color: theme.palette.primary.light,
-      },
+  },
+  row: {
+    '&:hover $copy > svg, & $copy:focus > svg': {
+      opacity: 1,
     },
-    row: {
-      '&:hover $copy > svg, & $copy:focus > svg': {
-        opacity: 1,
-      },
+  },
+  ipAddress: {
+    whiteSpace: 'nowrap',
+  },
+  copy: {
+    marginLeft: 4,
+    top: 1,
+    '& svg': {
+      height: `12px`,
+      width: `12px`,
+      opacity: 0,
     },
-    ipAddress: {
-      whiteSpace: 'nowrap',
-    },
-    copy: {
-      marginLeft: 4,
-      top: 1,
-      '& svg': {
-        height: `12px`,
-        width: `12px`,
-        opacity: 0,
-      },
-    },
-  });
+  },
+});
 
 interface State {
   linodeIPs?: LinodeIPsResponse;
@@ -801,8 +801,6 @@ class LinodeNetworking extends React.Component<CombinedProps, State> {
     );
   };
 }
-
-const styled = withStyles(styles);
 
 interface ContextProps {
   linode: Linode;

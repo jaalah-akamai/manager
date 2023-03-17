@@ -8,7 +8,7 @@ import PointerIcon from 'src/assets/icons/pointer.svg';
 import YoutubeIcon from 'src/assets/icons/youtube.svg';
 import List from 'src/components/core/List';
 import ListItem from 'src/components/core/ListItem';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Link from 'src/components/Link';
@@ -105,7 +105,7 @@ const youtubeLinks = (
   </List>
 );
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   placeholderAdjustment: {
     padding: `${theme.spacing(2)} 0`,
     [theme.breakpoints.up('md')]: {
@@ -115,7 +115,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const ListLinodesEmptyState: React.FC<{}> = (_) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { push } = useHistory();
 

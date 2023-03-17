@@ -3,7 +3,8 @@ import * as React from 'react';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Notice from 'src/components/Notice';
@@ -12,12 +13,11 @@ import scrollTo from 'src/utilities/scrollTo';
 
 type ClassNames = 'closeLink';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    closeLink: {
-      ...theme.applyLinkStyles,
-    },
-  });
+const styles = (theme: Theme) => ({
+  closeLink: {
+    ...theme.applyLinkStyles,
+  },
+});
 
 interface Props {
   ticketId: number;
@@ -156,6 +156,4 @@ class CloseTicketLink extends React.Component<CombinedProps, State> {
   }
 }
 
-const styled = withStyles(styles);
-
-export default styled(CloseTicketLink);
+export default withStyles(CloseTicketLink, styles);

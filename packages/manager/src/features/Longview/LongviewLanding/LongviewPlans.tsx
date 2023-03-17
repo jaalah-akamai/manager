@@ -4,13 +4,12 @@ import {
   updateActiveLongviewPlan,
 } from '@linode/api-v4/lib/longview';
 import { APIError } from '@linode/api-v4/lib/types';
-import classNames from 'classnames';
 import * as React from 'react';
 import Button from 'src/components/Button';
 import Chip from 'src/components/core/Chip';
 import CircularProgress from 'src/components/core/CircularProgress';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -29,7 +28,7 @@ import { UseAPIRequest } from 'src/hooks/useAPIRequest';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 import { useAccountSettings } from 'src/queries/accountSettings';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: theme.spacing(3),
     paddingBottom: 4,
@@ -137,7 +136,7 @@ export const managedText = (
 
 export const LongviewPlans: React.FC<CombinedProps> = (props) => {
   const { subscriptionRequestHook: subscriptions } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const mounted = React.useRef<boolean>(false);
 
   const { data: profile } = useProfile();
@@ -412,7 +411,7 @@ export const LongviewSubscriptionRow: React.FC<LongviewSubscriptionRowProps> = R
       disabled,
     } = props;
 
-    const styles = useStyles();
+    const { classes: styles, cx } = useStyles();
 
     const handleClick = () => {
       if (disabled) {
@@ -425,7 +424,7 @@ export const LongviewSubscriptionRow: React.FC<LongviewSubscriptionRowProps> = R
       <TableRow
         key={id}
         onClick={handleClick}
-        className={classNames({
+        className={cx({
           [styles.disabledTableRow]: disabled,
         })}
         data-testid={`lv-sub-table-row-${id}`}

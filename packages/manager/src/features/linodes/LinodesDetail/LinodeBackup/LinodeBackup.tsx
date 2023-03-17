@@ -24,7 +24,8 @@ import ConfirmationDialog from 'src/components/ConfirmationDialog';
 import FormControl from 'src/components/core/FormControl';
 import FormHelperText from 'src/components/core/FormHelperText';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -72,61 +73,60 @@ type ClassNames =
   | 'cancelButton'
   | 'cancelCopy';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    paper: {
-      marginBottom: theme.spacing(3),
-    },
-    subTitle: {
-      marginBottom: theme.spacing(1),
-    },
-    snapshotFormControl: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'flex-end',
-      flexWrap: 'wrap',
-      '& > div': {
-        width: 'auto',
-        marginRight: theme.spacing(2),
-      },
-      '& button': {
-        marginTop: theme.spacing(4),
-      },
-    },
-    scheduleAction: {
-      padding: 0,
-      '& button': {
-        marginLeft: 0,
-        marginTop: theme.spacing(2),
-      },
-    },
-    chooseDay: {
+const styles = (theme: Theme) => ({
+  paper: {
+    marginBottom: theme.spacing(3),
+  },
+  subTitle: {
+    marginBottom: theme.spacing(1),
+  },
+  snapshotFormControl: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    flexWrap: 'wrap',
+    '& > div': {
+      width: 'auto',
       marginRight: theme.spacing(2),
-      minWidth: 150,
-      '& .react-select__menu-list': {
-        maxHeight: 'none',
-      },
     },
-    cancelButton: {
-      marginBottom: theme.spacing(1),
-      [theme.breakpoints.down('md')]: {
-        marginLeft: theme.spacing(),
-        marginRight: theme.spacing(),
-      },
+    '& button': {
+      marginTop: theme.spacing(4),
     },
-    cancelCopy: {
-      [theme.breakpoints.down('md')]: {
-        marginLeft: theme.spacing(),
-        marginRight: theme.spacing(),
-      },
+  },
+  scheduleAction: {
+    padding: 0,
+    '& button': {
+      marginLeft: 0,
+      marginTop: theme.spacing(2),
     },
-    snapshotNameField: {
-      minWidth: 275,
+  },
+  chooseDay: {
+    marginRight: theme.spacing(2),
+    minWidth: 150,
+    '& .react-select__menu-list': {
+      maxHeight: 'none',
     },
-    snapshotGeneralError: {
-      minWidth: '100%',
+  },
+  cancelButton: {
+    marginBottom: theme.spacing(1),
+    [theme.breakpoints.down('md')]: {
+      marginLeft: theme.spacing(),
+      marginRight: theme.spacing(),
     },
-  });
+  },
+  cancelCopy: {
+    [theme.breakpoints.down('md')]: {
+      marginLeft: theme.spacing(),
+      marginRight: theme.spacing(),
+    },
+  },
+  snapshotNameField: {
+    minWidth: 275,
+  },
+  snapshotGeneralError: {
+    minWidth: '100%',
+  },
+});
 
 interface ContextProps {
   linodeID: number;
@@ -847,8 +847,6 @@ const preloaded = PromiseLoader<ContextProps>({
     return getType(linodeType);
   },
 });
-
-const styled = withStyles(styles);
 
 const linodeContext = withLinodeDetailContext(({ linode }) => ({
   backupsEnabled: linode.backups.enabled,

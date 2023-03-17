@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grant, GrantLevel, GrantType } from '@linode/api-v4/lib/account';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Table from 'src/components/Table/Table';
 import TableHead from 'src/components/core/TableHead';
@@ -33,7 +33,7 @@ interface Props {
   showHeading?: boolean;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   section: {
     marginTop: theme.spacing(2),
     paddingBottom: 0,
@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const UserPermissionsEntitySection = React.memo((props: Props) => {
   const { entity, grants, setGrantTo, entitySetAllTo, showHeading } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const pagination = usePagination(1);
 

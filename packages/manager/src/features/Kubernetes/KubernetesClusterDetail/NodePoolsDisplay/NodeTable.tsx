@@ -3,7 +3,7 @@ import { APIError } from '@linode/api-v4/lib/types';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import CopyTooltip from 'src/components/CopyTooltip';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableFooter from 'src/components/core/TableFooter';
@@ -26,44 +26,46 @@ import { LinodeWithMaintenanceAndDisplayStatus } from 'src/store/linodes/types';
 import { useRecentEventForLinode } from 'src/store/selectors/recentEventForLinode';
 import NodeActionMenu from './NodeActionMenu';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  table: {
-    borderLeft: `1px solid ${theme.borderColors.borderTable}`,
-    borderRight: `1px solid ${theme.borderColors.borderTable}`,
-  },
-  labelCell: {
-    ...theme.applyTableHeaderStyles,
-    width: '35%',
-  },
-  statusCell: {
-    ...theme.applyTableHeaderStyles,
-    width: '15%',
-  },
-  ipCell: {
-    ...theme.applyTableHeaderStyles,
-    width: '25%',
-  },
-  row: {
-    '&:hover': {
-      backgroundColor: theme.bg.lightBlue1,
+const useStyles = makeStyles<void, 'copy'>()(
+  (theme: Theme, _params, classes) => ({
+    table: {
+      borderLeft: `1px solid ${theme.borderColors.borderTable}`,
+      borderRight: `1px solid ${theme.borderColors.borderTable}`,
     },
-    '&:hover $copy > svg, & $copy:focus > svg': {
-      opacity: 1,
+    labelCell: {
+      ...theme.applyTableHeaderStyles,
+      width: '35%',
     },
-  },
-  copy: {
-    top: 1,
-    marginLeft: 4,
-    '& svg': {
-      height: `12px`,
-      width: `12px`,
-      opacity: 0,
+    statusCell: {
+      ...theme.applyTableHeaderStyles,
+      width: '15%',
     },
-  },
-  error: {
-    color: theme.color.red,
-  },
-}));
+    ipCell: {
+      ...theme.applyTableHeaderStyles,
+      width: '25%',
+    },
+    row: {
+      '&:hover': {
+        backgroundColor: theme.bg.lightBlue1,
+      },
+      [`&:hover .${classes.copy} > svg, & .${classes.copy}:focus > svg`]: {
+        opacity: 1,
+      },
+    },
+    copy: {
+      top: 1,
+      marginLeft: 4,
+      '& svg': {
+        height: `12px`,
+        width: `12px`,
+        opacity: 0,
+      },
+    },
+    error: {
+      color: theme.color.red,
+    },
+  })
+);
 
 // =============================================================================
 // NodeTable
@@ -78,7 +80,7 @@ export interface Props {
 export const NodeTable: React.FC<Props> = (props) => {
   const { nodes, poolId, typeLabel, openRecycleNodeDialog } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { _loading } = useReduxLoad(['linodes']);
   const { linodes } = useLinodes();
@@ -218,7 +220,7 @@ export const NodeRow: React.FC<NodeRowProps> = React.memo((props) => {
     openRecycleNodeDialog,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const recentEvent = useRecentEventForLinode(instanceId ?? -1);
 

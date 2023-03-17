@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import TableHead from 'src/components/core/TableHead';
 import { OrderByProps } from 'src/components/OrderBy';
@@ -9,13 +10,12 @@ import TableSortCell from 'src/components/TableSortCell';
 
 type ClassNames = 'root' | 'label';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {},
-    label: {
-      paddingLeft: 65,
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {},
+  label: {
+    paddingLeft: 65,
+  },
+});
 
 type combinedProps = Omit<OrderByProps, 'data'> & WithStyles<ClassNames>;
 
@@ -70,6 +70,4 @@ const SortableTableHead: React.FC<combinedProps> = (props) => {
   );
 };
 
-const styled = withStyles(styles);
-
-export default styled(SortableTableHead);
+export default withStyles(SortableTableHead, styles);

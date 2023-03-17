@@ -1,7 +1,7 @@
 import { Interface, InterfacePurpose } from '@linode/api-v4/lib/linodes/types';
 import * as React from 'react';
 import Divider from 'src/components/core/Divider';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Select, { Item } from 'src/components/EnhancedSelect/Select';
 import Grid from 'src/components/Grid';
@@ -9,7 +9,7 @@ import TextField from 'src/components/TextField';
 import useVlansQuery from 'src/queries/vlans';
 import { sendLinodeCreateDocsEvent } from 'src/utilities/ga';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   divider: {
     margin: `${theme.spacing(2)} ${theme.spacing()} 0 `,
     width: `calc(100% - ${theme.spacing(2)})`,
@@ -73,7 +73,7 @@ export interface ExtendedInterface extends Omit<Interface, 'purpose'> {
 }
 
 export const InterfaceSelect: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     readOnly,

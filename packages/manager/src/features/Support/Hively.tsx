@@ -2,12 +2,12 @@ import * as React from 'react';
 import { DateTime } from 'luxon';
 import { parseAPIDate } from 'src/utilities/date';
 import Divider from 'src/components/core/Divider';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { OFFICIAL_USERNAMES } from './ticketUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   hivelyContainer: {
     display: 'flex',
     flexFlow: 'row nowrap',
@@ -63,7 +63,7 @@ export const shouldRenderHively = (
 };
 
 export const Hively: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { linodeUsername, ticketId, replyId } = props;
   const href = `https://secure.teamhively.com/ratings/add/account/587/source/hs/ext/${linodeUsername}/ticket/${ticketId}-${replyId}/rating/`;
 

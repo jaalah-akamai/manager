@@ -3,7 +3,8 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import BarPercent from 'src/components/BarPercent';
 import Grid from 'src/components/core/Grid';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 
@@ -16,31 +17,30 @@ type ClassNames =
   | 'textOuter'
   | 'code';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {},
-    header: {
-      marginTop: `calc(${theme.spacing(1)} + 6px)`,
-      marginBottom: theme.spacing(1),
-    },
-    bar: {
-      marginBottom: theme.spacing(1),
-    },
-    text: {
-      margin: `${theme.spacing(2)} 0`,
-      // paddingRight: 40
-    },
-    divider: {
-      backgroundColor: theme.color.grey2,
-    },
-    textOuter: {
-      margin: `calc(${theme.spacing(1)} + 2px) 0`,
-    },
-    code: {
-      color: theme.color.black,
-      margin: `0 0 calc(${theme.spacing(1)} + 2px)`,
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {},
+  header: {
+    marginTop: `calc(${theme.spacing(1)} + 6px)`,
+    marginBottom: theme.spacing(1),
+  },
+  bar: {
+    marginBottom: theme.spacing(1),
+  },
+  text: {
+    margin: `${theme.spacing(2)} 0`,
+    // paddingRight: 40
+  },
+  divider: {
+    backgroundColor: theme.color.grey2,
+  },
+  textOuter: {
+    margin: `calc(${theme.spacing(1)} + 2px) 0`,
+  },
+  code: {
+    color: theme.color.black,
+    margin: `0 0 calc(${theme.spacing(1)} + 2px)`,
+  },
+});
 
 interface Props {
   disks: Disk[];
@@ -109,6 +109,4 @@ export const addUsedDiskSpace = (disks: Disk[]) => {
   return disks.reduce((accum, eachDisk) => eachDisk.size + accum, 0);
 };
 
-const styled = withStyles(styles);
-
-export default styled(LinodeDiskSpace);
+export default withStyles(LinodeDiskSpace, styles);

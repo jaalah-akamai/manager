@@ -6,7 +6,7 @@ import { APIError } from '@linode/api-v4/lib/types';
 import * as React from 'react';
 import Accordion from 'src/components/Accordion';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -20,7 +20,7 @@ import ConfirmTransferCancelDialog from './EntityTransfersLanding/ConfirmTransfe
 import TransferDetailsDialog from './EntityTransfersLanding/TransferDetailsDialog';
 import RenderTransferRow from './RenderTransferRow';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginBottom: theme.spacing(2),
     '& .MuiAccordionDetails-root': {
@@ -69,7 +69,7 @@ export const TransfersTable: React.FC<CombinedProps> = (props) => {
     handlePageSizeChange,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [cancelPendingDialogOpen, setCancelPendingDialogOpen] = React.useState(
     false

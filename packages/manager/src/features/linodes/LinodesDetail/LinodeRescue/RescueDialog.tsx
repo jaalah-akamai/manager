@@ -9,7 +9,7 @@ import { compose } from 'recompose';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Dialog from 'src/components/Dialog';
 import ErrorState from 'src/components/ErrorState';
@@ -27,7 +27,7 @@ import LinodePermissionsError from '../LinodePermissionsError';
 import DeviceSelection, { ExtendedDisk } from './DeviceSelection';
 import RescueDescription from './RescueDescription';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: `${theme.spacing(3)} 0 ${theme.spacing(1)}`,
     '& .iconTextLink': {
@@ -94,7 +94,7 @@ export const getDefaultDeviceMapAndCounter = (
 const LinodeRescue: React.FC<CombinedProps> = (props) => {
   const { diskError, open, onClose, linodeId } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const linode = useExtendedLinode(linodeId);
   const linodeRegion = linode?.region;

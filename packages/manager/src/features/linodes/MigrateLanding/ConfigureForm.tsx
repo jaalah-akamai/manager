@@ -2,7 +2,7 @@ import { Region } from '@linode/api-v4/lib/regions';
 import { pathOr } from 'ramda';
 import * as React from 'react';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import RegionSelect, {
@@ -14,7 +14,7 @@ import {
   getHumanReadableCountry,
 } from 'src/utilities/formatRegion';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginTop: theme.spacing(4),
     padding: 0,
@@ -49,7 +49,7 @@ interface Props {
 type CombinedProps = Props;
 
 const ConfigureForm: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { allRegions, currentRegion } = props;
 
   const country =

@@ -2,7 +2,7 @@ import { APIError } from '@linode/api-v4/lib/types';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Box from 'src/components/core/Box';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
 import Typography from 'src/components/core/Typography';
@@ -22,7 +22,7 @@ import {
 import { readableBytes } from 'src/utilities/unitConversions';
 import { formatCPU } from '../../shared/formatters';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   detailsLink: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -40,7 +40,7 @@ export interface Props {
 }
 
 export const TopProcesses: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const {
     topProcessesData,
     topProcessesLoading,

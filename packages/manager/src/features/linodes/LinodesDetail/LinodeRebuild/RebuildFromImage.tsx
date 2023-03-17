@@ -8,7 +8,7 @@ import { compose } from 'recompose';
 import AccessPanel from 'src/components/AccessPanel';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import ImageSelect from 'src/components/ImageSelect';
@@ -27,7 +27,7 @@ import {
 import scrollErrorIntoView from 'src/utilities/scrollErrorIntoView';
 import { extendValidationSchema } from 'src/utilities/validatePassword';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     paddingTop: theme.spacing(3),
   },
@@ -78,7 +78,7 @@ export const RebuildFromImage: React.FC<CombinedProps> = (props) => {
 
   const { data: preferences } = usePreferences();
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
   const RebuildSchema = () => extendValidationSchema(RebuildLinodeSchema);

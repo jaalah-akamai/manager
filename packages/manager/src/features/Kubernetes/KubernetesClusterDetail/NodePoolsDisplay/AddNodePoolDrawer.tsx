@@ -2,7 +2,7 @@ import * as React from 'react';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import Box from 'src/components/core/Box';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Drawer from 'src/components/Drawer';
@@ -19,7 +19,7 @@ import { pluralize } from 'src/utilities/pluralize';
 import scrollErrorIntoView from 'src/utilities/scrollErrorIntoView';
 import { nodeWarning } from '../../kubeUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   drawer: {
     '& .MuiDrawer-paper': {
       [theme.breakpoints.up('md')]: {
@@ -75,7 +75,7 @@ export interface Props {
 
 export const AddNodePoolDrawer = (props: Props) => {
   const { clusterId, clusterLabel, onClose, open } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data: types } = useAllLinodeTypesQuery();
   const {
     mutateAsync: createPool,

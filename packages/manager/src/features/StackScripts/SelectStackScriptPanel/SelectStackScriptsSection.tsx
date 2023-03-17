@@ -2,7 +2,7 @@ import { Image } from '@linode/api-v4/lib/images';
 import { StackScript } from '@linode/api-v4/lib/stackscripts';
 import * as React from 'react';
 import CircleProgress from 'src/components/CircleProgress';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import TableBody from 'src/components/core/TableBody';
 import TableCell from 'src/components/core/TableCell';
 import TableRow from 'src/components/TableRow';
@@ -10,7 +10,7 @@ import { formatDate } from 'src/utilities/formatDate';
 import { truncate } from 'src/utilities/truncate';
 import StackScriptSelectionRow from './StackScriptSelectionRow';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   loadingWrapper: {
     border: 0,
     paddingTop: 100,
@@ -30,7 +30,7 @@ export interface Props {
 type CombinedProps = Props;
 
 export const SelectStackScriptsSection: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { onSelect, selectedId, data, isSorting, disabled } = props;
 
   const selectStackScript = (s: StackScript) => (

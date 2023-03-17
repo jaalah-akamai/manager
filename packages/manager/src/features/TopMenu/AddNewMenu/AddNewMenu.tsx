@@ -20,7 +20,8 @@ import NodebalancerIcon from 'src/assets/icons/entityIcons/nodebalancer.svg';
 import OneClickIcon from 'src/assets/icons/entityIcons/oneclick.svg';
 import VolumeIcon from 'src/assets/icons/entityIcons/volume.svg';
 import DatabaseIcon from 'src/assets/icons/entityIcons/database.svg';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import withFeatureFlags, {
   FeatureFlagConsumerProps,
@@ -38,110 +39,107 @@ type CSSClasses =
   | 'menuItemList'
   | 'menuPopover';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    wrapper: {
+const styles = (theme: Theme) => ({
+  wrapper: {
+    position: 'relative',
+    marginRight: theme.spacing(1),
+    [theme.breakpoints.down('md')]: {
+      flex: 1,
+    },
+  },
+  button: {
+    display: 'flex',
+    alignItems: 'center',
+    '&[data-reach-menu-button]': {
+      textTransform: 'inherit',
+      borderRadius: 1,
+      fontSize: '1rem',
+      lineHeight: 1,
+      fontFamily:
+        Number(theme.spacing()) === 4 ? theme.font.normal : theme.font.bold,
+      backgroundColor: theme.palette.primary.main,
+      color: '#fff',
+      padding: `2px 20px`,
+      paddingRight: 12,
+      maxHeight: 34,
       position: 'relative',
-      marginRight: theme.spacing(1),
+      minHeight: `34px`,
+      cursor: 'pointer',
+      border: 'none',
       [theme.breakpoints.down('md')]: {
-        flex: 1,
-      },
-    },
-    button: {
-      display: 'flex',
-      alignItems: 'center',
-      '&[data-reach-menu-button]': {
-        textTransform: 'inherit',
-        borderRadius: 1,
-        fontSize: '1rem',
-        lineHeight: 1,
-        fontFamily:
-          Number(theme.spacing()) === 4 ? theme.font.normal : theme.font.bold,
-        backgroundColor: theme.palette.primary.main,
-        color: '#fff',
-        padding: `2px 20px`,
-        paddingRight: 12,
         maxHeight: 34,
-        position: 'relative',
-        minHeight: `34px`,
-        cursor: 'pointer',
-        border: 'none',
-        [theme.breakpoints.down('md')]: {
-          maxHeight: 34,
-          minWidth: 100,
-        },
-        '&:hover, &:focus': {
-          backgroundColor: '#226dc3',
-        },
-        '&[aria-expanded="true"]': {
-          backgroundColor: theme.palette.primary.light,
-          '& $caret': {
-            marginTop: 4,
-            transform: 'rotate(180deg)',
-          },
+        minWidth: 100,
+      },
+      '&:hover, &:focus': {
+        backgroundColor: '#226dc3',
+      },
+      '&[aria-expanded="true"]': {
+        backgroundColor: theme.palette.primary.light,
+        '& $caret': {
+          marginTop: 4,
+          transform: 'rotate(180deg)',
         },
       },
     },
-    caret: {
-      marginTop: 2,
-      marginLeft: 4,
-    },
-    menuItemLink: {
-      '&[data-reach-menu-item]': {
-        padding: 0,
-        cursor: 'pointer',
-        textDecoration: 'none',
+  },
+  caret: {
+    marginTop: 2,
+    marginLeft: 4,
+  },
+  menuItemLink: {
+    '&[data-reach-menu-item]': {
+      padding: 0,
+      cursor: 'pointer',
+      textDecoration: 'none',
+      '& h3': {
+        color: theme.textColors.linkActiveLight,
+      },
+      '&:hover': {
         '& h3': {
-          color: theme.textColors.linkActiveLight,
-        },
-        '&:hover': {
-          '& h3': {
-            color: theme.palette.primary.main,
-            textDecoration: 'underline',
-          },
+          color: theme.palette.primary.main,
+          textDecoration: 'underline',
         },
       },
-      '&[data-reach-menu-item][data-selected]': {
-        background: theme.bg.main,
-        '& svg': {
-          ...theme.addCircleHoverEffect,
-          backgroundColor: theme.bg.main,
-          color: theme.palette.text.primary,
-        },
-      },
+    },
+    '&[data-reach-menu-item][data-selected]': {
+      background: theme.bg.main,
       '& svg': {
-        width: 20,
-        height: 20,
+        ...theme.addCircleHoverEffect,
+        backgroundColor: theme.bg.main,
+        color: theme.palette.text.primary,
       },
     },
-    menuItemList: {
-      '&[data-reach-menu-items]': {
-        backgroundColor: theme.bg.white,
-        border: 'none',
-        boxShadow: '0 2px 3px 3px rgba(0, 0, 0, 0.1)',
-        padding: 0,
-        whiteSpace: 'normal',
-        zIndex: 3000,
+    '& svg': {
+      width: 20,
+      height: 20,
+    },
+  },
+  menuItemList: {
+    '&[data-reach-menu-items]': {
+      backgroundColor: theme.bg.white,
+      border: 'none',
+      boxShadow: '0 2px 3px 3px rgba(0, 0, 0, 0.1)',
+      padding: 0,
+      whiteSpace: 'normal',
+      zIndex: 3000,
+    },
+  },
+  menuPopover: {
+    '&[data-reach-menu], &[data-reach-menu-popover]': {
+      width: 350,
+      left: theme.spacing(),
+      [theme.breakpoints.up('md')]: {
+        left: 0,
       },
     },
-    menuPopover: {
-      '&[data-reach-menu], &[data-reach-menu-popover]': {
-        width: 350,
-        left: theme.spacing(),
-        [theme.breakpoints.up('md')]: {
-          left: 0,
-        },
-      },
-    },
-  });
+  },
+});
 
 type CombinedProps = WithStyles<CSSClasses> &
   RouteComponentProps<{}> &
   DispatchProps &
   StateProps &
   FeatureFlagConsumerProps;
-
-const styled = withStyles(styles);
 
 class AddNewMenu extends React.Component<CombinedProps> {
   render() {

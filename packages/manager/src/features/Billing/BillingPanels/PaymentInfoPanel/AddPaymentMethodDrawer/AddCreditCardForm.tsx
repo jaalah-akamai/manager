@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useFormik, yupToFormErrors } from 'formik';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import TextField from 'src/components/TextField';
@@ -16,7 +16,7 @@ import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { parseExpiryYear } from 'src/utilities/creditCard';
 import { InputBaseComponentProps } from '@mui/material/InputBase/InputBase';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   error: {
     marginTop: theme.spacing(2),
   },
@@ -49,7 +49,7 @@ interface Values {
 const AddCreditCardForm: React.FC<Props> = (props) => {
   const { onClose, disabled } = props;
   const [error, setError] = React.useState<string>();
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const expiryRef = React.useRef<HTMLInputElement>(null);
 

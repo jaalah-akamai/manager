@@ -1,32 +1,32 @@
 import { ManagedCredential } from '@linode/api-v4/lib/managed';
 import * as React from 'react';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DateTimeDisplay from 'src/components/DateTimeDisplay';
 import TableCell from 'src/components/TableCell';
 import TableRow from 'src/components/TableRow';
 import ActionMenu from './CredentialActionMenu';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    credentialDescription: {
-      paddingTop: theme.spacing(0.5),
+const useStyles = makeStyles()((theme: Theme) => ({
+  credentialDescription: {
+    paddingTop: theme.spacing(0.5),
+  },
+
+  credentialRow: {
+    '&:before': {
+      display: 'none',
     },
-    credentialRow: {
-      '&:before': {
-        display: 'none',
-      },
+  },
+
+  actionInner: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    padding: 0,
+    '&.MuiTableCell-root': {
+      paddingRight: 0,
     },
-    actionInner: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      padding: 0,
-      '&.MuiTableCell-root': {
-        paddingRight: 0,
-      },
-    },
-  })
-);
+  },
+}));
 
 interface Props {
   credential: ManagedCredential;
@@ -40,7 +40,7 @@ export const CredentialRow: React.FunctionComponent<CombinedProps> = (
   props
 ) => {
   const { credential, openDialog, openForEdit } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <TableRow

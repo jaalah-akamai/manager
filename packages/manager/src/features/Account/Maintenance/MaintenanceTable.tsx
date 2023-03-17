@@ -15,7 +15,7 @@ import TableRowEmptyState from 'src/components/TableRowEmptyState';
 import Typography from 'src/components/core/Typography';
 import { AccountMaintenance } from '@linode/api-v4/lib/account/types';
 import { CSVLink } from 'react-csv';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { cleanCSVData } from 'src/components/DownloadCSV/DownloadCSV';
 import { useOrder } from 'src/hooks/useOrder';
@@ -38,7 +38,7 @@ const headersForCSVDownload = [
   { label: 'Reason', key: 'reason' },
 ];
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   csvLink: {
     [theme.breakpoints.down('md')]: {
       marginRight: theme.spacing(),
@@ -65,7 +65,7 @@ interface Props {
 
 export const MaintenanceTable = ({ type }: Props) => {
   const csvRef = React.useRef<any>();
-  const classes = useStyles();
+  const { classes } = useStyles();
   const pagination = usePagination(1, `${preferenceKey}-${type}`);
 
   const { order, orderBy, handleOrderChange } = useOrder(

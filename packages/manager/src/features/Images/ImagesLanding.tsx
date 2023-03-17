@@ -12,7 +12,7 @@ import CircleProgress from 'src/components/CircleProgress';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
 import Hidden from 'src/components/core/Hidden';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -45,7 +45,7 @@ import ImageRow, { ImageWithEvent } from './ImageRow';
 import { Handlers as ImageHandlers } from './ImagesActionMenu';
 import ImagesDrawer, { DrawerMode } from './ImagesDrawer';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   imageTable: {
     marginBottom: theme.spacing(3),
     padding: 0,
@@ -97,7 +97,7 @@ const defaultDialogState = {
 };
 
 export const ImagesLanding: React.FC<CombinedProps> = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
 

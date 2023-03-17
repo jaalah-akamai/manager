@@ -8,7 +8,7 @@ import Accordion from 'src/components/Accordion';
 import Button from 'src/components/Button';
 import FormHelperText from 'src/components/core/FormHelperText';
 import InputAdornment from 'src/components/core/InputAdornment';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
@@ -22,7 +22,7 @@ import {
 import defaultNumeric from 'src/utilities/defaultNumeric';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   spacing: {
     marginTop: theme.spacing(),
   },
@@ -38,7 +38,7 @@ interface Props {
 type CombinedProps = Props & WithNodeBalancerActions;
 
 export const NodeBalancerSettings: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const history = useHistory();
 
   const {

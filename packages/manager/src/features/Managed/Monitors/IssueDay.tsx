@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import Bad from 'src/assets/icons/monitor-failed.svg';
 import Good from 'src/assets/icons/monitor-ok.svg';
 import TicketIcon from 'src/assets/icons/ticket.svg';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Tooltip from 'src/components/core/Tooltip';
 import DateTimeDisplay from 'src/components/DateTimeDisplay';
 import Grid from 'src/components/Grid';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginTop: theme.spacing(2),
   },
@@ -39,7 +39,7 @@ interface DisplayProps {
 
 const DayDisplay: React.FC<DisplayProps> = (props) => {
   const { day, icon, ticketUrl } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Grid

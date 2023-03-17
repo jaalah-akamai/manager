@@ -11,7 +11,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Grid from 'src/components/core/Grid';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Tooltip from 'src/components/core/Tooltip';
 import Typography from 'src/components/core/Typography';
@@ -46,182 +46,186 @@ export const menuLinkStyle = (linkColor: string) => ({
   },
 });
 
-const useStyles = makeStyles((theme: Theme) => ({
-  menu: {
-    transform: `translateY(${theme.spacing(1)})`,
-  },
-  button: {
-    borderRadius: 30,
-    order: 4,
-    padding: theme.spacing(1),
-    '&:hover, &.active': {
-      '& $username': {
-        color: theme.palette.primary.main,
-      },
-      '& $userWrapper': {
-        boxShadow: '0 0 10px #bbb',
-      },
+// TODO jss-to-tss-react codemod: Unable to handle style definition reliably. Unsupported arrow function syntax.
+//Unexpected value type of CallExpression.
+const useStyles = makeStyles<void, 'username' | 'userWrapper' | 'caret'>()(
+  (theme: Theme, _params, classes) => ({
+    menu: {
+      transform: `translateY(${theme.spacing(1)})`,
     },
-    '&:focus': {
-      '& $username': {
-        color: theme.palette.primary.main,
-      },
-    },
-  },
-  userWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '50%',
-    transition: theme.transitions.create(['box-shadow']),
-    height: 30,
-    width: 30,
-    '& svg': {
-      color: '#c9c7c7',
-      width: 30,
-      height: 30,
-    },
-    [theme.breakpoints.down('lg')]: {
-      width: '28px',
-      height: '28px',
-    },
-  },
-  leftIcon: {
-    borderRadius: '50%',
-    height: 30,
-    width: 30,
-  },
-  username: {
-    maxWidth: '135px',
-    overflow: 'hidden',
-    paddingRight: 15,
-    textOverflow: 'ellipsis',
-    transition: theme.transitions.create(['color']),
-    whiteSpace: 'nowrap',
-    // Hides username as soon as things start to scroll
-    [theme.breakpoints.down(1345)]: {
-      ...theme.visually.hidden,
-    },
-  },
-  menuItem: {
-    fontFamily: 'LatoWeb',
-    fontSize: '.9rem',
-    '&:hover, &:focus': {
-      backgroundColor: theme.name === 'light' ? '#3a3f46' : '#23262a',
-      color: 'white',
-    },
-  },
-  hidden: {
-    ...theme.visually.hidden,
-  },
-  menuButton: {
-    display: 'flex',
-    alignItems: 'center',
-    lineHeight: 1,
-    paddingRight: 10,
-    [theme.breakpoints.up('sm')]: {
-      paddingLeft: 12,
-    },
-    [theme.breakpoints.down(360)]: {
-      paddingLeft: 3,
-    },
-    '&[data-reach-menu-button]': {
-      backgroundColor: 'transparent',
-      border: 'none',
-      borderRadius: 0,
-      color: '#c9c7c7',
-      cursor: 'pointer',
-      fontSize: '1rem',
-      height: 50,
-      textTransform: 'inherit',
-      '&[aria-expanded="true"]': {
-        background: theme.bg.app,
-        '& $caret': {
-          color: '#0683E3',
-          marginTop: 4,
-          transform: 'rotate(180deg)',
+    button: {
+      borderRadius: 30,
+      order: 4,
+      padding: theme.spacing(1),
+      '&:hover, &.active': {
+        [`& .${classes.username}`]: {
+          color: theme.palette.primary.main,
+        },
+        [`& .${classes.userWrapper}`]: {
+          boxShadow: '0 0 10px #bbb',
         },
       },
-      [theme.breakpoints.down('md')]: {
-        paddingRight: 12,
+      '&:focus': {
+        [`& .${classes.username}`]: {
+          color: theme.palette.primary.main,
+        },
+      },
+    },
+    userWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: '50%',
+      transition: theme.transitions.create(['box-shadow']),
+      height: 30,
+      width: 30,
+      '& svg': {
+        color: '#c9c7c7',
+        width: 30,
+        height: 30,
+      },
+      [theme.breakpoints.down('lg')]: {
+        width: '28px',
+        height: '28px',
+      },
+    },
+    leftIcon: {
+      borderRadius: '50%',
+      height: 30,
+      width: 30,
+    },
+    username: {
+      maxWidth: '135px',
+      overflow: 'hidden',
+      paddingRight: 15,
+      textOverflow: 'ellipsis',
+      transition: theme.transitions.create(['color']),
+      whiteSpace: 'nowrap',
+      // Hides username as soon as things start to scroll
+      [theme.breakpoints.down(1345)]: {
+        ...theme.visually.hidden,
+      },
+    },
+    menuItem: {
+      fontFamily: 'LatoWeb',
+      fontSize: '.9rem',
+      '&:hover, &:focus': {
+        backgroundColor: theme.name === 'light' ? '#3a3f46' : '#23262a',
+        color: 'white',
+      },
+    },
+    hidden: {
+      ...theme.visually.hidden,
+    },
+    menuButton: {
+      display: 'flex',
+      alignItems: 'center',
+      lineHeight: 1,
+      paddingRight: 10,
+      [theme.breakpoints.up('sm')]: {
         paddingLeft: 12,
       },
       [theme.breakpoints.down(360)]: {
-        paddingRight: theme.spacing(),
-        paddingLeft: theme.spacing(),
+        paddingLeft: 3,
+      },
+      '&[data-reach-menu-button]': {
+        backgroundColor: 'transparent',
+        border: 'none',
+        borderRadius: 0,
+        color: '#c9c7c7',
+        cursor: 'pointer',
+        fontSize: '1rem',
+        height: 50,
+        textTransform: 'inherit',
+        '&[aria-expanded="true"]': {
+          background: theme.bg.app,
+          [`& .${classes.caret}`]: {
+            color: '#0683E3',
+            marginTop: 4,
+            transform: 'rotate(180deg)',
+          },
+        },
+        [theme.breakpoints.down('md')]: {
+          paddingRight: 12,
+          paddingLeft: 12,
+        },
+        [theme.breakpoints.down(360)]: {
+          paddingRight: theme.spacing(),
+          paddingLeft: theme.spacing(),
+        },
       },
     },
-  },
-  gravatar: {
-    height: 30,
-    width: 30,
-    borderRadius: '50%',
-  },
-  menuPopover: {
-    '&[data-reach-menu], &[data-reach-menu-popover]': {
-      position: 'absolute',
-      top: 50,
-      zIndex: 3000,
-      [theme.breakpoints.down('lg')]: {
-        left: 0,
+    gravatar: {
+      height: 30,
+      width: 30,
+      borderRadius: '50%',
+    },
+    menuPopover: {
+      '&[data-reach-menu], &[data-reach-menu-popover]': {
+        position: 'absolute',
+        top: 50,
+        zIndex: 3000,
+        [theme.breakpoints.down('lg')]: {
+          left: 0,
+        },
       },
     },
-  },
-  caret: {
-    color: '#9ea4ae',
-    fontSize: 26,
-    marginTop: 2,
-    marginLeft: 2,
-    [theme.breakpoints.down('md')]: {
-      display: 'none',
+    caret: {
+      color: '#9ea4ae',
+      fontSize: 26,
+      marginTop: 2,
+      marginLeft: 2,
+      [theme.breakpoints.down('md')]: {
+        display: 'none',
+      },
     },
-  },
-  menuItemList: {
-    boxShadow: '0 2px 3px 3px rgba(0, 0, 0, 0.1)',
-    '&[data-reach-menu-items]': {
-      backgroundColor: theme.bg.bgPaper,
-      border: 'none',
-      padding: 0,
-      paddingBottom: theme.spacing(1.5),
-      width: 300,
+    menuItemList: {
+      boxShadow: '0 2px 3px 3px rgba(0, 0, 0, 0.1)',
+      '&[data-reach-menu-items]': {
+        backgroundColor: theme.bg.bgPaper,
+        border: 'none',
+        padding: 0,
+        paddingBottom: theme.spacing(1.5),
+        width: 300,
+      },
     },
-  },
-  inlineUserName: {
-    paddingLeft: theme.spacing(),
-    fontSize: '0.875rem',
-  },
-  menuHeader: {
-    borderBottom: '1px solid #9ea4ae',
-    color: theme.textColors.headlineStatic,
-    fontSize: '.75rem',
-    letterSpacing: 1.875,
-    marginBottom: theme.spacing(),
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
-    padding: '16px 0 8px',
-    textTransform: 'uppercase',
-  },
-  profileWrapper: {
-    marginBottom: theme.spacing(2),
-    width: '100%',
-    '& > div': {
+    inlineUserName: {
+      paddingLeft: theme.spacing(),
+      fontSize: '0.875rem',
+    },
+    menuHeader: {
+      borderBottom: '1px solid #9ea4ae',
+      color: theme.textColors.headlineStatic,
+      fontSize: '.75rem',
+      letterSpacing: 1.875,
+      marginBottom: theme.spacing(),
+      marginLeft: theme.spacing(3),
+      marginRight: theme.spacing(3),
+      padding: '16px 0 8px',
+      textTransform: 'uppercase',
+    },
+    profileWrapper: {
+      marginBottom: theme.spacing(2),
+      width: '100%',
+      '& > div': {
+        whiteSpace: 'normal',
+      },
+    },
+    accountColumn: {
       whiteSpace: 'normal',
+      width: '100%',
     },
-  },
-  accountColumn: {
-    whiteSpace: 'normal',
-    width: '100%',
-  },
-  menuItemLink: menuLinkStyle(theme.textColors.linkActiveLight),
-  userName: {
-    color: theme.textColors.headlineStatic,
-    fontSize: '1.1rem',
-    marginTop: -1,
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
-    paddingTop: theme.spacing(2),
-  },
-}));
+    menuItemLink: menuLinkStyle(theme.textColors.linkActiveLight),
+    userName: {
+      color: theme.textColors.headlineStatic,
+      fontSize: '1.1rem',
+      marginTop: -1,
+      marginLeft: theme.spacing(3),
+      marginRight: theme.spacing(3),
+      paddingTop: theme.spacing(2),
+    },
+  })
+);
 
 const profileLinks: MenuLink[] = [
   {
@@ -242,7 +246,7 @@ const profileLinks: MenuLink[] = [
 ];
 
 export const UserMenu: React.FC<{}> = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     profile,

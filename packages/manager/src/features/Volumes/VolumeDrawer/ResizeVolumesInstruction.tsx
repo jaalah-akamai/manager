@@ -2,23 +2,23 @@ import * as React from 'react';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import CopyableTextField from 'src/components/CopyableTextField';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import NoticePanel from './NoticePanel';
 
 type ClassNames = 'root' | 'copySection' | 'copyField';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {},
-    copySection: {
-      marginTop: theme.spacing(2),
-    },
-    copyField: {
-      marginTop: theme.spacing(1),
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {},
+  copySection: {
+    marginTop: theme.spacing(2),
+  },
+  copyField: {
+    marginTop: theme.spacing(1),
+  },
+});
 
 interface Props {
   volumeLabel: string;
@@ -95,6 +95,4 @@ const ResizeVolumeInstructions: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const styled = withStyles(styles);
-
-export default styled(ResizeVolumeInstructions);
+export default withStyles(ResizeVolumeInstructions, styles);

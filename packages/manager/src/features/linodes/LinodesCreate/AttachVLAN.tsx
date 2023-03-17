@@ -1,6 +1,6 @@
 import { Interface } from '@linode/api-v4/lib/linodes';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ExternalLink from 'src/components/ExternalLink';
@@ -16,7 +16,7 @@ import {
 } from 'src/utilities/doesRegionSupportFeature';
 import InterfaceSelect from '../LinodesDetail/LinodeSettings/InterfaceSelect';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   title: {
     display: 'flex',
     alignItems: 'center',
@@ -55,7 +55,7 @@ const AttachVLAN: React.FC<CombinedProps> = (props) => {
     region,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   React.useEffect(() => {
     // Ensure VLANs are fresh.

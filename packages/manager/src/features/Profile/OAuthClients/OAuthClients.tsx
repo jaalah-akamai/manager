@@ -11,7 +11,8 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import AddNewLink from 'src/components/AddNewLink';
 import Hidden from 'src/components/core/Hidden';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -36,21 +37,20 @@ import OAuthFormDrawer from './OAuthFormDrawer';
 
 type ClassNames = 'root' | 'addNewWrapper';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
+const styles = (theme: Theme) => ({
+  root: {
+    width: '100%',
+  },
+  addNewWrapper: {
+    '&.MuiGrid-item': {
+      paddingTop: 0,
+      paddingRight: 0,
     },
-    addNewWrapper: {
-      '&.MuiGrid-item': {
-        paddingTop: 0,
-        paddingRight: 0,
-      },
-      [theme.breakpoints.down('md')]: {
-        marginRight: theme.spacing(),
-      },
+    [theme.breakpoints.down('md')]: {
+      marginRight: theme.spacing(),
     },
-  });
+  },
+});
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Props extends PaginationProps<OAuthClient> {}
@@ -453,8 +453,6 @@ export class OAuthClients extends React.Component<CombinedProps, State> {
     this.setState({ isPublic: !this.state.isPublic });
   };
 }
-
-const styled = withStyles(styles);
 
 const updatedRequest = (ownProps: any, params: any, filters: any) =>
   getOAuthClients(params, filters).then((response) => response);

@@ -11,7 +11,7 @@ import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import RadioGroup from 'src/components/core/RadioGroup';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Drawer from 'src/components/Drawer';
@@ -196,7 +196,7 @@ export default React.memo(FirewallRuleDrawer);
 // =============================================================================
 // <FirewallRuleForm />
 // =============================================================================
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   ipSelect: {
     marginTop: theme.spacing(2),
   },
@@ -218,7 +218,7 @@ interface FirewallRuleFormProps extends FormikProps<Form> {
 
 const FirewallRuleForm: React.FC<FirewallRuleFormProps> = React.memo(
   (props) => {
-    const classes = useStyles();
+    const { classes } = useStyles();
 
     // This will be set to `true` once a form field has been touched. This is used to disable the
     // "Submit" button unless there have been changes to the form.

@@ -2,9 +2,9 @@ import * as React from 'react';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import Radio from 'src/components/core/Radio';
 import RadioGroup from 'src/components/core/RadioGroup';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles()({
   label: {
     '& span': {
       fontSize: '1rem',
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const ModeSelection = ({ mode, onChange }: Props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   return (
     <RadioGroup
       aria-label="mode"

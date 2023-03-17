@@ -6,7 +6,7 @@ import ExternalLinkIcon from 'src/assets/icons/external-link.svg';
 import YoutubeIcon from 'src/assets/icons/youtube.svg';
 import List from 'src/components/core/List';
 import ListItem from 'src/components/core/ListItem';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Link from 'src/components/Link';
@@ -21,7 +21,7 @@ import {
 } from 'src/utilities/emptyStateLandingUtils';
 import { sendEvent } from 'src/utilities/ga';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   placeholderAdjustment: {
     padding: `${theme.spacing(2)} 0`,
     [theme.breakpoints.up('md')]: {
@@ -109,7 +109,7 @@ const youtubeLinks = (
 
 const KubernetesEmptyState = () => {
   const { push } = useHistory();
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Placeholder

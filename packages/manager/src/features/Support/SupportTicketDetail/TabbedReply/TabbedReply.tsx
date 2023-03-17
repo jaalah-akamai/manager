@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TabbedPanel, { Tab } from 'src/components/TabbedPanel';
 import Preview from './PreviewReply';
@@ -13,7 +13,7 @@ interface Props {
   required?: boolean;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     backgroundColor: 'transparent',
     padding: 0,
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 type CombinedProps = Props & ReplyProps;
 
 const TabbedReply: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { innerClass, rootClass, value, error, ...rest } = props;
 
   const title = props.isReply ? 'Reply' : 'Description';

@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 import { path } from 'ramda';
 import * as React from 'react';
 import Button from 'src/components/Button';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { Link } from 'src/components/Link';
@@ -359,7 +359,7 @@ export const adjustSeverity = ({
 
 export default useFormattedNotifications;
 
-const useComplianceNotificationStyles = makeStyles((theme: Theme) => ({
+const useComplianceNotificationStyles = makeStyles()((theme: Theme) => ({
   reviewUpdateButton: {
     ...theme.applyLinkStyles,
     minHeight: 0,
@@ -367,7 +367,7 @@ const useComplianceNotificationStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ComplianceNotification: React.FC<{}> = () => {
-  const classes = useComplianceNotificationStyles();
+  const { classes } = useComplianceNotificationStyles();
   const complianceModelContext = React.useContext(complianceUpdateContext);
 
   return (

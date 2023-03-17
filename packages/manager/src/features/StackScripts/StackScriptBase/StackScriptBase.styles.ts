@@ -1,4 +1,5 @@
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 
 type ClassNames =
@@ -10,74 +11,73 @@ type ClassNames =
   | 'landing'
   | 'stackscriptPlaceholder';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    loaderWrapper: {
+const styles = (theme: Theme) => ({
+  loaderWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: theme.spacing(2),
+  },
+  emptyState: {
+    color: theme.palette.text.primary,
+    textAlign: 'center',
+  },
+  table: {
+    backgroundColor: theme.bg.bgPaper,
+    overflow: 'scroll',
+  },
+  searchWrapper: {
+    display: 'flex',
+    flexWrap: 'nowrap',
+    backgroundColor: theme.bg.bgPaper,
+    paddingTop: theme.spacing(),
+    paddingBottom: '8px !important',
+    position: 'sticky',
+    top: 0,
+    width: '100%',
+    zIndex: 11,
+    [theme.breakpoints.up('sm')]: {
       display: 'flex',
-      justifyContent: 'center',
-      padding: theme.spacing(2),
+      alignItems: 'center',
+      justifyContent: 'space-between',
     },
-    emptyState: {
-      color: theme.palette.text.primary,
-      textAlign: 'center',
-    },
-    table: {
+  },
+  searchBar: {
+    backgroundColor: theme.color.white,
+    flexBasis: '100%',
+    marginTop: 0,
+    '& .input': {
       backgroundColor: theme.bg.bgPaper,
-      overflow: 'scroll',
+      border: `1px solid ${theme.color.grey3}`,
+      borderRadius: 0,
+      minHeight: 'auto',
+      minWidth: 415,
     },
-    searchWrapper: {
-      display: 'flex',
-      flexWrap: 'nowrap',
-      backgroundColor: theme.bg.bgPaper,
-      paddingTop: theme.spacing(),
-      paddingBottom: '8px !important',
-      position: 'sticky',
-      top: 0,
-      width: '100%',
-      zIndex: 11,
-      [theme.breakpoints.up('sm')]: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      },
+    '& > div': {
+      marginRight: 0,
     },
-    searchBar: {
-      backgroundColor: theme.color.white,
-      flexBasis: '100%',
-      marginTop: 0,
-      '& .input': {
-        backgroundColor: theme.bg.bgPaper,
-        border: `1px solid ${theme.color.grey3}`,
-        borderRadius: 0,
-        minHeight: 'auto',
-        minWidth: 415,
-      },
-      '& > div': {
-        marginRight: 0,
-      },
-      '& > input': {
-        padding: theme.spacing(),
-      },
-      '& + button': {
-        paddingTop: 0,
-        paddingBottom: 0,
-      },
+    '& > input': {
+      padding: theme.spacing(),
     },
-    landing: {
-      backgroundColor: `${theme.bg.app} !important`,
-      marginTop: `-${theme.spacing()}`,
+    '& + button': {
+      paddingTop: 0,
+      paddingBottom: 0,
     },
-    // Styles to override base placeholder styles for StackScript null state
-    stackscriptPlaceholder: {
-      padding: `${theme.spacing(1)} 0`,
-      margin: 0,
-      width: '100%',
-      '& svg': {
-        marginTop: 4,
-        transform: 'scale(0.8)',
-      },
+  },
+  landing: {
+    backgroundColor: `${theme.bg.app} !important`,
+    marginTop: `-${theme.spacing()}`,
+  },
+  // Styles to override base placeholder styles for StackScript null state
+  stackscriptPlaceholder: {
+    padding: `${theme.spacing(1)} 0`,
+    margin: 0,
+    width: '100%',
+    '& svg': {
+      marginTop: 4,
+      transform: 'scale(0.8)',
     },
-  });
+  },
+});
 
 export type StyleProps = WithStyles<ClassNames>;
 

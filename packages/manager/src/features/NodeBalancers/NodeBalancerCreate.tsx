@@ -21,7 +21,8 @@ import CheckoutBar, { DisplaySectionList } from 'src/components/CheckoutBar';
 import CircleProgress from 'src/components/CircleProgress';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
@@ -64,23 +65,22 @@ import {
 
 type ClassNames = 'title' | 'sidebar';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    title: {
-      marginTop: theme.spacing(3),
+const styles = (theme: Theme) => ({
+  title: {
+    marginTop: theme.spacing(3),
+  },
+  sidebar: {
+    [theme.breakpoints.up('md')]: {
+      marginTop: '60px !important',
     },
-    sidebar: {
-      [theme.breakpoints.up('md')]: {
-        marginTop: '60px !important',
-      },
-      [theme.breakpoints.down('lg')]: {
-        '&.MuiGrid-item': {
-          paddingLeft: 0,
-          paddingRight: 0,
-        },
+    [theme.breakpoints.down('lg')]: {
+      '&.MuiGrid-item': {
+        paddingLeft: 0,
+        paddingRight: 0,
       },
     },
-  });
+  },
+});
 
 type CombinedProps = WithNodeBalancerActions &
   ProfileProps &
@@ -768,8 +768,6 @@ class NodeBalancerCreate extends React.Component<CombinedProps, State> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 /* @todo: move to own file */
 export const lensFrom = (p1: (string | number)[]) => (

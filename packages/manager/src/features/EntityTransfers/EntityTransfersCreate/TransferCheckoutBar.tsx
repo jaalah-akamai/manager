@@ -2,13 +2,13 @@ import { CreateTransferPayload } from '@linode/api-v4/lib/entity-transfers';
 import Close from '@mui/icons-material/Close';
 import * as React from 'react';
 import Button from 'src/components/Button';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { pluralize } from 'src/utilities/pluralize';
 import { TransferState } from './transferReducer';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {},
   header: {
     color: theme.color.green,
@@ -88,7 +88,7 @@ export const TransferRow: React.FC<{
   onClick: () => void;
 }> = React.memo((props) => {
   const { label, onClick } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   return (
     <div className={classes.row}>
       <Typography>
@@ -103,7 +103,7 @@ export const TransferRow: React.FC<{
 
 export const TransferCheckoutBar: React.FC<Props> = (props) => {
   const { handleSubmit, isCreating, selectedEntities, removeEntities } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const onSubmit = () => {
     const payload = generatePayload(selectedEntities);
     handleSubmit(payload);

@@ -1,7 +1,7 @@
 import { Database, DatabaseInstance } from '@linode/api-v4/lib/databases/types';
 import * as React from 'react';
 import Box from 'src/components/core/Box';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import StatusIcon from 'src/components/StatusIcon';
@@ -13,7 +13,7 @@ import {
   databaseStatusMap,
 } from '../../DatabaseLanding/DatabaseRow';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   header: {
     marginBottom: theme.spacing(2),
   },
@@ -42,7 +42,7 @@ export const getDatabaseVersionNumber = (
 ) => version.split('/')[1];
 
 export const DatabaseSummaryClusterConfiguration: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { database } = props;
 

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from 'src/components/Button';
 import Box from 'src/components/core/Box';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import DismissibleBanner from 'src/components/DismissibleBanner';
@@ -11,7 +11,7 @@ import Link from 'src/components/Link';
 import { useFlags } from 'src/hooks/useFlags';
 import { useAccount } from 'src/queries/account';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   button: {
     marginLeft: theme.spacing(2),
     minWidth: 140,
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const TaxCollectionBanner: React.FC<{}> = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const history = useHistory();
   const flags = useFlags();
 

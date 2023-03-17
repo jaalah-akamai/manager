@@ -5,7 +5,7 @@ import * as React from 'react';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { compose } from 'recompose';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import PreferenceToggle, { ToggleProps } from 'src/components/PreferenceToggle';
@@ -15,7 +15,7 @@ import { handleOpen } from 'src/store/backupDrawer';
 import { getLinodesWithoutBackups } from 'src/store/selectors/getLinodesWithBackups';
 import { MapState } from 'src/store/types';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: theme.spacing(1),
     paddingRight: theme.spacing(2),
@@ -46,7 +46,7 @@ const BackupsCTA: React.FC<CombinedProps> = (props) => {
     linodesWithoutBackups,
     actions: { openBackupsDrawer },
   } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { data: accountSettings } = useAccountSettings();
 

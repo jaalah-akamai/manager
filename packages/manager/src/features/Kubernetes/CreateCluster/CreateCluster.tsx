@@ -11,7 +11,7 @@ import { compose } from 'recompose';
 import Breadcrumb from 'src/components/Breadcrumb';
 import Grid from 'src/components/core/Grid';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DocsLink from 'src/components/DocsLink';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
@@ -37,7 +37,7 @@ import scrollErrorIntoView from 'src/utilities/scrollErrorIntoView';
 import KubeCheckoutBar from '../KubeCheckoutBar';
 import NodePoolPanel from './NodePoolPanel';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     '& .mlMain': {
       maxWidth: '100%',
@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 type CombinedProps = RouteComponentProps<{}> & WithTypesProps;
 
 export const CreateCluster: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { typesData: allTypes, typesLoading, typesError } = props;
 
   const {

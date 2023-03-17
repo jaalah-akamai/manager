@@ -1,7 +1,7 @@
 import * as React from 'react';
 import CheckBox from 'src/components/CheckBox';
 import Box from 'src/components/core/Box';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import DisplayPrice from 'src/components/DisplayPrice';
@@ -19,7 +19,7 @@ export const HACopy = () => (
   </Typography>
 );
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   heading: {
     paddingTop: theme.spacing(0.5),
     paddingBottom: theme.spacing(),
@@ -49,7 +49,7 @@ export interface Props {
 
 const HACheckbox: React.FC<Props> = (props) => {
   const { checked, onChange } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   if (HIGH_AVAILABILITY_PRICE === undefined) {
     return null;

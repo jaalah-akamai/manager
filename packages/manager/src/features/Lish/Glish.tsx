@@ -3,11 +3,11 @@ import * as React from 'react';
 import { Linode } from '@linode/api-v4/lib/linodes';
 import { VncScreen, VncScreenHandle } from 'react-vnc';
 import { getLishSchemeAndHostname, resizeViewPort } from './lishUtils';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import CircleProgress from 'src/components/CircleProgress';
 import ErrorState from 'src/components/ErrorState';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   container: {
     '& canvas': {
       margin: 'auto',
@@ -30,7 +30,7 @@ interface Props {
 let monitor: WebSocket;
 
 const Glish = (props: Props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { linode, token, refreshToken } = props;
   const ref = React.useRef<VncScreenHandle>(null);
   const region = linode.region;

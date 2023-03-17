@@ -1,18 +1,17 @@
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import { MenuLink } from '@reach/menu-button';
-import classNames from 'classnames';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import CircleProgress from 'src/components/CircleProgress';
 import Box from 'src/components/core/Box';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ExtendedAccordion from 'src/components/ExtendedAccordion';
 import { menuLinkStyle } from 'src/features/TopMenu/UserMenu/UserMenu';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'nowrap',
@@ -91,7 +90,7 @@ interface Props {
 export type CombinedProps = Props;
 
 export const NotificationSection: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const {
     content,
@@ -127,7 +126,7 @@ export const NotificationSection: React.FC<Props> = (props) => {
         <>
           <Hidden smDown>
             <div
-              className={classNames({
+              className={cx({
                 [classes.root]: true,
                 [classes.notificationSpacing]: isActualNotificationContainer,
               })}
@@ -187,7 +186,7 @@ interface BodyProps {
 }
 
 const ContentBody: React.FC<BodyProps> = React.memo((props) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const { header, content, count, emptyMessage, loading } = props;
 
@@ -224,7 +223,7 @@ const ContentBody: React.FC<BodyProps> = React.memo((props) => {
           >
             {showAll ? 'Collapse' : `${content.length - count} more`}
             <KeyboardArrowDown
-              className={classNames({
+              className={cx({
                 [classes.caret]: true,
                 [classes.inverted]: showAll,
               })}

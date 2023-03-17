@@ -1,11 +1,10 @@
-import classNames from 'classnames';
 import { useSnackbar } from 'notistack';
 import * as React from 'react';
 import Download from 'src/assets/icons/download.svg';
 import View from 'src/assets/icons/view.svg';
 import Button from 'src/components/Button';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { useKubenetesKubeConfigQuery } from 'src/queries/kubernetes';
@@ -13,7 +12,7 @@ import { downloadFile } from 'src/utilities/downloadFile';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 import { KubeConfigDrawer } from './KubeConfigDrawer';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: `calc(${theme.spacing(3)} + 5px) calc(${theme.spacing(
       3
@@ -59,7 +58,7 @@ interface Props {
 
 export const KubeConfigPanel = (props: Props) => {
   const { clusterID, clusterLabel } = props;
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false);
   const { refetch } = useKubenetesKubeConfigQuery(clusterID);
   const { enqueueSnackbar } = useSnackbar();
@@ -101,7 +100,7 @@ export const KubeConfigPanel = (props: Props) => {
             <Download className={classes.icon} />
           </Button>
           <Button
-            className={classNames(classes.button, classes.buttonSecondary)}
+            className={cx(classes.button, classes.buttonSecondary)}
             buttonType="secondary"
             onClick={handleOpenDrawer}
           >

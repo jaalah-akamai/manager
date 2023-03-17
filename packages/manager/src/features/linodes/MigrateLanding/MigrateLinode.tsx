@@ -7,7 +7,7 @@ import { connect, MapStateToProps } from 'react-redux';
 import { compose } from 'recompose';
 import Button from 'src/components/Button';
 import Box from 'src/components/core/Box';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Dialog from 'src/components/Dialog';
@@ -38,7 +38,7 @@ import scrollErrorIntoView from 'src/utilities/scrollErrorIntoView';
 import CautionNotice from './CautionNotice';
 import ConfigureForm from './ConfigureForm';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   details: {
     marginTop: theme.spacing(2),
   },
@@ -81,7 +81,7 @@ type CombinedProps = Props & WithTypesAndImages;
 
 const MigrateLanding: React.FC<CombinedProps> = (props) => {
   const { linodeID, notifications, onClose, open } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
   const regions = useRegionsQuery().data ?? [];

@@ -1,9 +1,8 @@
 import { AutoscaleNodePoolSchema } from '@linode/validation/lib/kubernetes.schema';
 import { useFormik } from 'formik';
 import * as React from 'react';
-import classNames from 'classnames';
 import FormControlLabel from 'src/components/core/FormControlLabel';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ActionsPanel from 'src/components/ActionsPanel';
@@ -26,7 +25,7 @@ interface Props {
   onClose: () => void;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   slash: {
     alignSelf: 'end',
     padding: '0px !important',
@@ -69,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const AutoscalePoolDialog = (props: Props) => {
   const { nodePool, open, handleOpenResizeDrawer, onClose, clusterId } = props;
   const autoscaler = nodePool?.autoscaler;
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
   const { mutateAsync, isLoading, error } = useUpdateNodePoolMutation(
@@ -203,7 +202,7 @@ export const AutoscalePoolDialog = (props: Props) => {
           </Grid>
           <Grid
             item
-            className={classNames({
+            className={cx({
               [classes.slash]: true,
               [classes.disabled]: !values.enabled,
             })}

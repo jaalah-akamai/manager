@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Action } from 'src/components/ActionMenu';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import InlineMenuAction from 'src/components/InlineMenuAction';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   root: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -18,7 +18,7 @@ interface Props {
 type CombinedProps = Props;
 
 const TransfersPendingActionMenu: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { onCancelClick } = props;
 

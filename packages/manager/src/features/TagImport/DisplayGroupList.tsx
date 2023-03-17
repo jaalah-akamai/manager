@@ -1,25 +1,25 @@
 import { isEmpty } from 'ramda';
 import * as React from 'react';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 
 type ClassNames = 'root' | 'groupBox' | 'groupItem';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      background: theme.bg.tableHeader,
-      padding: theme.spacing(2),
-    },
-    groupBox: {
-      marginTop: theme.spacing(3),
-    },
-    groupItem: {
-      margin: theme.spacing(1),
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {
+    background: theme.bg.tableHeader,
+    padding: theme.spacing(2),
+  },
+  groupBox: {
+    marginTop: theme.spacing(3),
+  },
+  groupItem: {
+    margin: theme.spacing(1),
+  },
+});
 
 interface Props {
   entity: 'Linode' | 'Domain';
@@ -53,6 +53,4 @@ export const DisplayGroupList: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const styled = withStyles(styles);
-
-export default styled(DisplayGroupList);
+export default withStyles(DisplayGroupList, styles);

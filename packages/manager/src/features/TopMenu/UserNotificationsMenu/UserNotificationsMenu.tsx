@@ -7,7 +7,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import Menu from 'src/components/core/Menu';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import MenuItem from 'src/components/MenuItem';
 import { MapState } from 'src/store/types';
@@ -16,42 +17,41 @@ import UserNotificationsList from './UserNotificationsList';
 
 type ClassNames = 'root' | 'dropDown' | 'hidden';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      transform: `translate(-${theme.spacing(1)}, ${theme.spacing(1)})`,
+const styles = (theme: Theme) => ({
+  root: {
+    transform: `translate(-${theme.spacing(1)}, ${theme.spacing(1)})`,
+  },
+  dropDown: {
+    position: 'absolute',
+    outline: 0,
+    boxShadow: `0 0 5px ${theme.color.boxShadow}`,
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    minHeight: 16,
+    width: 250,
+    maxHeight: 300,
+    [theme.breakpoints.up('sm')]: {
+      width: 380,
     },
-    dropDown: {
-      position: 'absolute',
-      outline: 0,
-      boxShadow: `0 0 5px ${theme.color.boxShadow}`,
-      overflowY: 'auto',
-      overflowX: 'hidden',
-      minHeight: 16,
-      width: 250,
-      maxHeight: 300,
-      [theme.breakpoints.up('sm')]: {
-        width: 380,
+    '& .notification': {
+      margin: 0,
+      padding: '16px 32px 16px 23px',
+      borderBottom:
+        theme.name === 'dark' ? '1px solid #f4f4f4' : '1px solid #fbfbfb',
+      transition: 'background-color 225ms ease-in-out',
+      '&:hover': {
+        backgroundColor: theme.name === 'dark' ? '#111111' : '#f4f4f4',
       },
-      '& .notification': {
-        margin: 0,
-        padding: '16px 32px 16px 23px',
-        borderBottom:
-          theme.name === 'dark' ? '1px solid #f4f4f4' : '1px solid #fbfbfb',
-        transition: 'background-color 225ms ease-in-out',
-        '&:hover': {
-          backgroundColor: theme.name === 'dark' ? '#111111' : '#f4f4f4',
-        },
+      ...theme.typography.h3,
+      '& p': {
         ...theme.typography.h3,
-        '& p': {
-          ...theme.typography.h3,
-        },
       },
     },
-    hidden: {
-      ...theme.visually.hidden,
-    },
-  });
+  },
+  hidden: {
+    ...theme.visually.hidden,
+  },
+});
 
 interface State {
   anchorEl?: HTMLElement;
@@ -146,8 +146,6 @@ const reduceSeverity = (
 
   return result;
 };
-
-const styled = withStyles(styles);
 
 interface StateProps {
   notifications: Notification[];

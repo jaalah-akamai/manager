@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import Dialog from 'src/components/ConfirmationDialog';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Notice from 'src/components/Notice';
 import Typography from 'src/components/core/Typography';
@@ -21,7 +21,7 @@ interface Props {
 
 type CombinedProps = Props;
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   dontgo: {
     marginTop: theme.spacing(2),
   },
@@ -36,7 +36,7 @@ const CloseAccountDialog: React.FC<CombinedProps> = (props) => {
   const [inputtedUsername, setUsername] = React.useState<string>('');
   const [canSubmit, setCanSubmit] = React.useState<boolean>(false);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const history = useHistory();
   const { data: profile } = useProfile();
 

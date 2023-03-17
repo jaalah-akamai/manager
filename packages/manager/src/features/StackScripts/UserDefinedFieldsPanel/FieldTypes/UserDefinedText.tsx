@@ -2,21 +2,21 @@ import classNames from 'classnames';
 import { UserDefinedField } from '@linode/api-v4/lib/stackscripts';
 import * as React from 'react';
 import AccessPanel from 'src/components/AccessPanel';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import RenderGuard from 'src/components/RenderGuard';
 import TextField from 'src/components/TextField';
 
 type ClassNames = 'accessPanel' | 'marginTop';
 
-const styles = () =>
-  createStyles({
-    accessPanel: {
-      padding: 0,
-    },
-    marginTop: {
-      marginTop: 0,
-    },
-  });
+const styles = () => ({
+  accessPanel: {
+    padding: 0,
+  },
+  marginTop: {
+    marginTop: 0,
+  },
+});
 
 interface Props {
   isPassword?: boolean;
@@ -88,6 +88,4 @@ class UserDefinedText extends React.Component<CombinedProps, {}> {
   }
 }
 
-const styled = withStyles(styles);
-
-export default styled(RenderGuard<CombinedProps>(UserDefinedText));
+export default withStyles(RenderGuard<CombinedProps>(UserDefinedText), styles);

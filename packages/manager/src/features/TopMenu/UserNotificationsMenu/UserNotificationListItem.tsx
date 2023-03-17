@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import { NotificationSeverity } from '@linode/api-v4/lib/account';
 import * as React from 'react';
 import ListItem from 'src/components/core/ListItem';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 
@@ -19,7 +20,7 @@ type ClassNames =
   | 'root';
 
 const styles = (theme: Theme) => {
-  return createStyles({
+  return {
     pointer: {
       cursor: 'pointer',
     },
@@ -74,7 +75,7 @@ const styles = (theme: Theme) => {
     flag: {
       marginRight: theme.spacing(2),
     },
-  });
+  };
 };
 
 interface Props {
@@ -123,6 +124,4 @@ class UserNotificationListItem extends React.Component<CombinedProps> {
   }
 }
 
-const styled = withStyles(styles);
-
-export default styled(UserNotificationListItem);
+export default withStyles(UserNotificationListItem, styles);

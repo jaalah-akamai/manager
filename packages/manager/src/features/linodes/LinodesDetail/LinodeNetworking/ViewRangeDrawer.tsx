@@ -2,7 +2,8 @@ import { IPRange } from '@linode/api-v4/lib/networking';
 import * as React from 'react';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Drawer from 'src/components/Drawer';
@@ -10,15 +11,14 @@ import { formatRegion } from 'src/utilities';
 
 type ClassNames = 'root' | 'section';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {},
-    section: {
-      marginBottom: theme.spacing(2),
-      paddingBottom: theme.spacing(2),
-      borderBottom: `1px solid ${theme.palette.divider}`,
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {},
+  section: {
+    marginBottom: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+});
 
 interface Props {
   open: boolean;
@@ -71,6 +71,4 @@ const ViewRangeDrawer: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const styled = withStyles(styles);
-
-export default styled(ViewRangeDrawer);
+export default withStyles(ViewRangeDrawer, styles);

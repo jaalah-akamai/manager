@@ -4,7 +4,7 @@ import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import Breadcrumb, { BreadcrumbProps } from 'src/components/Breadcrumb';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DocsLink from 'src/components/DocsLink';
 import Grid from 'src/components/Grid';
@@ -16,7 +16,7 @@ import {
   withLinodeDetailContext,
 } from '../linodeDetailContext';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     textDecoration: 'none',
     [theme.breakpoints.down('md')]: {
@@ -35,7 +35,7 @@ interface Props {
 type CombinedProps = Props & LinodeDetailContext & RouteComponentProps<{}>;
 
 const LinodeControls: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { linode, updateLinode, breadcrumbProps } = props;
 

@@ -1,7 +1,8 @@
 import { DataSeries, ManagedStatsData } from '@linode/api-v4/lib/managed';
 import * as React from 'react';
 import CircleProgress from 'src/components/CircleProgress';
-import { makeStyles, WithTheme, withTheme } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
+import { WithTheme, withTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ErrorState from 'src/components/ErrorState';
@@ -17,7 +18,7 @@ import { useProfile } from 'src/queries/profile';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 import getUserTimezone from 'src/utilities/getUserTimezone';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     position: 'relative',
   },
@@ -205,7 +206,7 @@ const createTabs = (
 
 export const ManagedChartPanel: React.FC<CombinedProps> = (props) => {
   const { theme } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data: profile } = useProfile();
   const timezone = getUserTimezone(profile);
   const { data, isLoading, error } = useManagedStatsQuery();

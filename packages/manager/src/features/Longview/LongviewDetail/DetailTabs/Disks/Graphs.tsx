@@ -1,7 +1,8 @@
 import { pathOr } from 'ramda';
 import * as React from 'react';
 import { compose } from 'recompose';
-import { makeStyles, withTheme, WithTheme } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
+import { withTheme, WithTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import LongviewLineGraph from 'src/components/LongviewLineGraph';
@@ -10,7 +11,7 @@ import { Stat, StatWithDummyPoint } from '../../../request.types';
 import { convertData } from '../../../shared/formatters';
 import GraphCard from '../../GraphCard';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   graphContainer: {
     marginTop: theme.spacing(),
     display: 'flex',
@@ -67,7 +68,7 @@ const Graphs: React.FC<CombinedProps> = (props) => {
     writes,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const isToday = _isToday(startTime, endTime);
   const labelHelperText = generateHelperText(sysInfoType, isSwap, isMounted);

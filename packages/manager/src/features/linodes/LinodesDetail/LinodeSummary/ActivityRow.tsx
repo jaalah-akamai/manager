@@ -1,6 +1,7 @@
 import { Event } from '@linode/api-v4/lib/account';
 import * as React from 'react';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import DateTimeDisplay from 'src/components/DateTimeDisplay';
@@ -12,15 +13,14 @@ import { formatEventSeconds } from 'src/utilities/minute-conversion/minute-conve
 
 type ClassNames = 'root';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      padding: theme.spacing(1),
-      borderBottom: `1px solid ${theme.palette.divider}`,
-      width: '100%',
-      margin: 0,
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {
+    padding: theme.spacing(1),
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    width: '100%',
+    margin: 0,
+  },
+});
 
 interface Props {
   event: Event;
@@ -70,6 +70,4 @@ export const ActivityRow: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const styled = withStyles(styles);
-
-export default styled(ActivityRow);
+export default withStyles(ActivityRow, styles);

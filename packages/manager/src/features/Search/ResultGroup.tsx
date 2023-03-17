@@ -3,7 +3,7 @@ import * as React from 'react';
 import { compose, withStateHandlers } from 'recompose';
 import Button from 'src/components/Button';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -16,7 +16,7 @@ import TableRow from 'src/components/TableRow';
 import capitalize from 'src/utilities/capitalize';
 import ResultRow from './ResultRow';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginBottom: theme.spacing(3),
   },
@@ -45,7 +45,7 @@ interface HandlerProps {
 type CombinedProps = Props & HandlerProps;
 
 export const ResultGroup: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { entity, groupSize, results, toggle, showMore } = props;
 

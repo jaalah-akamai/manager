@@ -1,13 +1,13 @@
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import HighlightedMarkdown from 'src/components/HighlightedMarkdown';
 import IconButton from 'src/components/IconButton';
 import { truncate } from 'src/utilities/truncate';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginTop: theme.spacing(1),
     padding: `${theme.spacing(2)} ${theme.spacing(1)}`,
@@ -40,7 +40,7 @@ interface Props {
 }
 
 const TicketDetailText: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [panelOpen, togglePanel] = React.useState<boolean>(props.open || true);
   const { text } = props;

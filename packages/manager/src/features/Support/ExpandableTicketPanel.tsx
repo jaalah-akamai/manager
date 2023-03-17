@@ -1,7 +1,7 @@
 import { SupportReply, SupportTicket } from '@linode/api-v4';
 import * as React from 'react';
 import { compose } from 'recompose';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import DateTimeDisplay from 'src/components/DateTimeDisplay';
@@ -12,7 +12,7 @@ import { OFFICIAL_USERNAMES } from './ticketUtils';
 import UserIcon from 'src/assets/icons/account.svg';
 import Avatar from '@mui/material/Avatar';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   '@keyframes fadeIn': {
     from: {
       opacity: 0,
@@ -109,7 +109,7 @@ interface Data {
 }
 
 export const ExpandableTicketPanel: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { parentTicket, ticket, open, reply, ticketUpdated } = props;
 

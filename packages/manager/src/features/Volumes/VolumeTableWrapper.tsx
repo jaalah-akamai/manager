@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import { OrderByProps } from 'src/components/OrderBy';
@@ -9,13 +10,12 @@ import SortableVolumesTableHeader from './SortableVolumesTableHeader';
 
 type ClassNames = 'root' | 'paperWrapper';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {},
-    paperWrapper: {
-      backgroundColor: 'transparent',
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {},
+  paperWrapper: {
+    backgroundColor: 'transparent',
+  },
+});
 
 interface VolumeTableWrapperProps {
   isVolumesLanding: boolean;
@@ -59,6 +59,4 @@ const DomainsTableWrapper: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const styled = withStyles(styles);
-
-export default styled(DomainsTableWrapper);
+export default withStyles(DomainsTableWrapper, styles);

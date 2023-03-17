@@ -3,7 +3,7 @@ import { curry } from 'ramda';
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import Breadcrumb from 'src/components/Breadcrumb';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
 import Grid from 'src/components/Grid';
@@ -22,7 +22,7 @@ import {
   TransferableEntity,
 } from './transferReducer';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     [theme.breakpoints.down('lg')]: {
       margin: 0,
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const EntityTransfersCreate: React.FC<{}> = (_) => {
   const { push } = useHistory();
   const { mutateAsync: createTransfer, error, isLoading } = useCreateTransfer();
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   /**
    * Reducer and helpers for working with the payload/selection process

@@ -2,13 +2,13 @@ import { StackScript, UserDefinedField } from '@linode/api-v4/lib/stackscripts';
 import { decode } from 'he';
 import * as React from 'react';
 import Divider from 'src/components/core/Divider';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
 import SelectionCardWrapper from 'src/features/linodes/LinodesCreate/SelectionCardWrapper';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   flatImagePanelSelections: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(),
@@ -40,7 +40,7 @@ export const AppPanelSection: React.FC<Props> = (props) => {
     openDrawer,
     handleClick,
   } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <>

@@ -3,7 +3,7 @@ import ActionsPanel from 'src/components/ActionsPanel';
 import Chip from 'src/components/core/Chip';
 import Divider from 'src/components/core/Divider';
 import MenuItem from 'src/components/core/MenuItem';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -13,7 +13,7 @@ import { getErrorMap } from 'src/utilities/errorUtils';
 import SelectIP from './ConfigNodeIPSelect';
 import { NodeBalancerConfigNodeFields } from './types';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   backendIPAction: {
     display: 'flex',
     alignItems: 'flex-end',
@@ -81,7 +81,7 @@ export interface Props {
 }
 
 export const NodeBalancerConfigNode: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const {
     disabled,
     node,

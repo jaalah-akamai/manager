@@ -11,7 +11,8 @@ import { connect, MapDispatchToProps } from 'react-redux';
 import { compose } from 'recompose';
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Notice from 'src/components/Notice';
@@ -29,12 +30,11 @@ import withMutationDrawerState, {
 
 type ClassNames = 'pendingMutationLink';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    pendingMutationLink: {
-      ...theme.applyLinkStyles,
-    },
-  });
+const styles = (theme: Theme) => ({
+  pendingMutationLink: {
+    ...theme.applyLinkStyles,
+  },
+});
 
 interface Props {
   disks: Disk[];
@@ -214,8 +214,6 @@ const MutationNotification: React.FC<CombinedProps> = (props) => {
 export const addUsedDiskSpace = (disks: Disk[]) => {
   return disks.reduce((accum, eachDisk) => eachDisk.size + accum, 0);
 };
-
-const styled = withStyles(styles);
 
 interface ContextProps {
   linodeSpecs: LinodeSpecs;

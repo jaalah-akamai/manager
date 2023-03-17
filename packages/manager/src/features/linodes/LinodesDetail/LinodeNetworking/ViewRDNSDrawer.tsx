@@ -1,11 +1,11 @@
 import { IPAddress } from '@linode/api-v4/lib/networking';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Drawer from 'src/components/Drawer';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   rdnsListItem: {
     marginBottom: theme.spacing(2),
   },
@@ -21,7 +21,7 @@ type CombinedProps = Props;
 
 const ViewRDNSDrawer: React.FC<CombinedProps> = (props) => {
   const { open, onClose, ips } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Drawer open={open} onClose={onClose} title={`View Reverse DNS`}>

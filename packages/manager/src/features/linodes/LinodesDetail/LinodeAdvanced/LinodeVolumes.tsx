@@ -4,7 +4,7 @@ import { compose } from 'recompose';
 import { bindActionCreators, Dispatch } from 'redux';
 import AddNewLink from 'src/components/AddNewLink';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -37,7 +37,7 @@ import {
   Origin as VolumeDrawerOrigin,
 } from 'src/store/volumeForm';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     backgroundColor: theme.color.white,
     margin: 0,
@@ -118,7 +118,7 @@ export const LinodeVolumes: React.FC<CombinedProps> = (props) => {
 
   const pagination = usePagination(1, preferenceKey);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const regions = useRegionsQuery().data ?? [];
   const { data, isLoading, error } = useLinodeVolumesQuery(

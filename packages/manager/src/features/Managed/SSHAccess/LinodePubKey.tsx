@@ -5,7 +5,7 @@ import Button from 'src/components/Button';
 import CircleProgress from 'src/components/CircleProgress';
 import Box from 'src/components/core/Box';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ErrorState from 'src/components/ErrorState';
@@ -17,7 +17,7 @@ import { getErrorStringOrDefault } from 'src/utilities/errorUtils';
 const DOC_URL =
   'https://www.linode.com/docs/platform/linode-managed/#adding-the-public-key';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: theme.spacing(2.5),
     minHeight: '112px',
@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const LinodePubKey: React.FC<{}> = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { data, isLoading, error } = useManagedSSHKey();
 

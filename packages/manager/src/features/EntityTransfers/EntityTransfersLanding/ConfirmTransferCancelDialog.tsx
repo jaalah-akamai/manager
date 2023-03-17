@@ -8,7 +8,7 @@ import * as React from 'react';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import Typography from 'src/components/core/Typography';
 import Notice from 'src/components/Notice';
 import { queryClient } from 'src/queries/base';
@@ -16,7 +16,7 @@ import { queryKey } from 'src/queries/entityTransfers';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 import { sendEntityTransferCancelEvent } from 'src/utilities/ga';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   actions: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -33,7 +33,7 @@ export interface Props {
 export const ConfirmTransferCancelDialog: React.FC<Props> = (props) => {
   const { onClose, open, token, entities } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
   const [submitting, setSubmitting] = React.useState(false);

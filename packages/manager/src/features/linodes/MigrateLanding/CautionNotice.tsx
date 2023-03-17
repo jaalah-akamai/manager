@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import * as React from 'react';
 import Checkbox from 'src/components/CheckBox';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { Link } from 'src/components/Link';
@@ -10,7 +10,7 @@ import { API_MAX_PAGE_SIZE } from 'src/constants';
 import { useAccount } from 'src/queries/account';
 import { useLinodeVolumesQuery } from 'src/queries/volumes';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginTop: 24,
     marginBottom: theme.spacing(2),
@@ -49,7 +49,7 @@ interface Props {
 }
 
 const CautionNotice: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data: account } = useAccount();
 
   const capabilities = account?.capabilities ?? [];

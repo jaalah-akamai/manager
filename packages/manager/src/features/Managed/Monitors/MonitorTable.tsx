@@ -4,7 +4,7 @@ import { FormikBag } from 'formik';
 import { useSnackbar } from 'notistack';
 import * as React from 'react';
 import AddNewLink from 'src/components/AddNewLink';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -37,7 +37,7 @@ import MonitorDrawer from '../MonitorDrawer';
 import HistoryDrawer from './HistoryDrawer';
 import MonitorTableContent from './MonitorTableContent';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   addNewWrapper: {
     marginBottom: 5,
     [theme.breakpoints.down('md')]: {
@@ -59,7 +59,7 @@ export type Modes = 'create' | 'edit';
 export type FormikProps = FormikBag<{}, ManagedServicePayload>;
 
 export const MonitorTable = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
   const { data, isLoading, error } = useAllManagedMonitorsQuery();

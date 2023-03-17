@@ -1,13 +1,12 @@
 import { PaymentMethod } from '@linode/api-v4';
 import { makePayment } from '@linode/api-v4/lib/account';
 import { APIWarning } from '@linode/api-v4/lib/types';
-import classNames from 'classnames';
 import { useSnackbar } from 'notistack';
 import * as React from 'react';
 import Button from 'src/components/Button';
 import Divider from 'src/components/core/Divider';
 import InputAdornment from 'src/components/core/InputAdornment';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Currency from 'src/components/Currency';
@@ -31,7 +30,7 @@ import { PaymentMethodCard } from './PaymentMethodCard';
 import PayPalButton from './PayPalButton';
 import { SetSuccess } from './types';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   currentBalance: {
     fontSize: '1.1rem',
     marginBottom: theme.spacing(4),
@@ -90,7 +89,7 @@ export const PaymentDrawer: React.FC<Props> = (props) => {
     refetch: accountRefetch,
   } = useAccount();
 
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
   const hasPaymentMethods = paymentMethods && paymentMethods.length > 0;
@@ -242,7 +241,7 @@ export const PaymentDrawer: React.FC<Props> = (props) => {
                 <strong>
                   Current balance:{' '}
                   <span
-                    className={classNames({
+                    className={cx({
                       [classes.credit]: account?.balance < 0,
                     })}
                   >

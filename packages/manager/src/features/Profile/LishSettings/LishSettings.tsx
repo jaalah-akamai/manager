@@ -1,6 +1,6 @@
 import { Profile } from '@linode/api-v4/lib/profile';
 import { APIError } from '@linode/api-v4/lib/types';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { equals, lensPath, remove, set } from 'ramda';
 import * as React from 'react';
 import { compose } from 'recompose';
@@ -21,7 +21,7 @@ import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 import getAPIErrorFor from 'src/utilities/getAPIErrorFor';
 import scrollErrorIntoView from 'src/utilities/scrollErrorIntoView';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   intro: {
     marginBottom: theme.spacing(2),
   },
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const LishSettings: React.FC = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data: profile, isLoading } = useProfile();
   const { mutateAsync: updateProfile } = useMutateProfile();
 

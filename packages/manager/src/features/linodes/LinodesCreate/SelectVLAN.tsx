@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Select, { Item } from 'src/components/EnhancedSelect/Select';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Tooltip from 'src/components/core/Tooltip';
 import Typography from 'src/components/core/Typography';
@@ -8,7 +8,7 @@ import useReduxLoad from 'src/hooks/useReduxLoad';
 import useVlans from 'src/hooks/useVlans';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   header: {
     color: theme.color.headline,
     fontFamily: theme.font.bold,
@@ -31,7 +31,7 @@ export interface Props {
 export const SelectVLAN: React.FC<Props> = (props) => {
   const { error, selectedRegionID, selectedVlanIDs, handleSelectVLAN } = props;
   useReduxLoad(['vlans']);
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   React.useEffect(() => {
     /**

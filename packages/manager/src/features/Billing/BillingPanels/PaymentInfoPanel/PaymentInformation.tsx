@@ -6,7 +6,7 @@ import PayPalIcon from 'src/assets/icons/payment/payPal.svg';
 import Button from 'src/components/Button';
 import Box from 'src/components/core/Box';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import DismissibleBanner from 'src/components/DismissibleBanner';
@@ -20,7 +20,7 @@ import { queryClient } from 'src/queries/base';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 import AddPaymentMethodDrawer from './AddPaymentMethodDrawer';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   ...styled(theme),
   summarySectionHeight: {
     flex: '0 1 auto',
@@ -94,7 +94,7 @@ const PaymentInformation: React.FC<Props> = (props) => {
     setDeletePaymentMethodSelection,
   ] = React.useState<PaymentMethod | undefined>();
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { replace } = useHistory();
 
   const drawerLink = '/account/billing/add-payment-method';

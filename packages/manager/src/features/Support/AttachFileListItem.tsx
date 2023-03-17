@@ -3,14 +3,14 @@ import CloudUpload from '@mui/icons-material/CloudUpload';
 import * as React from 'react';
 import { compose, withHandlers } from 'recompose';
 import InputAdornment from 'src/components/core/InputAdornment';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import LinearProgress from 'src/components/LinearProgress';
 import TextField from 'src/components/TextField';
 import { FileAttachment } from './index';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   attachmentField: {
     marginTop: 0,
     width: 415,
@@ -48,7 +48,7 @@ interface Props {
 type CombinedProps = Props & HandlerProps;
 
 export const AttachFileListItem: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { file, onClick } = props;
   if (file.uploaded) {

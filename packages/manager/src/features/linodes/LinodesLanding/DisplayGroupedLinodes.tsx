@@ -4,7 +4,7 @@ import * as React from 'react';
 import GroupByTag from 'src/assets/icons/group-by-tag.svg';
 import TableView from 'src/assets/icons/table-view.svg';
 import IconButton from 'src/components/core/IconButton';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableCell from 'src/components/core/TableCell';
@@ -26,50 +26,52 @@ import { groupByTags, sortGroups } from 'src/utilities/groupByTags';
 import { ExtendedLinode } from '../LinodesDetail/types';
 import TableWrapper from './TableWrapper';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  tagGridRow: {
-    marginBottom: 20,
-  },
-  tagHeaderRow: {
-    backgroundColor: theme.bg.main,
-    height: 'auto',
-    '& td': {
-      // This is maintaining the spacing between groups because of how tables handle margin/padding. Adjust with care!
-      padding: `calc(${theme.spacing(2)} + 4px) 0 2px`,
-      borderBottom: 'none',
-      borderTop: 'none',
+const useStyles = makeStyles<void, 'tagHeaderRow'>()(
+  (theme: Theme, _params, classes) => ({
+    tagGridRow: {
+      marginBottom: 20,
     },
-  },
-  groupContainer: {
-    [theme.breakpoints.up('md')]: {
-      '& $tagHeaderRow > td': {
-        padding: '10px 0 2px',
+    tagHeaderRow: {
+      backgroundColor: theme.bg.main,
+      height: 'auto',
+      '& td': {
+        // This is maintaining the spacing between groups because of how tables handle margin/padding. Adjust with care!
+        padding: `calc(${theme.spacing(2)} + 4px) 0 2px`,
+        borderBottom: 'none',
         borderTop: 'none',
       },
     },
-  },
-  tagHeader: {
-    marginBottom: 2,
-    marginLeft: theme.spacing(),
-  },
-  paginationCell: {
-    padding: 0,
-  },
-  controlHeader: {
-    marginBottom: 28,
-    display: 'flex',
-    justifyContent: 'flex-end',
-    backgroundColor: theme.bg.tableHeader,
-  },
-  toggleButton: {
-    color: '#d2d3d4',
-    padding: 10,
-    '&:focus': {
-      // Browser default until we get styling direction for focus states
-      outline: '1px dotted #999',
+    groupContainer: {
+      [theme.breakpoints.up('md')]: {
+        [`& .${classes.tagHeaderRow} > td`]: {
+          padding: '10px 0 2px',
+          borderTop: 'none',
+        },
+      },
     },
-  },
-}));
+    tagHeader: {
+      marginBottom: 2,
+      marginLeft: theme.spacing(),
+    },
+    paginationCell: {
+      padding: 0,
+    },
+    controlHeader: {
+      marginBottom: 28,
+      display: 'flex',
+      justifyContent: 'flex-end',
+      backgroundColor: theme.bg.tableHeader,
+    },
+    toggleButton: {
+      color: '#d2d3d4',
+      padding: 10,
+      '&:focus': {
+        // Browser default until we get styling direction for focus states
+        outline: '1px dotted #999',
+      },
+    },
+  })
+);
 
 interface Props {
   openDialog: (type: DialogType, linodeID: number, linodeLabel: string) => void;
@@ -93,7 +95,7 @@ interface Props {
 type CombinedProps = Props & OrderByProps;
 
 const DisplayGroupedLinodes: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     data,

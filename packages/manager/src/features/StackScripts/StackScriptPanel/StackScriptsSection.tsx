@@ -2,7 +2,7 @@ import { Image } from '@linode/api-v4/lib/images';
 import { StackScript } from '@linode/api-v4/lib/stackscripts';
 import * as React from 'react';
 import CircleProgress from 'src/components/CircleProgress';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import TableBody from 'src/components/core/TableBody';
 import TableCell from 'src/components/TableCell';
 import TableRow from 'src/components/TableRow';
@@ -16,7 +16,7 @@ import { formatDate } from 'src/utilities/formatDate';
 import stripImageName from 'src/utilities/stripImageName';
 import StackScriptRow from './StackScriptRow';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   loadingWrapper: {
     border: 0,
     paddingTop: 100,
@@ -38,7 +38,7 @@ export interface Props {
 }
 
 const StackScriptsSection: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data, isSorting, triggerDelete, triggerMakePublic, category } = props;
 
   const { data: profile } = useProfile();

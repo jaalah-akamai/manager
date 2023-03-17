@@ -19,7 +19,7 @@ import { useOrder } from 'src/hooks/useOrder';
 import { usePagination } from 'src/hooks/usePagination';
 import { CreateAPITokenDrawer } from './CreateAPITokenDrawer';
 import { Token } from '@linode/api-v4/lib/profile';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { isWayInTheFuture } from './utils';
 import { RevokeTokenDialog } from './RevokeTokenDialog';
@@ -31,7 +31,7 @@ import {
 } from 'src/queries/tokens';
 import Box from 'src/components/core/Box';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     background: theme.color.white,
     width: '100%',
@@ -67,7 +67,7 @@ interface Props {
 const preferenceKey = 'api-tokens';
 
 export const APITokenTable = (props: Props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { type, title } = props;
 
   const { order, orderBy, handleOrderChange } = useOrder(

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Button from 'src/components/Button';
 import DeletionDialog from 'src/components/DeletionDialog';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { useDeleteDomainMutation } from 'src/queries/domains';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
@@ -14,7 +14,7 @@ export interface Props {
   onSuccess?: () => void;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   button: {
     float: 'right',
     [theme.breakpoints.down('lg')]: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const DeleteDomain = (props: Props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { domainId, domainLabel } = props;
   const { enqueueSnackbar } = useSnackbar();

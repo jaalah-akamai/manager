@@ -1,7 +1,7 @@
 import { pathOr } from 'ramda';
 import * as React from 'react';
 import { compose } from 'recompose';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableCell from 'src/components/core/TableCell';
@@ -17,7 +17,7 @@ import withLongviewStats, {
 import LongviewPackageRow from './LongviewPackageRow';
 import { LongviewPackage } from './request.types';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   new: {
     color: theme.color.green,
   },
@@ -35,7 +35,7 @@ type CombinedProps = Props & DispatchProps & LVClientData;
 export const LongviewPackageDrawer: React.FC<CombinedProps> = (props) => {
   const { isOpen, clientLabel, longviewClientData, onClose } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const lvPackages: LongviewPackage[] = pathOr(
     [],

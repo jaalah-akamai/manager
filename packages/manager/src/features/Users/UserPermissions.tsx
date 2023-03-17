@@ -16,7 +16,8 @@ import CircleProgress from 'src/components/CircleProgress';
 import Divider from 'src/components/core/Divider';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
@@ -49,50 +50,49 @@ type ClassNames =
   | 'section'
   | 'setAll';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    title: {
-      [theme.breakpoints.down('md')]: {
-        paddingLeft: theme.spacing(),
-      },
+const styles = (theme: Theme) => ({
+  title: {
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: theme.spacing(),
     },
-    toggle: {
-      marginRight: 3,
+  },
+  toggle: {
+    marginRight: 3,
+  },
+  unrestrictedRoot: {
+    marginTop: theme.spacing(2),
+    padding: theme.spacing(3),
+  },
+  globalSection: {
+    marginTop: theme.spacing(2),
+  },
+  globalRow: {
+    padding: `${theme.spacing(1)} 0`,
+  },
+  section: {
+    marginTop: theme.spacing(2),
+    paddingBottom: 0,
+  },
+  setAll: {
+    '& > div': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
     },
-    unrestrictedRoot: {
-      marginTop: theme.spacing(2),
-      padding: theme.spacing(3),
+    '& label': {
+      marginTop: 6,
     },
-    globalSection: {
-      marginTop: theme.spacing(2),
+    '& .react-select__menu, & .input': {
+      width: 125,
+      right: 0,
+      marginLeft: theme.spacing(1),
+      textAlign: 'left',
     },
-    globalRow: {
-      padding: `${theme.spacing(1)} 0`,
+    '& .react-select__menu-list': {
+      width: '100%',
     },
-    section: {
-      marginTop: theme.spacing(2),
-      paddingBottom: 0,
-    },
-    setAll: {
-      '& > div': {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-      },
-      '& label': {
-        marginTop: 6,
-      },
-      '& .react-select__menu, & .input': {
-        width: 125,
-        right: 0,
-        marginLeft: theme.spacing(1),
-        textAlign: 'left',
-      },
-      '& .react-select__menu-list': {
-        width: '100%',
-      },
-    },
-  });
+  },
+});
 
 interface Props {
   username?: string;
@@ -745,7 +745,5 @@ class UserPermissions extends React.Component<CombinedProps, State> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 export default withSnackbar(styled(UserPermissions));

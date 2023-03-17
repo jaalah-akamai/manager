@@ -1,6 +1,6 @@
 import { KubernetesCluster } from '@linode/api-v4';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -17,7 +17,7 @@ interface Props {
   cluster: KubernetesCluster;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginBottom: theme.spacing(3),
     padding: `${theme.spacing(2.5)} ${theme.spacing(2.5)} ${theme.spacing(3)}`,
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const KubeClusterSpecs = (props: Props) => {
   const { cluster } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { data: types } = useAllLinodeTypesQuery();
 
   const { data: pools } = useAllKubernetesNodePoolQuery(cluster.id);

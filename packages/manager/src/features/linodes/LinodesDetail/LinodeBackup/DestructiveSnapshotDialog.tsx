@@ -2,19 +2,19 @@ import * as React from 'react';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 
 type ClassNames = 'warningCopy';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    warningCopy: {
-      color: theme.color.red,
-      marginBottom: theme.spacing(2),
-    },
-  });
+const styles = (theme: Theme) => ({
+  warningCopy: {
+    color: theme.color.red,
+    marginBottom: theme.spacing(2),
+  },
+});
 
 interface Props {
   open: boolean;
@@ -69,4 +69,4 @@ class DestructiveSnapshotDialog extends React.PureComponent<CombinedProps, {}> {
   }
 }
 
-export default withStyles(styles)(DestructiveSnapshotDialog);
+export default withStyles(DestructiveSnapshotDialog, styles);

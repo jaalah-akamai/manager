@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 
 import CopyTooltip from 'src/components/CopyTooltip';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   copyContainer: {
     backgroundColor: theme.color.grey5,
     margin: `${theme.spacing(1)} 0`,
@@ -46,7 +46,7 @@ interface Props {
 type CombinedProps = Props;
 
 const InstallationInstructions: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const command = `curl -s https://lv.linode.com/${props.installationKey} | sudo bash`;
 

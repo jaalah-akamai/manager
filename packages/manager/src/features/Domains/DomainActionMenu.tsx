@@ -2,12 +2,13 @@ import { Domain } from '@linode/api-v4/lib/domains';
 import { splitAt } from 'ramda';
 import * as React from 'react';
 import ActionMenu, { Action } from 'src/components/ActionMenu';
-import { makeStyles, useTheme } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
+import { useTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import InlineMenuAction from 'src/components/InlineMenuAction';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   button: {
     justifyContent: 'flex-start',
     minWidth: 66,
@@ -32,7 +33,7 @@ interface ExtendedAction extends Action {
 type CombinedProps = Props & Handlers;
 
 export const DomainActionMenu: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { domain, onClone, onDisableOrEnable, onEdit, onRemove } = props;
 

@@ -5,7 +5,8 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import Button from 'src/components/Button';
 import Hidden from 'src/components/core/Hidden';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -40,60 +41,59 @@ type ClassNames =
   | 'enhancedInputOuter'
   | 'enhancedInputButton';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      padding: 0,
-      paddingTop: theme.spacing(3),
+const styles = (theme: Theme) => ({
+  root: {
+    padding: 0,
+    paddingTop: theme.spacing(3),
+  },
+  copy: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(3),
+  },
+  disabledRow: {
+    backgroundColor: theme.bg.tableHeader,
+    cursor: 'not-allowed',
+  },
+  headingCellContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  chip: {
+    backgroundColor: theme.color.green,
+    color: '#fff',
+    textTransform: 'uppercase',
+    marginLeft: theme.spacing(2),
+  },
+  currentPlanChipCell: {
+    width: '13%',
+  },
+  radioCell: {
+    width: '5%',
+    height: 55,
+  },
+  enhancedInputOuter: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    [theme.breakpoints.down('md')]: {
+      justifyContent: 'flex-start',
     },
-    copy: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(3),
-    },
-    disabledRow: {
-      backgroundColor: theme.bg.tableHeader,
-      cursor: 'not-allowed',
-    },
-    headingCellContainer: {
-      display: 'flex',
-      alignItems: 'center',
-    },
-    chip: {
-      backgroundColor: theme.color.green,
-      color: '#fff',
-      textTransform: 'uppercase',
-      marginLeft: theme.spacing(2),
-    },
-    currentPlanChipCell: {
-      width: '13%',
-    },
-    radioCell: {
-      width: '5%',
-      height: 55,
-    },
-    enhancedInputOuter: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      [theme.breakpoints.down('md')]: {
-        justifyContent: 'flex-start',
-      },
-      alignItems: 'center',
-    },
-    enhancedInputButton: {
-      marginLeft: 10,
-      minWidth: 85,
-      paddingTop: 7,
-      paddingBottom: 7,
-      [theme.breakpoints.down('md')]: {
-        minWidth: 80,
-        paddingTop: 12,
-        paddingBottom: 12,
-        '& span': {
-          color: '#fff !important',
-        },
+    alignItems: 'center',
+  },
+  enhancedInputButton: {
+    marginLeft: 10,
+    minWidth: 85,
+    paddingTop: 7,
+    paddingBottom: 7,
+    [theme.breakpoints.down('md')]: {
+      minWidth: 80,
+      paddingTop: 12,
+      paddingBottom: 12,
+      '& span': {
+        color: '#fff !important',
       },
     },
-  });
+  },
+});
 
 export interface ExtendedTypeWithCount extends ExtendedType {
   count: number;
@@ -424,8 +424,6 @@ export class SelectPlanPanel extends React.Component<
     );
   }
 }
-
-const styled = withStyles(styles);
 
 export default compose<
   Props & WithStyles<ClassNames>,

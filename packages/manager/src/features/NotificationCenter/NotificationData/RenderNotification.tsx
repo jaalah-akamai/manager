@@ -1,10 +1,9 @@
 import { NotificationType } from '@linode/api-v4/lib/account';
 import ErrorIcon from '@mui/icons-material/Error';
 import WarningIcon from '@mui/icons-material/Warning';
-import classNames from 'classnames';
 import * as React from 'react';
 import Divider from 'src/components/core/Divider';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -12,7 +11,8 @@ import { Link } from 'src/components/Link';
 import { sanitizeHTML } from 'src/utilities/sanitize-html';
 import { ExtendedNotification } from './useFormattedNotifications';
 
-export const useStyles = makeStyles((theme: Theme) => ({
+// TODO jss-to-tss-react codemod: usages of this hook outside of this file will not be converted.
+export const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginTop: -2,
   },
@@ -53,7 +53,7 @@ export type CombinedProps = Props;
 
 export const RenderNotification: React.FC<Props> = (props) => {
   const { notification, onClose } = props;
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const severity = notification.severity;
 
@@ -65,7 +65,7 @@ export const RenderNotification: React.FC<Props> = (props) => {
 
   const message = (
     <Typography
-      className={classNames({
+      className={cx({
         [classes.itemsWithoutIcon]: notification.severity === 'minor',
         [classes.severeAlert]: severity === 'critical',
       })}
@@ -104,7 +104,7 @@ export const RenderNotification: React.FC<Props> = (props) => {
             notification.jsx
           ) : linkTarget ? (
             <Link
-              className={classNames({
+              className={cx({
                 [classes.redLink]: severity === 'critical',
               })}
               to={linkTarget}

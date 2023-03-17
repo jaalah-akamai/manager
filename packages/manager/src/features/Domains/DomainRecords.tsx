@@ -25,7 +25,8 @@ import { Subscription } from 'rxjs/Subscription';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -54,50 +55,49 @@ import DomainRecordDrawer from './DomainRecordDrawer';
 
 type ClassNames = 'root' | 'cells' | 'linkContainer';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      margin: 0,
-      marginTop: theme.spacing(2),
-      width: '100%',
-      '& .MuiGrid-item': {
-        paddingLeft: 0,
-        paddingRight: 0,
-      },
-      '& .domain-btn': {
-        [theme.breakpoints.down('lg')]: {
-          marginRight: theme.spacing(),
-        },
-      },
-      [theme.breakpoints.down('md')]: {
-        marginLeft: theme.spacing(),
+const styles = (theme: Theme) => ({
+  root: {
+    margin: 0,
+    marginTop: theme.spacing(2),
+    width: '100%',
+    '& .MuiGrid-item': {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
+    '& .domain-btn': {
+      [theme.breakpoints.down('lg')]: {
         marginRight: theme.spacing(),
       },
     },
-    cells: {
+    [theme.breakpoints.down('md')]: {
+      marginLeft: theme.spacing(),
+      marginRight: theme.spacing(),
+    },
+  },
+  cells: {
+    whiteSpace: 'nowrap',
+    width: 'auto',
+    '& .data': {
+      maxWidth: 300,
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
-      width: 'auto',
-      '& .data': {
-        maxWidth: 300,
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        [theme.breakpoints.up('md')]: {
-          maxWidth: 750,
-        },
-      },
-      '&:last-of-type': {
-        display: 'flex',
-        justifyContent: 'flex-end',
+      [theme.breakpoints.up('md')]: {
+        maxWidth: 750,
       },
     },
-    linkContainer: {
-      [theme.breakpoints.down('md')]: {
-        marginLeft: theme.spacing(),
-        marginRight: theme.spacing(),
-      },
+    '&:last-of-type': {
+      display: 'flex',
+      justifyContent: 'flex-end',
     },
-  });
+  },
+  linkContainer: {
+    [theme.breakpoints.down('md')]: {
+      marginLeft: theme.spacing(),
+      marginRight: theme.spacing(),
+    },
+  },
+});
 
 interface Props {
   domain: Domain;
@@ -937,8 +937,6 @@ const getNSRecords = compose<
   DomainRecord[],
   DomainRecord[]
 >(prependLinodeNS, filter(typeEq('NS')), pathOr([], ['domainRecords']));
-
-const styled = withStyles(styles);
 
 export default recompose<CombinedProps, Props>(
   styled,

@@ -6,7 +6,7 @@ import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import RegionSelect from 'src/components/EnhancedSelect/variants/RegionSelect';
@@ -33,7 +33,7 @@ import { isEURegion } from 'src/utilities/formatRegion';
 import { wrapInQuotes } from 'src/utilities/stringUtils';
 import EUAgreementCheckbox from '../Account/Agreements/EUAgreementCheckbox';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   container: {
     minWidth: '100%',
     paddingTop: theme.spacing(2),
@@ -72,7 +72,7 @@ export const ImageUpload: React.FC<Props> = (props) => {
   const { data: agreements } = useAccountAgreements();
   const { mutateAsync: updateAccountAgreements } = useMutateAccountAgreements();
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const regions = useRegionsQuery().data ?? [];
   const dispatch: Dispatch = useDispatch();
   const { push } = useHistory();

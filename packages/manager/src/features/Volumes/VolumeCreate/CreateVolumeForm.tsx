@@ -10,7 +10,7 @@ import Button from 'src/components/Button';
 import Box from 'src/components/core/Box';
 import Form from 'src/components/core/Form';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import RegionSelect from 'src/components/EnhancedSelect/variants/RegionSelect';
@@ -46,7 +46,7 @@ import LabelField from '../VolumeDrawer/LabelField';
 import NoticePanel from '../VolumeDrawer/NoticePanel';
 import SizeField from '../VolumeDrawer/SizeField';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   copy: {
     marginBottom: theme.spacing(),
     maxWidth: 680,
@@ -119,7 +119,7 @@ interface Props {
 type CombinedProps = Props & StateProps;
 
 const CreateVolumeForm: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { onSuccess, origin, history, regions } = props;
 
   const { data: profile } = useProfile();

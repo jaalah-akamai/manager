@@ -2,7 +2,8 @@ import { Event } from '@linode/api-v4/lib/account';
 import * as React from 'react';
 import Grid from 'src/components/core/Grid';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ViewAllLink from 'src/components/ViewAllLink';
@@ -19,18 +20,17 @@ import { removeBlocklistedEvents } from 'src/utilities/eventUtils';
 
 type ClassNames = 'root' | 'header' | 'viewMore';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {},
-    header: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(1),
-    },
-    viewMore: {
-      position: 'relative',
-      top: 2,
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {},
+  header: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1),
+  },
+  viewMore: {
+    position: 'relative',
+    top: 2,
+  },
+});
 
 interface Props {
   linodeId: number;
@@ -161,6 +161,4 @@ export class ActivitySummary extends React.Component<CombinedProps, State> {
   }
 }
 
-const styled = withStyles(styles);
-
-export default styled(ActivitySummary);
+export default withStyles(ActivitySummary, styles);

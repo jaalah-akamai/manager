@@ -3,7 +3,8 @@ import InsertPhoto from '@mui/icons-material/InsertPhoto';
 import { isEmpty, slice } from 'ramda';
 import * as React from 'react';
 import { compose, withStateHandlers } from 'recompose';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -12,20 +13,19 @@ import TicketAttachmentRow from './TicketAttachmentRow';
 
 type ClassNames = 'root' | 'attachmentPaperWrapper';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      marginLeft: theme.spacing(7),
-      maxWidth: 600,
-      [theme.breakpoints.down('sm')]: {
-        marginLeft: theme.spacing(5),
-        width: 'calc(100% - 32px)',
-      },
+const styles = (theme: Theme) => ({
+  root: {
+    marginLeft: theme.spacing(7),
+    maxWidth: 600,
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: theme.spacing(5),
+      width: 'calc(100% - 32px)',
     },
-    attachmentPaperWrapper: {
-      overflowX: 'auto',
-    },
-  });
+  },
+  attachmentPaperWrapper: {
+    overflowX: 'auto',
+  },
+});
 
 interface ToggleProps {
   showMoreAttachments: boolean;
@@ -94,8 +94,6 @@ export const TicketAttachmentList: React.FC<CombinedProps> = (props) => {
     </Grid>
   );
 };
-
-const styled = withStyles(styles);
 
 const enhanced = compose<CombinedProps, Props>(
   withStateHandlers(

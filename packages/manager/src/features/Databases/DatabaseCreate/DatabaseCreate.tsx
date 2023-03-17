@@ -25,7 +25,7 @@ import FormControl from 'src/components/core/FormControl';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import Paper from 'src/components/core/Paper';
 import RadioGroup from 'src/components/core/RadioGroup';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import SingleValue from 'src/components/EnhancedSelect/components/SingleValue';
@@ -64,7 +64,7 @@ import {
 import scrollErrorIntoView from 'src/utilities/scrollErrorIntoView';
 import { typeLabelDetails } from 'src/features/linodes/presentation';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   formControlLabel: {
     marginBottom: theme.spacing(),
   },
@@ -191,7 +191,7 @@ interface NodePricing {
 }
 
 const DatabaseCreate: React.FC<{}> = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const history = useHistory();
   const flags = useFlags();
 

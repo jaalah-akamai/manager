@@ -1,11 +1,11 @@
 import { TransferEntities } from '@linode/api-v4/lib/entity-transfers/types';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Dialog from 'src/components/Dialog';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   token: {
     marginBottom: theme.spacing(3),
   },
@@ -26,7 +26,7 @@ export interface Props {
 }
 
 export const TransferDetailsDialog: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { isOpen, onClose, token, entities } = props;
 
   return (

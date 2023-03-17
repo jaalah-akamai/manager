@@ -4,7 +4,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { compose } from 'recompose';
 import Button from 'src/components/Button';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -20,7 +20,7 @@ import {
   useAllFirewallDevicesQuery,
 } from 'src/queries/firewalls';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   copy: {
     fontSize: '0.875rem',
     marginTop: theme.spacing(),
@@ -52,7 +52,7 @@ type CombinedProps = RouteComponentProps & Props & LinodesProps;
 
 const FirewallLinodesLanding: React.FC<CombinedProps> = (props) => {
   const { firewallID, firewallLabel, disabled } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { data: devices, isLoading, error } = useAllFirewallDevicesQuery(
     firewallID

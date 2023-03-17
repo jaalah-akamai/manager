@@ -2,7 +2,8 @@ import { UserDefinedField } from '@linode/api-v4/lib/stackscripts';
 import * as React from 'react';
 import { compose } from 'recompose';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import ErrorState from 'src/components/ErrorState';
 import Loading from 'src/components/LandingLoading';
@@ -14,20 +15,19 @@ import { AppsData } from './types';
 
 type ClassNames = 'panel' | 'loading';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    panel: {
-      marginBottom: theme.spacing(3),
+const styles = (theme: Theme) => ({
+  panel: {
+    marginBottom: theme.spacing(3),
+    height: 450,
+    overflowY: 'auto',
+    boxShadow: `${theme.color.boxShadow} 0px -15px 10px -10px inset`,
+  },
+  loading: {
+    '& >div:first-child': {
       height: 450,
-      overflowY: 'auto',
-      boxShadow: `${theme.color.boxShadow} 0px -15px 10px -10px inset`,
     },
-    loading: {
-      '& >div:first-child': {
-        height: 450,
-      },
-    },
-  });
+  },
+});
 
 interface Props extends AppsData {
   handleClick: (
@@ -192,8 +192,6 @@ class SelectAppPanel extends React.PureComponent<CombinedProps> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 export default compose<CombinedProps, Props>(
   styled,

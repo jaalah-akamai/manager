@@ -1,9 +1,8 @@
 import { Event } from '@linode/api-v4/lib/account/types';
-import classNames from 'classnames';
 import * as React from 'react';
 import Box from 'src/components/core/Box';
 import Divider from 'src/components/core/Divider';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import HighlightedMarkdown from 'src/components/HighlightedMarkdown';
@@ -11,7 +10,8 @@ import { GravatarByUsername } from 'src/components/GravatarByUsername';
 import { parseAPIDate } from 'src/utilities/date';
 import useEventInfo from './useEventInfo';
 
-export const useStyles = makeStyles((theme: Theme) => ({
+// TODO jss-to-tss-react codemod: usages of this hook outside of this file will not be converted.
+export const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     paddingTop: 12,
     paddingBottom: 12,
@@ -49,7 +49,7 @@ interface Props {
 }
 
 export const RenderEvent: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const { event } = props;
   const { message } = useEventInfo(event);
@@ -60,7 +60,7 @@ export const RenderEvent: React.FC<Props> = (props) => {
 
   const eventMessage = (
     <div
-      className={classNames({
+      className={cx({
         [classes.unseenEvent]: !event.seen,
       })}
     >
@@ -71,7 +71,7 @@ export const RenderEvent: React.FC<Props> = (props) => {
   return (
     <>
       <Box
-        className={classNames({
+        className={cx({
           [classes.root]: true,
           [classes.event]: true,
         })}
@@ -84,9 +84,7 @@ export const RenderEvent: React.FC<Props> = (props) => {
         />
         <div className={classes.eventMessage}>
           {eventMessage}
-          <Typography
-            className={classNames({ [classes.unseenEvent]: !event.seen })}
-          >
+          <Typography className={cx({ [classes.unseenEvent]: !event.seen })}>
             {parseAPIDate(event.created).toRelative()}
           </Typography>
         </div>

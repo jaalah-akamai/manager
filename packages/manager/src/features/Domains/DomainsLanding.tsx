@@ -5,7 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import DomainIcon from 'src/assets/icons/entityIcons/domain.svg';
 import Button from 'src/components/Button';
 import CircleProgress from 'src/components/CircleProgress';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import DeletionDialog from 'src/components/DeletionDialog';
@@ -43,7 +43,7 @@ import { EditDomainDrawer } from './EditDomainDrawer';
 
 const DOMAIN_CREATE_ROUTE = '/domains/create';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     // Adds spacing when the docs button wraps to make it look a little less awkward
     [theme.breakpoints.down(380)]: {
@@ -67,7 +67,7 @@ interface Props {
 const preferenceKey = 'domains';
 
 export const DomainsLanding: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const history = useHistory();
   const location = useLocation<{ recordError?: string }>();
 

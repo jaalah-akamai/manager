@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -17,7 +17,7 @@ import TableSortCell from 'src/components/TableSortCell';
 import { LongviewPort } from 'src/features/Longview/request.types';
 import ConnectionRow from './ConnectionRow';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   container: {
     [theme.breakpoints.down('md')]: {
       marginTop: theme.spacing(3),
@@ -39,7 +39,7 @@ export interface TableProps {
 
 export const ActiveConnections: React.FC<TableProps> = (props) => {
   const { connections, connectionsError, connectionsLoading } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Grid item xs={12} md={4} className={classes.container}>

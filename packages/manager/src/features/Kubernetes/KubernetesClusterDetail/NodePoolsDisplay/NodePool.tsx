@@ -3,7 +3,7 @@ import {
   PoolNodeResponse,
 } from '@linode/api-v4/lib/kubernetes';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Button from 'src/components/Button';
 import Typography from 'src/components/core/Typography';
@@ -24,7 +24,7 @@ interface Props {
   isOnlyNodePool: boolean;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   slash: {
     alignSelf: 'end',
     padding: '0px !important',
@@ -60,7 +60,7 @@ const NodePool: React.FC<Props> = (props) => {
     isOnlyNodePool,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Notice from 'src/components/Notice';
 const PasswordInput = React.lazy(() => import('src/components/PasswordInput'));
@@ -9,23 +10,20 @@ import SuspenseLoader from 'src/components/SuspenseLoader';
 
 type ClassNames = 'root' | 'inner' | 'panelBody';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-      width: '100%',
-      marginTop: theme.spacing(3),
-      backgroundColor: theme.color.white,
-    },
-    inner: {
-      padding: theme.spacing(3),
-    },
-    panelBody: {
-      padding: `${theme.spacing(3)} 0 ${theme.spacing(1)}`,
-    },
-  });
-
-const styled = withStyles(styles);
+const styles = (theme: Theme) => ({
+  root: {
+    flexGrow: 1,
+    width: '100%',
+    marginTop: theme.spacing(3),
+    backgroundColor: theme.color.white,
+  },
+  inner: {
+    padding: theme.spacing(3),
+  },
+  panelBody: {
+    padding: `${theme.spacing(3)} 0 ${theme.spacing(1)}`,
+  },
+});
 
 interface Props {
   password: string | null;
@@ -74,4 +72,4 @@ class PasswordPanel extends React.Component<CombinedProps> {
   }
 }
 
-export default styled(RenderGuard<CombinedProps>(PasswordPanel));
+export default withStyles(RenderGuard<CombinedProps>(PasswordPanel), styles);

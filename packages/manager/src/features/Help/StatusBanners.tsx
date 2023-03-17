@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import DismissibleBanner from 'src/components/DismissibleBanner';
@@ -14,7 +14,7 @@ import { capitalize } from 'src/utilities/capitalize';
 import { sanitizeHTML } from 'src/utilities/sanitize-html';
 import { truncateEnd } from 'src/utilities/truncate';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: theme.spacing(),
     paddingLeft: theme.spacing(2),
@@ -80,7 +80,7 @@ export interface IncidentProps {
 export const IncidentBanner: React.FC<IncidentProps> = React.memo((props) => {
   const { message, status: _status, title, impact, href } = props;
   const status = _status ?? '';
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const preferenceKey = `${href}-${status}`;
 

@@ -2,7 +2,7 @@ import { ManagedLinodeSetting } from '@linode/api-v4/lib/managed';
 import produce from 'immer';
 import * as React from 'react';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -19,7 +19,7 @@ import { DEFAULTS } from './common';
 import EditSSHAccessDrawer from './EditSSHAccessDrawer';
 import SSHAccessTableContent from './SSHAccessTableContent';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginTop: theme.spacing(4),
     '&:before': {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const SSHAccessTable: React.FC<{}> = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { data: settings, isLoading, error } = useAllLinodeSettingsQuery();
 

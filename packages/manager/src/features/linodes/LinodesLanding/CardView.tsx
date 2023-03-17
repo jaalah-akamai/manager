@@ -1,7 +1,7 @@
 import { Config } from '@linode/api-v4/lib/linodes';
 import * as React from 'react';
 import CircleProgress from 'src/components/CircleProgress';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -16,7 +16,7 @@ import { useProfile } from 'src/queries/profile';
 import { getVolumesForLinode, useAllVolumesQuery } from 'src/queries/volumes';
 import { LinodeWithMaintenance } from 'src/store/linodes/linodes.helpers';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   '@keyframes pulse': {
     to: {
       backgroundColor: `hsla(40, 100%, 55%, 0)`,
@@ -53,7 +53,7 @@ interface Props {
 type CombinedProps = Props & PaginationProps;
 
 const CardView: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const notificationContext = React.useContext(_notificationContext);
 
   const { updateLinode } = useLinodeActions();

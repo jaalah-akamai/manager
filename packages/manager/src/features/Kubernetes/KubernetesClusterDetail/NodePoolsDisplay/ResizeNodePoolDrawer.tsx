@@ -3,7 +3,7 @@ import * as React from 'react';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import CircleProgress from 'src/components/CircleProgress';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Drawer from 'src/components/Drawer';
@@ -14,7 +14,7 @@ import { useAllLinodeTypesQuery } from 'src/queries/linodes';
 import { pluralize } from 'src/utilities/pluralize';
 import { getMonthlyPrice, nodeWarning } from '../../kubeUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   summary: {
     fontWeight: 'bold',
     lineHeight: '20px',
@@ -40,7 +40,7 @@ the pool.`;
 
 export const ResizeNodePoolDrawer = (props: Props) => {
   const { nodePool, onClose, open, kubernetesClusterId } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { data: types, isLoading: isLoadingTypes } = useAllLinodeTypesQuery();
 

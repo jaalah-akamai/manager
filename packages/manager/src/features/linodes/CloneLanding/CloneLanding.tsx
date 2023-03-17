@@ -22,7 +22,7 @@ import { compose } from 'recompose';
 import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import SafeTabPanel from 'src/components/SafeTabPanel';
 import TabPanels from 'src/components/core/ReachTabPanels';
@@ -54,7 +54,7 @@ const LinodesDetailHeader = React.lazy(
   () => import('../LinodesDetail/LinodesDetailHeader')
 );
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginTop: theme.spacing(1),
   },
@@ -101,7 +101,7 @@ export const CloneLanding: React.FC<CombinedProps> = (props) => {
     linodesData,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   /**
    * ROUTING

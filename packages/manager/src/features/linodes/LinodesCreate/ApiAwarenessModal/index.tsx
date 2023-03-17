@@ -9,7 +9,7 @@ import SafeTabPanel from 'src/components/SafeTabPanel';
 import TabLinkList from 'src/components/TabLinkList';
 import Typography from 'src/components/core/Typography';
 import Notice from 'src/components/Notice';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Tabs from 'src/components/core/ReachTabs';
 import TabPanels from 'src/components/core/ReachTabPanels';
@@ -21,7 +21,7 @@ import useEvents from 'src/hooks/useEvents';
 
 import CodeBlock from '../CodeBlock';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   guides: {
     marginTop: 16,
   },
@@ -70,7 +70,7 @@ const fireGAEvent = (label: string) => {
 const ApiAwarenessModal = (props: Props) => {
   const { isOpen, onClose, route, payLoad } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const history = useHistory();
   const { events } = useEvents();
 

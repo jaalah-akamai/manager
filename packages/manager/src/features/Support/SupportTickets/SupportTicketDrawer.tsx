@@ -11,7 +11,7 @@ import Accordion from 'src/components/Accordion';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import FormHelperText from 'src/components/core/FormHelperText';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Dialog from 'src/components/Dialog';
@@ -46,7 +46,7 @@ import SupportTicketSMTPFields, {
   smtpHelperText,
 } from './SupportTicketSMTPFields';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   expPanelSummary: {
     backgroundColor: theme.name === 'dark' ? theme.bg.main : theme.bg.white,
     paddingTop: theme.spacing(1),
@@ -231,7 +231,7 @@ export const SupportTicketDrawer: React.FC<CombinedProps> = (props) => {
 
   const entities = useEntities();
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   React.useEffect(() => {
     if (!open) {

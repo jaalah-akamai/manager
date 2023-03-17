@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Paper from 'src/components/core/Paper';
-import { makeStyles, withTheme, WithTheme } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
+import { withTheme, WithTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import LongviewLineGraph from 'src/components/LongviewLineGraph';
@@ -19,7 +20,7 @@ import {
 } from 'src/utilities/unitConversions';
 import { Process } from './types';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginTop: theme.spacing(1.25),
     padding: theme.spacing(3),
@@ -49,7 +50,7 @@ interface Props {
 type CombinedProps = Props & WithTheme;
 
 const ProcessesGraphs: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     error,

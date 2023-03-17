@@ -5,7 +5,8 @@ import { assocPath } from 'ramda';
 import * as React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import { compose } from 'recompose';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import setDocs, { SetDocsProps } from 'src/components/DocsSidebar/setDocs';
 import Grid from 'src/components/Grid';
@@ -56,37 +57,36 @@ const appCategoryOptions = appCategories.map((categoryName) => ({
 
 // type AppCategory = typeof appCategories;
 
-const styles = (theme: Theme) =>
-  createStyles({
-    sidebar: {
-      [theme.breakpoints.up('md')]: {
-        marginTop: '-130px !important',
-      },
+const styles = (theme: Theme) => ({
+  sidebar: {
+    [theme.breakpoints.up('md')]: {
+      marginTop: '-130px !important',
     },
-    main: {
-      [theme.breakpoints.up('md')]: {
-        maxWidth: '100%',
-      },
+  },
+  main: {
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '100%',
     },
-    searchAndFilter: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      gap: theme.spacing(),
-      marginTop: theme.spacing(),
-      '& > h2': {
-        width: '100%',
-      },
+  },
+  searchAndFilter: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: theme.spacing(),
+    marginTop: theme.spacing(),
+    '& > h2': {
+      width: '100%',
     },
-    search: {
-      flexGrow: 10,
-      '& .input': {
-        maxWidth: 'none',
-      },
+  },
+  search: {
+    flexGrow: 10,
+    '& .input': {
+      maxWidth: 'none',
     },
-    filter: {
-      flexGrow: 1.5,
-    },
-  });
+  },
+  filter: {
+    flexGrow: 1.5,
+  },
+});
 
 const errorResources = {
   type: 'A plan selection',
@@ -402,8 +402,6 @@ class FromAppsContent extends React.Component<CombinedProps, State> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 interface StateProps {
   documentation: Linode.Doc[];

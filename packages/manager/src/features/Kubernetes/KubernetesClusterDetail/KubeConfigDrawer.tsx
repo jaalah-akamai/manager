@@ -2,7 +2,7 @@ import * as React from 'react';
 import Download from 'src/assets/icons/download.svg';
 import CopyTooltip from 'src/components/CopyTooltip';
 import Grid from 'src/components/core/Grid';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Drawer from 'src/components/Drawer';
@@ -11,7 +11,7 @@ import { downloadFile } from 'src/utilities/downloadFile';
 import HighlightedMarkdown from 'src/components/HighlightedMarkdown';
 import { useKubenetesKubeConfigQuery } from 'src/queries/kubernetes';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   icon: {
     color: '#3683dc',
   },
@@ -38,7 +38,7 @@ interface Props {
 }
 
 export const KubeConfigDrawer = (props: Props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { clusterLabel, clusterId, closeDrawer, open } = props;
 
   const {

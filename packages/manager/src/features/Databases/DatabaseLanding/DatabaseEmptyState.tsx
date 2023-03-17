@@ -7,7 +7,7 @@ import PointerIcon from 'src/assets/icons/pointer.svg';
 import YoutubeIcon from 'src/assets/icons/youtube.svg';
 import List from 'src/components/core/List';
 import ListItem from 'src/components/core/ListItem';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import Typography from 'src/components/core/Typography';
 import Link from 'src/components/Link';
 import Placeholder from 'src/components/Placeholder';
@@ -94,7 +94,7 @@ const youtubeLinks = (
   </List>
 );
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   root: {
     '& > svg': {
       transform: 'scale(0.8)',
@@ -103,7 +103,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const DatabaseEmptyState: React.FC = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const history = useHistory();
 
   return (

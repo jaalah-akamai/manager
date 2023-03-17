@@ -7,7 +7,8 @@ import { compose as ramdaCompose } from 'ramda';
 import * as React from 'react';
 import VolumeIcon from 'src/assets/icons/entityIcons/volume.svg';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import Placeholder from 'src/components/Placeholder';
@@ -29,14 +30,13 @@ export interface LinodeWithBackups extends Linode {
 
 type ClassNames = 'main';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    main: {
-      [theme.breakpoints.up('md')]: {
-        maxWidth: '100%',
-      },
+const styles = (theme: Theme) => ({
+  main: {
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '100%',
     },
-  });
+  },
+});
 
 interface Props {
   disabled?: boolean;
@@ -239,6 +239,4 @@ export class FromBackupsContent extends React.Component<CombinedProps, State> {
   }
 }
 
-const styled = withStyles(styles);
-
-export default styled(FromBackupsContent);
+export default withStyles(FromBackupsContent, styles);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -9,7 +9,7 @@ interface Props {
   region: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     overflowX: 'auto',
     overflowY: 'hidden',
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const DNSResolvers: React.FC<Props> = (props) => {
   const { region } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const regions = useRegionsQuery().data ?? [];
 
   const linodeRegion = regions.find((thisRegion) => thisRegion.id === region);

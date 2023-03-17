@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import CircleProgress from 'src/components/CircleProgress';
 import TabPanels from 'src/components/core/ReachTabPanels';
 import Tabs from 'src/components/core/ReachTabs';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import ErrorState from 'src/components/ErrorState';
 import SafeTabPanel from 'src/components/SafeTabPanel';
@@ -15,7 +15,7 @@ import Weblish from './Weblish';
 
 const AUTH_POLLING_INTERVAL = 2000;
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   tabs: {
     backgroundColor: 'black',
     margin: 0,
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Lish = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const history = useHistory();
 
   const { linodeId, type } = useParams<{ linodeId: string; type: string }>();

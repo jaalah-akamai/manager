@@ -1,101 +1,102 @@
-import classNames from 'classnames';
 import * as React from 'react';
 import CautionIcon from 'src/assets/icons/caution.svg';
 import FileUploadComplete from 'src/assets/icons/fileUploadComplete.svg';
 import UploadPending from 'src/assets/icons/uploadPending.svg';
 import Button from 'src/components/Button';
 import LinearProgress from 'src/components/core/LinearProgress';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Tooltip from 'src/components/core/Tooltip';
 import Typography from 'src/components/core/Typography';
 import { readableBytes } from 'src/utilities/unitConversions';
 import { ObjectUploaderAction } from './reducer';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    marginTop: theme.spacing(0.5),
-    marginBottom: theme.spacing(0.5),
-    position: 'relative',
-    '&:last-child ': {
-      '&$overwriteNotice': {
-        borderBottom: 0,
-        paddingBottom: theme.spacing(1),
+const useStyles = makeStyles<void, 'overwriteNotice'>()(
+  (theme: Theme, _params, classes) => ({
+    root: {
+      marginTop: theme.spacing(0.5),
+      marginBottom: theme.spacing(0.5),
+      position: 'relative',
+      '&:last-child ': {
+        [`&.${classes.overwriteNotice}`]: {
+          borderBottom: 0,
+          paddingBottom: theme.spacing(1),
+        },
       },
     },
-  },
-  errorState: {
-    cursor: 'pointer',
-  },
-  progressBar: {
-    backgroundColor: theme.bg.app,
-    borderRadius: 3,
-    height: theme.spacing(5.25),
-    width: '100%',
-    position: 'absolute',
-    zIndex: 1,
-  },
-  barColorPrimary: {
-    backgroundColor: theme.name === 'light' ? '#cce2ff' : '#243142',
-  },
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: theme.spacing(),
-    position: 'relative',
-    zIndex: 2,
-  },
-  leftWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    marginRight: theme.spacing(),
-  },
-  rightWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  iconRight: {
-    color: theme.textColors.headlineStatic,
-  },
-  error: {
-    color: theme.color.red,
-    '& g': {
-      stroke: theme.color.red,
+    errorState: {
+      cursor: 'pointer',
     },
-  },
-  fileSize: {
-    marginRight: theme.spacing(),
-  },
-  rotate: {
-    animation: '$rotate 2s linear infinite',
-  },
-  '@keyframes rotate': {
-    from: {
-      transform: 'rotate(360deg)',
+    progressBar: {
+      backgroundColor: theme.bg.app,
+      borderRadius: 3,
+      height: theme.spacing(5.25),
+      width: '100%',
+      position: 'absolute',
+      zIndex: 1,
     },
-    to: {
-      transform: 'rotate(0deg)',
+    barColorPrimary: {
+      backgroundColor: theme.name === 'light' ? '#cce2ff' : '#243142',
     },
-  },
-  overwriteNotice: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderBottom: `1px solid ${theme.color.grey2}`,
-    padding: theme.spacing(),
-    paddingTop: 0,
-    position: 'relative',
-    zIndex: 10,
-  },
-  actions: {
-    display: 'flex',
-    justifyContent: 'center',
-    '& button': {
-      marginLeft: theme.spacing(),
+    container: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: theme.spacing(),
+      position: 'relative',
+      zIndex: 2,
     },
-  },
-}));
+    leftWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+      marginRight: theme.spacing(),
+    },
+    rightWrapper: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    iconRight: {
+      color: theme.textColors.headlineStatic,
+    },
+    error: {
+      color: theme.color.red,
+      '& g': {
+        stroke: theme.color.red,
+      },
+    },
+    fileSize: {
+      marginRight: theme.spacing(),
+    },
+    rotate: {
+      animation: '$rotate 2s linear infinite',
+    },
+    '@keyframes rotate': {
+      from: {
+        transform: 'rotate(360deg)',
+      },
+      to: {
+        transform: 'rotate(0deg)',
+      },
+    },
+    overwriteNotice: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      borderBottom: `1px solid ${theme.color.grey2}`,
+      padding: theme.spacing(),
+      paddingTop: 0,
+      position: 'relative',
+      zIndex: 10,
+    },
+    actions: {
+      display: 'flex',
+      justifyContent: 'center',
+      '& button': {
+        marginLeft: theme.spacing(),
+      },
+    },
+  })
+);
 
 interface Props {
   displayName: string;
@@ -110,7 +111,7 @@ interface Props {
 }
 
 const FileUpload: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const resumeUpload = () =>
     props.dispatch({
@@ -132,7 +133,7 @@ const FileUpload: React.FC<Props> = (props) => {
 
   const Content = (
     <div
-      className={classNames({
+      className={cx({
         [classes.root]: true,
         [classes.errorState]: props.error,
       })}
@@ -155,7 +156,7 @@ const FileUpload: React.FC<Props> = (props) => {
         <div className={classes.leftWrapper}>
           <Typography
             variant="body1"
-            className={classNames({
+            className={cx({
               [classes.error]: props.error,
             })}
           >
@@ -165,7 +166,7 @@ const FileUpload: React.FC<Props> = (props) => {
         <div className={classes.rightWrapper}>
           <Typography
             variant="body1"
-            className={classNames({
+            className={cx({
               [classes.fileSize]: true,
               [classes.error]: props.error,
             })}
@@ -180,7 +181,7 @@ const FileUpload: React.FC<Props> = (props) => {
             />
           ) : props.error || props.overwriteNotice ? (
             <CautionIcon
-              className={classNames({
+              className={cx({
                 [classes.iconRight]: true,
                 [classes.error]: props.error,
               })}

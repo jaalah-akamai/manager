@@ -10,7 +10,7 @@ import { compose } from 'recompose';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Notice from 'src/components/Notice';
@@ -31,7 +31,7 @@ import curriedFirewallRuleEditorReducer, {
 import FirewallRuleTable from './FirewallRuleTable';
 import { Category, parseFirewallRuleError } from './shared';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   copy: {
     fontSize: '0.875rem',
     lineHeight: 1.5,
@@ -68,7 +68,7 @@ interface Drawer {
 type CombinedProps = Props & DispatchProps & RouteComponentProps;
 
 const FirewallRulesLanding: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { firewallID, rules, disabled } = props;
 
   /**

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ExternalLink from 'src/components/ExternalLink';
@@ -11,26 +12,25 @@ import Toggle from 'src/components/Toggle';
 
 type ClassNames = 'root' | 'header' | 'toggleLabel' | 'toggleLabelText';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      backgroundColor: theme.bg.offWhite,
-      padding: theme.spacing(1),
-    },
-    header: {
-      marginBottom: theme.spacing(1),
-      fontSize: 17,
-    },
-    toggleLabel: {
-      display: 'flex',
-      alignItems: 'flex-start',
-      marginLeft: 0,
-      marginBottom: theme.spacing(1),
-    },
-    toggleLabelText: {
-      marginTop: theme.spacing(1) + theme.spacing(0.5),
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {
+    backgroundColor: theme.bg.offWhite,
+    padding: theme.spacing(1),
+  },
+  header: {
+    marginBottom: theme.spacing(1),
+    fontSize: 17,
+  },
+  toggleLabel: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    marginLeft: 0,
+    marginBottom: theme.spacing(1),
+  },
+  toggleLabelText: {
+    marginTop: theme.spacing(1) + theme.spacing(0.5),
+  },
+});
 
 interface Props {
   enabled: boolean;
@@ -85,6 +85,4 @@ export const AutoEnroll: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const styled = withStyles(styles);
-
-export default styled(AutoEnroll);
+export default withStyles(AutoEnroll, styles);

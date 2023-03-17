@@ -8,7 +8,7 @@ import { lensPath, set } from 'ramda';
 import * as React from 'react';
 import { compose } from 'recompose';
 import Accordion from 'src/components/Accordion';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import Notice from 'src/components/Notice';
@@ -21,7 +21,7 @@ import Reference from './MarkdownReference';
 import ReplyActions from './ReplyActions';
 import TabbedReply from './TabbedReply';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   replyContainer: {
     paddingLeft: theme.spacing(8),
     [theme.breakpoints.down('sm')]: {
@@ -63,7 +63,7 @@ interface Props {
 type CombinedProps = Props;
 
 const ReplyContainer: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { onSuccess, reloadAttachments, lastReply, ...rest } = props;
 

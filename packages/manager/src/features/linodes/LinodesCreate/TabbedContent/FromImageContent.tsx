@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -15,7 +15,7 @@ import {
   WithTypesRegionsAndImages,
 } from '../types';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   main: {
     [theme.breakpoints.up('md')]: {
       maxWidth: '100%',
@@ -35,7 +35,7 @@ export type CombinedProps = Props &
   WithTypesRegionsAndImages;
 
 export const FromImageContent: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     error,

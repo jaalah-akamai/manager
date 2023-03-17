@@ -2,7 +2,8 @@ import { Linode } from '@linode/api-v4/lib/linodes';
 import * as React from 'react';
 import { compose } from 'recompose';
 import Paper from 'src/components/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -19,17 +20,16 @@ export interface ExtendedLinode extends Linode {
 
 type ClassNames = 'root' | 'panelBody';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-      width: '100%',
-      backgroundColor: theme.color.white,
-    },
-    panelBody: {
-      padding: `${theme.spacing(2)} 0 0`,
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {
+    flexGrow: 1,
+    width: '100%',
+    backgroundColor: theme.color.white,
+  },
+  panelBody: {
+    padding: `${theme.spacing(2)} 0 0`,
+  },
+});
 
 interface Notice {
   text: string;
@@ -117,8 +117,6 @@ class SelectLinodePanel extends React.Component<CombinedProps> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 export default compose<CombinedProps, Props & RenderGuardProps>(
   RenderGuard,

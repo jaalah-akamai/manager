@@ -2,7 +2,7 @@ import { TransferEntities } from '@linode/api-v4/lib/entity-transfers';
 import * as React from 'react';
 import CopyTooltip from 'src/components/CopyTooltip';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DateTimeDisplay from 'src/components/DateTimeDisplay';
 import TableCell from 'src/components/TableCell';
@@ -11,7 +11,7 @@ import capitalize from 'src/utilities/capitalize';
 import { pluralize } from 'src/utilities/pluralize';
 import ActionMenu from './TransfersPendingActionMenu';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   row: {
     '&:hover': {
       '& [data-qa-copy-token]': {
@@ -97,7 +97,7 @@ export const RenderTransferRow: React.FC<CombinedProps> = (props) => {
     handleTokenClick,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const entitiesAndTheirCounts = Object.entries(entities);
 

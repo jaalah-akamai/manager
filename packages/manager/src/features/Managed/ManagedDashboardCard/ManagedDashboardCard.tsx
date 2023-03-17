@@ -4,7 +4,7 @@ import DashboardCard from './DashboardCard';
 import ManagedChartPanel from './ManagedChartPanel';
 import MonitorStatus from './MonitorStatus';
 import MonitorTickets from './MonitorTickets';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import {
   useAllManagedIssuesQuery,
@@ -14,7 +14,7 @@ import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 import ErrorState from 'src/components/ErrorState/ErrorState';
 import CircleProgress from 'src/components/CircleProgress/CircleProgress';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     backgroundColor: theme.bg.bgPaper,
     margin: 0,
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const ManagedDashboardCard = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     data: monitors,

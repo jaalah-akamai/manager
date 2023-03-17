@@ -19,7 +19,7 @@ import FormHelperText from 'src/components/core/FormHelperText';
 import Grid from 'src/components/core/Grid';
 import Paper from 'src/components/core/Paper';
 import RadioGroup from 'src/components/core/RadioGroup';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DocsLink from 'src/components/DocsLink';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
@@ -48,7 +48,7 @@ import {
 import scrollErrorIntoView from 'src/utilities/scrollErrorIntoView';
 import { generateDefaultDomainRecords } from '../domainUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   main: {
     width: '100%',
   },
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 type DefaultRecordsType = 'none' | 'linode' | 'nodebalancer';
 
 export const CreateDomain = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { data: profile } = useProfile();
   const { data: grants } = useGrants();

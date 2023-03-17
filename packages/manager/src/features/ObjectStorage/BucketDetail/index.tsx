@@ -5,7 +5,7 @@ import Breadcrumb from 'src/components/Breadcrumb';
 import Box from 'src/components/core/Box';
 import TabPanels from 'src/components/core/ReachTabPanels';
 import Tabs from 'src/components/core/ReachTabs';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DocsLink from 'src/components/DocsLink';
 import SafeTabPanel from 'src/components/SafeTabPanel';
@@ -17,7 +17,7 @@ const ObjectList = React.lazy(() => import('./BucketDetail'));
 // const Access = React.lazy(() => import('./BucketAccess'));
 const BucketSSL = React.lazy(() => import('./BucketSSL'));
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     [theme.breakpoints.down('md')]: {
       paddingRight: theme.spacing(),
@@ -36,7 +36,7 @@ interface MatchProps {
 type CombinedProps = RouteComponentProps<MatchProps>;
 
 export const BucketDetailLanding: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const matches = (p: string) => {
     return Boolean(matchPath(p, { path: props.location.pathname }));

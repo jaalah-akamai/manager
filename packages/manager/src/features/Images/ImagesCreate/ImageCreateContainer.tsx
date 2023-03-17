@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Breadcrumb from 'src/components/Breadcrumb';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import DocsLink from 'src/components/DocsLink';
 import Grid from 'src/components/Grid';
 import ImageCreate from './ImageCreate';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: theme.spacing(2),
   },
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const ImagesCreateContainer: React.FC = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Grid container className={classes.root}>

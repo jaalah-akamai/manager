@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import EditableEntityLabel from 'src/components/EditableEntityLabel';
 import Grid from 'src/components/Grid';
@@ -12,7 +12,7 @@ import RestrictedUserLabel from './RestrictedUserLabel';
 
 import Instructions from '../shared/InstallationInstructions';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginBottom: theme.spacing(4),
     padding: theme.spacing(3),
@@ -44,7 +44,7 @@ export const LongviewClientInstructions: React.FC<Props> = (props) => {
     triggerDeleteLongviewClient,
     userCanModifyClient,
   } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [updating, setUpdating] = React.useState<boolean>(false);
 

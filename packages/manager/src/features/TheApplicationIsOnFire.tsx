@@ -1,18 +1,18 @@
 import * as React from 'react';
 import Dialog from 'src/components/core/Dialog';
 import DialogContent from 'src/components/core/DialogContent';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import DialogTitle from 'src/components/DialogTitle';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   restartButton: {
     ...theme.applyLinkStyles,
   },
 }));
 
-const TheApplicationIsOnFire: React.FC<{}> = (props) => {
+const TheApplicationIsOnFire = () => {
   return (
     <Dialog open PaperProps={{ role: undefined }} role="dialog">
       <DialogTitle title="Oh snap!" />
@@ -26,7 +26,7 @@ const TheApplicationIsOnFire: React.FC<{}> = (props) => {
 };
 
 const ReloadLink = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <button

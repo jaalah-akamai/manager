@@ -8,7 +8,7 @@ import Button from 'src/components/Button';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import Radio from 'src/components/core/Radio';
 import RadioGroup from 'src/components/core/RadioGroup';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Tooltip from 'src/components/core/Tooltip';
 import Typography from 'src/components/core/Typography';
@@ -18,7 +18,7 @@ import ExternalLink from 'src/components/Link';
 import Notice from 'src/components/Notice';
 import { getErrorStringOrDefault } from 'src/utilities/errorUtils';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   copy: {
     marginTop: theme.spacing(2),
   },
@@ -98,7 +98,7 @@ interface Props {
 type CombinedProps = Props;
 
 const AddIPDrawer: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [selectedIPv4, setSelectedIPv4] = React.useState<IPType | null>(null);
   const [submittingIPv4, setSubmittingIPv4] = React.useState(false);

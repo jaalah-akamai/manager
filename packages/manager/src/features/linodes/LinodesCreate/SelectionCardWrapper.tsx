@@ -1,13 +1,13 @@
 import { UserDefinedField } from '@linode/api-v4/lib/stackscripts';
 import * as React from 'react';
 import Info from 'src/assets/icons/info.svg';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import SelectionCard from 'src/components/SelectionCard';
 import { APP_ROOT } from 'src/constants';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   flatImagePanelSelections: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(),
@@ -68,7 +68,7 @@ export const SelectionCardWrapper: React.FC<Props> = (props) => {
    * '' is the default value for a stackscript's logo_url;
    * display a fallback image in this case, to avoid broken image icons
    */
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const handleSelectApp = () =>
     handleClick(

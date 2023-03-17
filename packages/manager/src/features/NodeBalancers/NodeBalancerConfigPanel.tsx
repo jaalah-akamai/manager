@@ -7,7 +7,8 @@ import Divider from 'src/components/core/Divider';
 import FormControlLabel from 'src/components/core/FormControlLabel';
 import FormHelperText from 'src/components/core/FormHelperText';
 import InputAdornment from 'src/components/core/InputAdornment';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Select, { Item } from 'src/components/EnhancedSelect/Select';
@@ -22,18 +23,15 @@ import { NodeBalancerConfigNodeFields } from './types';
 
 type ClassNames = 'passiveChecks' | 'actionsPanel';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    passiveChecks: {
-      marginTop: 4,
-    },
-    actionsPanel: {
-      paddingBottom: 0,
-      paddingRight: `${theme.spacing()} !important`,
-    },
-  });
-
-const styled = withStyles(styles);
+const styles = (theme: Theme) => ({
+  passiveChecks: {
+    marginTop: 4,
+  },
+  actionsPanel: {
+    paddingBottom: 0,
+    paddingRight: `${theme.spacing()} !important`,
+  },
+});
 
 interface Props {
   nodeBalancerRegion?: string;
@@ -918,4 +916,7 @@ class NodeBalancerConfigPanel extends React.Component<CombinedProps> {
   }
 }
 
-export default styled(NodeBalancerConfigPanel) as React.ComponentType<Props>;
+export default withStyles(
+  NodeBalancerConfigPanel,
+  styles
+) as React.ComponentType<Props>;

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import NodeBalancer from 'src/assets/icons/entityIcons/nodebalancer.svg';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
 import Link from 'src/components/Link';
 import Placeholder from 'src/components/Placeholder';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   placeholderAdjustment: {
     padding: `${theme.spacing(2)} 0 0 0`,
     [theme.breakpoints.up('md')]: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const NodeBalancerLandingEmptyState = () => {
   const history = useHistory();
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <React.Fragment>

@@ -4,7 +4,7 @@ import * as React from 'react';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import FormControlLabel from 'src/components/core/FormControlLabel';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Drawer from 'src/components/Drawer';
@@ -21,7 +21,7 @@ import { privateIPRegex, removePrefixLength } from 'src/utilities/ipUtils';
 import { DEFAULTS } from './common';
 import { useUpdateLinodeSettingsMutation } from 'src/queries/managed/managed';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   ip: {
     [theme.breakpoints.down('md')]: {
       paddingBottom: '0px !important',
@@ -44,7 +44,7 @@ interface Props {
 }
 
 const EditSSHAccessDrawer: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { isOpen, closeDrawer, linodeSetting } = props;
 

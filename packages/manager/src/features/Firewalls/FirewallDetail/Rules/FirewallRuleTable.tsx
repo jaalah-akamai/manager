@@ -1,5 +1,4 @@
 import { FirewallPolicyType } from '@linode/api-v4/lib/firewalls/types';
-import classNames from 'classnames';
 import { prop, uniqBy } from 'ramda';
 import * as React from 'react';
 import {
@@ -13,7 +12,8 @@ import Undo from 'src/assets/icons/undo.svg';
 import Button from 'src/components/Button';
 import Grid from 'src/components/Grid';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles, useTheme } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
+import { useTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Typography from 'src/components/core/Typography';
@@ -29,7 +29,7 @@ import { Mode } from './FirewallRuleDrawer';
 import { ExtendedFirewallRule, RuleStatus } from './firewallRuleEditor';
 import { Category, FirewallRuleError, sortPortString } from './shared';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     '& .MuiGrid-root': {
       margin: 0,
@@ -203,7 +203,7 @@ const FirewallRuleTable: React.FC<CombinedProps> = (props) => {
     triggerReorder,
   } = props;
 
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const theme: Theme = useTheme();
   const xsDown = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -247,7 +247,7 @@ const FirewallRuleTable: React.FC<CombinedProps> = (props) => {
       <Grid
         container
         aria-label={`${category} Rules List`}
-        className={classNames(classes.root, classes.ruleGrid)}
+        className={cx(classes.root, classes.ruleGrid)}
       >
         <Grid
           container
@@ -299,10 +299,7 @@ const FirewallRuleTable: React.FC<CombinedProps> = (props) => {
                     <Grid
                       container
                       data-testid={'table-row-empty'}
-                      className={classNames(
-                        classes.unmodified,
-                        classes.ruleRow
-                      )}
+                      className={cx(classes.unmodified, classes.ruleRow)}
                       style={{
                         padding: 8,
                         width: '100%',
@@ -379,7 +376,7 @@ type FirewallRuleTableRowProps = RuleRow &
 
 const FirewallRuleTableRow: React.FC<FirewallRuleTableRowProps> = React.memo(
   (props) => {
-    const classes = useStyles();
+    const { classes, cx } = useStyles();
     const theme: Theme = useTheme();
     const xsDown = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -413,7 +410,7 @@ const FirewallRuleTableRow: React.FC<FirewallRuleTableRowProps> = React.memo(
         container
         key={id}
         aria-label={label}
-        className={classNames({
+        className={cx({
           [classes.ruleGrid]: true,
           [classes.ruleRow]: true,
           // Highlight the row if it's been modified or reordered. ID is the
@@ -482,7 +479,7 @@ const FirewallRuleTableRow: React.FC<FirewallRuleTableRowProps> = React.memo(
           {status !== 'NOT_MODIFIED' ? (
             <div className={classes.undoButtonContainer}>
               <button
-                className={classNames({
+                className={cx({
                   [classes.undoButton]: true,
                   [classes.highlight]: status !== 'PENDING_DELETION',
                 })}
@@ -517,7 +514,7 @@ const policyOptions: Item<FirewallPolicyType>[] = [
 
 export const PolicyRow: React.FC<PolicyRowProps> = React.memo((props) => {
   const { category, policy, disabled, handlePolicyChange } = props;
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   // Calculate how many cells the text should span so that the Select lines up
   // with the Action column
@@ -538,11 +535,7 @@ export const PolicyRow: React.FC<PolicyRowProps> = React.memo((props) => {
   return (
     <Grid
       container
-      className={classNames(
-        classes.policyRow,
-        classes.unmodified,
-        classes.ruleRow
-      )}
+      className={cx(classes.policyRow, classes.unmodified, classes.ruleRow)}
       tabIndex={0}
     >
       <Grid item xs={colSpan} className={classes.policyText}>
@@ -576,7 +569,7 @@ interface ConditionalErrorProps {
 
 export const ConditionalError: React.FC<ConditionalErrorProps> = React.memo(
   (props) => {
-    const classes = useStyles();
+    const { classes } = useStyles();
 
     const { formField, errors } = props;
 

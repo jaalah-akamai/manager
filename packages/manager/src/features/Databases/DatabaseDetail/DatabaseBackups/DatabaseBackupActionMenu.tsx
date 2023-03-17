@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { DatabaseBackup } from '@linode/api-v4/lib/databases';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import InlineAction from 'src/components/InlineMenuAction';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   inlineActions: {
     display: 'flex',
     alignItems: 'center',
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const DatabaseBackupActionMenu: React.FC<Props> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { backup, onRestore } = props;
 
   const actions = [

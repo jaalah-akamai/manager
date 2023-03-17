@@ -1,6 +1,6 @@
 import { APIError } from '@linode/api-v4/lib/types';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -17,7 +17,7 @@ import { useWindowDimensions } from 'src/hooks/useWindowDimensions';
 import { readableBytes } from 'src/utilities/unitConversions';
 import { Process } from './types';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   processName: {
     display: 'flex',
     flexFlow: 'row nowrap',
@@ -64,7 +64,7 @@ export interface Props {
 export type CombinedProps = Props;
 
 export const ProcessesTable: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { width } = useWindowDimensions();
 
   const {
@@ -211,7 +211,7 @@ export const ProcessesTableRow: React.FC<ProcessTableRowProps> = React.memo(
       isSelected,
     } = props;
 
-    const classes = useStyles();
+    const { classes } = useStyles();
 
     return (
       <TableRow

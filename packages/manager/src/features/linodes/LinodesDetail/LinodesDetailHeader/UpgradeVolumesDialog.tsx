@@ -6,7 +6,7 @@ import Paper from 'src/components/core/Paper';
 import Typography from 'src/components/core/Typography';
 import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { VolumeUpgradeCopy } from 'src/features/Volumes/UpgradeVolumeDialog';
 import { Dispatch } from 'src/hooks/types';
@@ -22,7 +22,7 @@ interface Props {
   upgradeableVolumeIds: number[];
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   notice: {
     borderLeft: `solid 6px ${theme.color.yellow}`,
     marginTop: theme.spacing(2),
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const UpgradeVolumesDialog: React.FC<Props> = (props) => {
   const { open, onClose, linode, upgradeableVolumeIds } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const dispatch: Dispatch = useDispatch();
 

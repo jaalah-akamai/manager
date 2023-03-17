@@ -2,7 +2,7 @@ import { Config } from '@linode/api-v4/lib/linodes';
 import * as React from 'react';
 import { useLocation } from 'react-router-dom';
 import TableBody from 'src/components/core/TableBody';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import { OrderByProps } from 'src/components/OrderBy';
@@ -20,7 +20,7 @@ import GroupByTag from 'src/assets/icons/group-by-tag.svg';
 import TableView from 'src/assets/icons/table-view.svg';
 import { getParamsFromUrl } from 'src/utilities/queryParams';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   controlHeader: {
     marginBottom: 28,
     display: 'flex',
@@ -63,7 +63,7 @@ interface Props {
 type CombinedProps = Props & OrderByProps;
 
 const DisplayLinodes = (props: CombinedProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const {
     count,
     data,

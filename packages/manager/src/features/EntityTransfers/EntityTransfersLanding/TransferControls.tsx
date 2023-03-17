@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from 'src/components/Button';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -10,7 +10,7 @@ import HelpIcon from 'src/components/HelpIcon';
 import TextField from 'src/components/TextField';
 import ConfirmTransferDialog from './ConfirmTransferDialog';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     margin: `${theme.spacing(2)} 0`,
     width: '100%',
@@ -105,7 +105,7 @@ export const TransferControls: React.FC<{}> = (_) => {
   const [token, setToken] = React.useState('');
   const [confirmDialogOpen, setConfirmDialogOpen] = React.useState(false);
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { push } = useHistory();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

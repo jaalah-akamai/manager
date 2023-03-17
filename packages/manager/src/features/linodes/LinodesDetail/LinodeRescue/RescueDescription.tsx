@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Link from 'src/components/Link';
@@ -19,7 +19,9 @@ interface Props {
   isBareMetal?: boolean;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+// TODO jss-to-tss-react codemod: Unable to handle style definition reliably. Unsupported arrow function syntax.
+//Unexpected value type of MemberExpression.
+const useStyles = makeStyles()((theme: Theme) => ({
   copy: {
     marginTop: theme.spacing(1),
   },
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const RescueDescription: React.FC<Props> = (props) => {
   const { linodeId, isBareMetal } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { data: linodeFirewallsData } = useLinodeFirewalls(linodeId);
   const firewallsLinodeAssignedTo = linodeFirewallsData?.data ?? [];

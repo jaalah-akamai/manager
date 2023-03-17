@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
 import Grid from 'src/components/Grid';
@@ -12,19 +13,18 @@ import TablesPanel from './TablesPanel';
 
 type ClassNames = 'main' | 'sidebar';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    main: {
-      [theme.breakpoints.up('md')]: {
-        order: 1,
-      },
+const styles = (theme: Theme) => ({
+  main: {
+    [theme.breakpoints.up('md')]: {
+      order: 1,
     },
-    sidebar: {
-      [theme.breakpoints.up('md')]: {
-        order: 2,
-      },
+  },
+  sidebar: {
+    [theme.breakpoints.up('md')]: {
+      order: 2,
     },
-  });
+  },
+});
 
 interface Props {
   nodeBalancer: ExtendedNodeBalancer;
@@ -51,6 +51,4 @@ const NodeBalancerSummary: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const styled = withStyles(styles);
-
-export default styled(NodeBalancerSummary);
+export default withStyles(NodeBalancerSummary, styles);

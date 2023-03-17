@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect, MapDispatchToProps } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import BreadCrumb from 'src/components/Breadcrumb';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
 import { useRegionsQuery } from 'src/queries/regions';
@@ -10,7 +10,7 @@ import { MapState } from 'src/store/types';
 import { openForConfig, viewResizeInstructions } from 'src/store/volumeForm';
 import CreateVolumeForm from './CreateVolumeForm';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   title: {
     [theme.breakpoints.down('sm')]: {
       marginLeft: theme.spacing(),
@@ -60,7 +60,7 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = (
 type CombinedProps = StateProps & RouteComponentProps<{}> & DispatchProps;
 
 const VolumeCreate: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const regions = useRegionsQuery().data ?? [];
 
   const { actions, history } = props;

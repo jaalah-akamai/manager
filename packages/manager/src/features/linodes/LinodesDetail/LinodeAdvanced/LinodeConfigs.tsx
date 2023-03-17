@@ -14,7 +14,8 @@ import ActionsPanel from 'src/components/ActionsPanel';
 import AddNewLink from 'src/components/AddNewLink';
 import Button from 'src/components/Button';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -51,39 +52,38 @@ type ClassNames =
   | 'deviceColumn'
   | 'actionsColumn';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      margin: 0,
-      width: '100%',
+const styles = (theme: Theme) => ({
+  root: {
+    margin: 0,
+    width: '100%',
+  },
+  addNewWrapper: {
+    '&.MuiGrid-item': {
+      paddingTop: 0,
+      paddingRight: 0,
     },
-    addNewWrapper: {
-      '&.MuiGrid-item': {
-        paddingTop: 0,
-        paddingRight: 0,
-      },
-      [theme.breakpoints.down('md')]: {
-        marginRight: theme.spacing(),
-      },
+    [theme.breakpoints.down('md')]: {
+      marginRight: theme.spacing(),
     },
-    tableCell: {
-      borderRight: `1px solid ${theme.palette.divider}`,
-      fontWeight: 'bold',
-    },
-    labelColumn: {
-      ...theme.applyTableHeaderStyles,
-      width: '35%',
-    },
-    interfacesColumn: {
-      width: '30%',
-    },
-    deviceColumn: {
-      width: '25%',
-    },
-    actionsColumn: {
-      width: '10%',
-    },
-  });
+  },
+  tableCell: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+    fontWeight: 'bold',
+  },
+  labelColumn: {
+    ...theme.applyTableHeaderStyles,
+    width: '35%',
+  },
+  interfacesColumn: {
+    width: '30%',
+  },
+  deviceColumn: {
+    width: '25%',
+  },
+  actionsColumn: {
+    width: '10%',
+  },
+});
 
 type CombinedProps = LinodeContext &
   FeatureFlagConsumerProps &
@@ -508,8 +508,6 @@ class LinodeConfigs extends React.Component<CombinedProps, State> {
     );
   };
 }
-
-const styled = withStyles(styles);
 
 interface LinodeContext {
   linodeHypervisor: 'kvm' | 'xen';

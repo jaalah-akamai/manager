@@ -6,7 +6,7 @@ import Divider from 'src/components/core/Divider';
 import List from 'src/components/core/List';
 import ListItem from 'src/components/core/ListItem';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Notice from 'src/components/Notice';
@@ -19,7 +19,7 @@ import {
   getEstimatedCloneTime,
 } from './utilities';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: theme.spacing(2),
   },
@@ -104,7 +104,7 @@ export const Configs: React.FC<Props> = (props) => {
     clearAll,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const noneError = errorMap.none;
   // When duplicating a disk on the SAME Linode, if there's not a enough space,

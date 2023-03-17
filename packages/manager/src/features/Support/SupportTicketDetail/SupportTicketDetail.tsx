@@ -17,7 +17,8 @@ import VolumeIcon from 'src/assets/addnewmenu/volume.svg';
 import Breadcrumb from 'src/components/Breadcrumb';
 import CircleProgress from 'src/components/CircleProgress';
 import Chip from 'src/components/core/Chip';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import setDocs from 'src/components/DocsSidebar/setDocs';
@@ -44,57 +45,56 @@ export type ClassNames =
   | 'ticketLabel'
   | 'closed';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    title: {
-      display: 'flex',
-      alignItems: 'center',
+const styles = (theme: Theme) => ({
+  title: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  breadcrumbs: {
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    [theme.breakpoints.down('md')]: {
+      marginLeft: theme.spacing(),
     },
-    breadcrumbs: {
-      marginBottom: theme.spacing(2),
-      marginTop: theme.spacing(1),
-      [theme.breakpoints.down('md')]: {
-        marginLeft: theme.spacing(),
-      },
+  },
+  label: {
+    marginLeft: 32,
+    width: `calc(100% - (32px + ${theme.spacing(7)}))`,
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: `calc(40px + ${theme.spacing(1)})`,
+      width: `calc(100% - (40px + ${theme.spacing(7)}))`,
     },
-    label: {
-      marginLeft: 32,
-      width: `calc(100% - (32px + ${theme.spacing(7)}))`,
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: `calc(40px + ${theme.spacing(1)})`,
-        width: `calc(100% - (40px + ${theme.spacing(7)}))`,
-      },
+  },
+  ticketLabel: {
+    position: 'relative',
+    top: -3,
+  },
+  labelIcon: {
+    paddingRight: 0,
+    '& svg': {
+      width: 40,
+      height: 40,
     },
-    ticketLabel: {
-      position: 'relative',
-      top: -3,
+    '& .outerCircle': {
+      fill: theme.bg.offWhite,
+      stroke: theme.bg.main,
     },
-    labelIcon: {
-      paddingRight: 0,
-      '& svg': {
-        width: 40,
-        height: 40,
-      },
-      '& .outerCircle': {
-        fill: theme.bg.offWhite,
-        stroke: theme.bg.main,
-      },
-      '& .circle': {
-        stroke: theme.bg.main,
-      },
+    '& .circle': {
+      stroke: theme.bg.main,
     },
-    status: {
-      marginTop: 5,
-      marginLeft: theme.spacing(1),
-      color: theme.color.white,
-    },
-    open: {
-      backgroundColor: theme.color.green,
-    },
-    closed: {
-      backgroundColor: theme.color.red,
-    },
-  });
+  },
+  status: {
+    marginTop: 5,
+    marginLeft: theme.spacing(1),
+    color: theme.color.white,
+  },
+  open: {
+    backgroundColor: theme.color.green,
+  },
+  closed: {
+    backgroundColor: theme.color.red,
+  },
+});
 
 type RouteProps = RouteComponentProps<{ ticketId?: string }>;
 
@@ -422,7 +422,6 @@ export class SupportTicketDetail extends React.Component<CombinedProps, State> {
     );
   }
 }
-const styled = withStyles(styles);
 
 export default compose<any, any, any, any>(
   setDocs(SupportTicketDetail.docs),

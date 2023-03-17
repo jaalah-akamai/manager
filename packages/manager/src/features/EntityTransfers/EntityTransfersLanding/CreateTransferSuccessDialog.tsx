@@ -5,7 +5,7 @@ import { update } from 'ramda';
 import * as React from 'react';
 import Button from 'src/components/Button';
 import CopyableTextField from 'src/components/CopyableTextField';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import ToolTip from 'src/components/core/Tooltip';
 import Typography from 'src/components/core/Typography';
@@ -30,7 +30,7 @@ const debouncedSendEntityTransferDraftEmailEvent = debounce(
   sendEntityTransferCopyDraftEmailEvent
 );
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     paddingBottom: theme.spacing(),
   },
@@ -61,7 +61,7 @@ interface Props {
 export const CreateTransferSuccessDialog: React.FC<Props> = (props) => {
   const { isOpen, onClose, transfer } = props;
   const [tooltipOpen, setTooltipOpen] = React.useState([false, false]);
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const handleCopy = (idx: number, text: string) => {
     copy(text);

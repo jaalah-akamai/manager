@@ -5,7 +5,7 @@ import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import InputAdornment from 'src/components/core/InputAdornment';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { Item } from 'src/components/EnhancedSelect/Select';
@@ -16,7 +16,7 @@ import ImageSelect from 'src/features/Images/ImageSelect';
 import getAPIErrorsFor from 'src/utilities/getAPIErrorFor';
 import imageToItem from 'src/utilities/imageToItem';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: theme.spacing(2),
   },
@@ -114,7 +114,7 @@ export const StackScriptForm: React.FC<CombinedProps> = (props) => {
     disableSubmit,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const hasErrorFor = getAPIErrorsFor(errorResources, errors);
   const selectedImages = imageToItem(images.selected);

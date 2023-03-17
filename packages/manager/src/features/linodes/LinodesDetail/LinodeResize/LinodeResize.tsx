@@ -15,7 +15,8 @@ import { ThunkDispatch } from 'redux-thunk';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import Checkbox from 'src/components/CheckBox';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Dialog from 'src/components/Dialog';
@@ -54,45 +55,44 @@ type ClassNames =
   | 'selectPlanPanel'
   | 'actionPanel';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    toolTip: {
-      marginLeft: -2,
+const styles = (theme: Theme) => ({
+  toolTip: {
+    marginLeft: -2,
+  },
+  title: {
+    marginBottom: theme.spacing(2),
+  },
+  resizeTitle: {
+    display: 'flex',
+    alignItems: 'center',
+    minHeight: '44px',
+  },
+  subTitle: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1),
+  },
+  currentPlanContainer: {
+    '& input[type=radio]': {
+      cursor: 'not-allowed',
     },
-    title: {
-      marginBottom: theme.spacing(2),
+  },
+  currentHeaderEmptyCell: {
+    width: '13%',
+  },
+  selectPlanPanel: {
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(3),
+    '& > div': {
+      padding: 0,
     },
-    resizeTitle: {
-      display: 'flex',
-      alignItems: 'center',
-      minHeight: '44px',
+  },
+  actionPanel: {
+    flexDirection: 'column',
+    '& button': {
+      alignSelf: 'flex-end',
     },
-    subTitle: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(1),
-    },
-    currentPlanContainer: {
-      '& input[type=radio]': {
-        cursor: 'not-allowed',
-      },
-    },
-    currentHeaderEmptyCell: {
-      width: '13%',
-    },
-    selectPlanPanel: {
-      marginTop: theme.spacing(5),
-      marginBottom: theme.spacing(3),
-      '& > div': {
-        padding: 0,
-      },
-    },
-    actionPanel: {
-      flexDirection: 'column',
-      '& button': {
-        alignSelf: 'flex-end',
-      },
-    },
-  });
+  },
+});
 
 interface Props {
   linodeId?: number;
@@ -423,8 +423,6 @@ export class LinodeResize extends React.Component<CombinedProps, State> {
     );
   }
 }
-
-const styled = withStyles(styles);
 
 interface DispatchProps {
   updateLinode: (id: number) => void;

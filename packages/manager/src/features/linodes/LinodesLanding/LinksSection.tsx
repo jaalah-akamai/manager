@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   categoryWrapper: {
     display: 'grid',
     gridAutoColumns: '1fr',
@@ -23,7 +23,7 @@ interface Props {
 }
 
 const LinksSection = (props: Props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   return <div className={classes.categoryWrapper}>{props.children}</div>;
 };
 

@@ -10,7 +10,7 @@ import { compose } from 'recompose';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
 import Dialog from 'src/components/ConfirmationDialog';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ExternalLink from 'src/components/ExternalLink';
@@ -20,7 +20,7 @@ import LinodeConfigDrawer from 'src/features/LinodeConfigSelectionDrawer';
 
 export type Action = 'Reboot' | 'Power Off' | 'Power On';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginBottom: theme.spacing(1.25),
     display: 'flex',
@@ -66,7 +66,7 @@ export const selectDefaultConfig = (configs?: Config[]) =>
 
 const PowerActionsDialogOrDrawer: React.FC<CombinedProps> = (props) => {
   const { linodeConfigs } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [isTakingAction, setTakingAction] = React.useState<boolean>(false);
   const [errors, setErrors] = React.useState<APIError[] | undefined>(undefined);
   const [selectedConfigID, selectConfigID] = React.useState<number | undefined>(

@@ -5,7 +5,7 @@ import ActionsPanel from 'src/components/ActionsPanel';
 import AddNewLink from 'src/components/AddNewLink';
 import Button from 'src/components/Button';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import Typography from 'src/components/core/Typography';
@@ -18,7 +18,7 @@ import { useDatabaseMutation } from 'src/queries/databases';
 import { ExtendedIP, stringToExtendedIP } from 'src/utilities/ipUtils';
 import AddAccessControlDrawer from './AddAccessControlDrawer';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   topSection: {
     display: 'flex',
     alignItems: 'center',
@@ -88,7 +88,7 @@ export const AccessControls: React.FC<Props> = (props) => {
     description,
   } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const [isDialogOpen, setDialogOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();

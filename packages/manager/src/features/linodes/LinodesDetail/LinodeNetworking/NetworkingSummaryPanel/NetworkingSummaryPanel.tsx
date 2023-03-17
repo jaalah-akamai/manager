@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import DNSResolvers from './DNSResolvers';
 import NetworkTransfer from './NetworkTransfer';
 import TransferHistory from './TransferHistory';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     display: 'flex',
     flexFlow: 'row nowrap',
@@ -49,7 +49,7 @@ type CombinedProps = Props;
 
 const LinodeNetworkingSummaryPanel: React.FC<CombinedProps> = (props) => {
   const { linodeID, linodeRegion, linodeCreated, linodeLabel } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Paper className={classes.root}>

@@ -3,7 +3,8 @@ import { compose } from 'ramda';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import InputAdornment from 'src/components/core/InputAdornment';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import H1Header from 'src/components/H1Header';
@@ -23,41 +24,40 @@ type ClassNames =
   | 'searchField'
   | 'searchIcon';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
+const styles = (theme: Theme) => ({
+  root: {
+    maxWidth: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    position: 'relative',
+  },
+  searchBar: {
+    maxWidth: '100%',
+  },
+  searchBoxInner: {
+    padding: theme.spacing(3),
+    backgroundColor: theme.color.grey2,
+    marginTop: 0,
+    '& > div': {
       maxWidth: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      position: 'relative',
     },
-    searchBar: {
-      maxWidth: '100%',
+  },
+  searchHeading: {
+    color: theme.color.black,
+    marginBottom: theme.spacing(2),
+    fontSize: '175%',
+  },
+  searchField: {
+    padding: theme.spacing(3),
+  },
+  searchIcon: {
+    marginRight: 0,
+    '& svg': {
+      color: theme.palette.text.primary,
     },
-    searchBoxInner: {
-      padding: theme.spacing(3),
-      backgroundColor: theme.color.grey2,
-      marginTop: 0,
-      '& > div': {
-        maxWidth: '100%',
-      },
-    },
-    searchHeading: {
-      color: theme.color.black,
-      marginBottom: theme.spacing(2),
-      fontSize: '175%',
-    },
-    searchField: {
-      padding: theme.spacing(3),
-    },
-    searchIcon: {
-      marginRight: 0,
-      '& svg': {
-        color: theme.palette.text.primary,
-      },
-    },
-  });
+  },
+});
 
 interface State {
   query: string;
@@ -162,7 +162,6 @@ export class SupportSearchLanding extends React.Component<
   }
 }
 
-const styled = withStyles(styles);
 const searchable = withSearch({ hitsPerPage: 5, highlight: false });
 const enhanced: any = compose(
   styled,

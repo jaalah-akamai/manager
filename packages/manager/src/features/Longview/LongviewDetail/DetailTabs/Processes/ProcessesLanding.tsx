@@ -2,7 +2,7 @@ import { APIError } from '@linode/api-v4/lib/types';
 import { prop, sortBy } from 'ramda';
 import * as React from 'react';
 import Box from 'src/components/core/Box';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import TextField from 'src/components/TextField';
@@ -20,7 +20,7 @@ import ProcessesTable, { ExtendedProcess } from './ProcessesTable';
 import { Process } from './types';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     [theme.breakpoints.down('lg')]: {
       marginLeft: theme.spacing(),
@@ -62,7 +62,7 @@ export const filterResults = (
 
 const ProcessesLanding: React.FC<Props> = (props) => {
   const { clientAPIKey, lastUpdated, lastUpdatedError, timezone } = props;
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   // Text input for filtering processes by name or user.
   const [inputText, setInputText] = React.useState<string | undefined>();

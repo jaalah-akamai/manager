@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -14,7 +14,7 @@ import MemoryGraph from './MemoryGraph';
 import NetworkGraph from './NetworkGraph';
 import { GraphProps } from './types';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   paperSection: {
     padding: `calc(${theme.spacing(3)} + 1px)`,
     marginBottom: `calc(${theme.spacing(1)} + 3px)`,
@@ -46,7 +46,7 @@ interface Props {
 export type CombinedProps = Props;
 
 export const OverviewGraphs: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { clientAPIKey, lastUpdated, lastUpdatedError, timezone } = props;
 

@@ -1,7 +1,7 @@
 import { Stats } from '@linode/api-v4/lib/linodes';
 import { map, pathOr } from 'ramda';
 import * as React from 'react';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme, useTheme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import LineGraph from 'src/components/LineGraph';
@@ -28,7 +28,7 @@ export interface TotalTrafficProps {
 const formatTotalTraffic = (value: number) =>
   readableBytes(value, { base10: true }).formatted;
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   graphGrids: {
     flexWrap: 'nowrap',
     margin: 0,
@@ -101,7 +101,7 @@ export const NetworkGraphs: React.FC<Props> = (props) => {
   const { rangeSelection, stats, ...rest } = props;
 
   const theme = useTheme<Theme>();
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const v4Data: NetworkStats = {
     publicIn: pathOr([], ['data', 'netv4', 'in'], stats),

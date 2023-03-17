@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Waypoint } from 'react-waypoint';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ErrorState from 'src/components/ErrorState';
@@ -18,9 +18,8 @@ import { useAllKubernetesNodePoolQuery } from 'src/queries/kubernetes';
 import { useAllLinodeTypesQuery } from 'src/queries/linodes';
 import CircleProgress from 'src/components/CircleProgress';
 import { RecycleClusterDialog } from '../RecycleClusterDialog';
-import classNames from 'classnames';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: theme.spacing(3),
     paddingTop: '4px',
@@ -64,7 +63,7 @@ export interface Props {
 export const NodePoolsDisplay = (props: Props) => {
   const { clusterID, clusterLabel } = props;
 
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const {
     data: pools,
@@ -127,10 +126,7 @@ export const NodePoolsDisplay = (props: Props) => {
         <Grid item>
           <Typography
             variant="h2"
-            className={classNames(
-              classes.nodePoolHeader,
-              classes.mobileSpacing
-            )}
+            className={cx(classes.nodePoolHeader, classes.mobileSpacing)}
           >
             Node Pools
           </Typography>
@@ -138,14 +134,14 @@ export const NodePoolsDisplay = (props: Props) => {
         <Grid item>
           <Button
             buttonType="secondary"
-            className={classNames(classes.button, classes.mobileSpacing)}
+            className={cx(classes.button, classes.mobileSpacing)}
             onClick={() => setIsRecycleClusterOpen(true)}
           >
             Recycle All Nodes
           </Button>
           <Button
             buttonType="primary"
-            className={classNames(classes.button, classes.mobileSpacing)}
+            className={cx(classes.button, classes.mobileSpacing)}
             onClick={handleOpenAddDrawer}
           >
             Add a Node Pool

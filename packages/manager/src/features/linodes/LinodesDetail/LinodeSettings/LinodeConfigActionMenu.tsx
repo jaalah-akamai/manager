@@ -3,7 +3,8 @@ import { splitAt } from 'ramda';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ActionMenu, { Action } from 'src/components/ActionMenu';
-import { makeStyles, useTheme } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
+import { useTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import InlineMenuAction from 'src/components/InlineMenuAction';
@@ -18,7 +19,7 @@ interface Props {
   label: string;
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   root: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -31,7 +32,7 @@ type CombinedProps = Props & RouteComponentProps<{}>;
 const ConfigActionMenu: React.FC<CombinedProps> = (props) => {
   const { readOnly, history, linodeId, config } = props;
 
-  const classes = useStyles();
+  const { classes } = useStyles();
   const theme = useTheme<Theme>();
   const matchesSmDown = useMediaQuery(theme.breakpoints.down('md'));
 

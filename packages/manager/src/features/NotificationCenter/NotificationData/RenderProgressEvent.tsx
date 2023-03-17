@@ -1,11 +1,10 @@
 import { Event } from '@linode/api-v4/lib/account/types';
-import classNames from 'classnames';
 import { Duration } from 'luxon';
 import * as React from 'react';
 import BarPercent from 'src/components/BarPercent';
 import Box from 'src/components/core/Box';
 import Divider from 'src/components/core/Divider';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import {
@@ -17,7 +16,7 @@ import useLinodes from 'src/hooks/useLinodes';
 import { useTypes } from 'src/hooks/useTypes';
 import { useStyles as useEventStyles } from './RenderEvent';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   bar: {
     marginTop: theme.spacing(),
   },
@@ -33,7 +32,7 @@ export type CombinedProps = Props;
 export const RenderProgressEvent: React.FC<Props> = (props) => {
   const { event } = props;
   const eventClasses = useEventStyles();
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   const { linodes } = useLinodes();
   const { types } = useTypes();
@@ -63,7 +62,7 @@ export const RenderProgressEvent: React.FC<Props> = (props) => {
   return (
     <>
       <Box
-        className={classNames({
+        className={cx({
           [eventClasses.root]: true,
           [eventClasses.event]: true,
         })}

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'recompose';
 import Paper from 'src/components/core/Paper';
-import { makeStyles, withStyles } from '@mui/styles';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -15,7 +15,7 @@ import { useUpdateDomainMutation } from 'src/queries/domains';
 import DeleteDomain from './DeleteDomain';
 import DomainRecords from './DomainRecords';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     marginTop: theme.spacing(2),
     marginLeft: 0,
@@ -58,7 +58,7 @@ type CombinedProps = Props & StyleProps;
 
 const DomainRecordsWrapper: React.FC<CombinedProps> = (props) => {
   const { domain, records, updateRecords, handleUpdateTags, classes } = props;
-  const hookClasses = useStyles();
+  const { classes: hookClasses } = useStyles();
   const history = useHistory();
   const { mutateAsync: updateDomain } = useUpdateDomainMutation();
 
@@ -96,7 +96,7 @@ const DomainRecordsWrapper: React.FC<CombinedProps> = (props) => {
   );
 };
 
-const styled = withStyles(summaryPanelStyles);
+const styled = withStyles(DomainRecordsWrapper, summaryPanelStyles);
 
 export default compose<CombinedProps, Props>(
   React.memo,

@@ -3,7 +3,8 @@ import { pathOr } from 'ramda';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import { createStyles, withStyles, WithStyles, WithTheme } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles, WithTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import EnhancedSelect, { Item } from 'src/components/EnhancedSelect';
 import Notice from 'src/components/Notice';
@@ -18,46 +19,45 @@ type ClassNames =
   | 'searchItem'
   | 'enhancedSelectWrapper';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      position: 'relative',
+const styles = (theme: Theme) => ({
+  root: {
+    position: 'relative',
+  },
+  searchItem: {
+    '& em': {
+      fontStyle: 'normal',
+      color: theme.palette.primary.main,
     },
-    searchItem: {
-      '& em': {
-        fontStyle: 'normal',
-        color: theme.palette.primary.main,
+  },
+  searchIcon: {
+    position: 'absolute',
+    color: theme.color.grey1,
+    zIndex: 3,
+    top: 4,
+    left: 5,
+  },
+  enhancedSelectWrapper: {
+    margin: '0 auto',
+    width: 300,
+    maxHeight: 500,
+    '& .react-select__value-container': {
+      paddingLeft: theme.spacing(4),
+    },
+    '& .input': {
+      maxWidth: '100%',
+      '& p': {
+        paddingLeft: theme.spacing(3),
+        color: theme.color.grey1,
+      },
+      '& > div': {
+        marginRight: 0,
       },
     },
-    searchIcon: {
-      position: 'absolute',
-      color: theme.color.grey1,
-      zIndex: 3,
-      top: 4,
-      left: 5,
+    [theme.breakpoints.up('md')]: {
+      width: 500,
     },
-    enhancedSelectWrapper: {
-      margin: '0 auto',
-      width: 300,
-      maxHeight: 500,
-      '& .react-select__value-container': {
-        paddingLeft: theme.spacing(4),
-      },
-      '& .input': {
-        maxWidth: '100%',
-        '& p': {
-          paddingLeft: theme.spacing(3),
-          color: theme.color.grey1,
-        },
-        '& > div': {
-          marginRight: 0,
-        },
-      },
-      [theme.breakpoints.up('md')]: {
-        width: 500,
-      },
-    },
-  });
+  },
+});
 
 interface State {
   inputValue: string;

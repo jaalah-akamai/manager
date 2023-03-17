@@ -5,18 +5,18 @@ import CircleProgress from 'src/components/CircleProgress';
 import { Linode } from '@linode/api-v4/lib/linodes';
 import { Terminal } from 'xterm';
 import { getLishSchemeAndHostname, resizeViewPort } from './lishUtils';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 
 type ClassNames = 'errorState';
 
-const styles = () =>
-  createStyles({
-    errorState: {
-      '& *': {
-        color: '#f4f4f4 !important',
-      },
+const styles = () => ({
+  errorState: {
+    '& *': {
+      color: '#f4f4f4 !important',
     },
-  });
+  },
+});
 
 interface Props {
   linode: Linode;
@@ -177,6 +177,4 @@ export class Weblish extends React.Component<CombinedProps, State> {
   }
 }
 
-const styled = withStyles(styles);
-
-export default styled(Weblish);
+export default withStyles(Weblish, styles);

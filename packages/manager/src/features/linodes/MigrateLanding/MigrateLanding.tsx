@@ -13,7 +13,7 @@ import { connect, MapStateToProps } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'recompose';
 import Button from 'src/components/Button';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
@@ -41,7 +41,7 @@ import { linodeInTransition } from '../transitions';
 import CautionNotice from './CautionNotice';
 import ConfigureForm from './ConfigureForm';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   details: {
     marginTop: theme.spacing(2),
   },
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 type CombinedProps = LinodeContextProps & WithTypes;
 
 const MigrateLanding: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const history = useHistory();
 

@@ -2,7 +2,8 @@ import { useSnackbar } from 'notistack';
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from 'src/components/Button';
-import { makeStyles, useTheme } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
+import { useTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Typography from 'src/components/core/Typography';
@@ -84,7 +85,7 @@ export const EmailBounceNotificationSection: React.FC<{}> = React.memo(() => {
 // =============================================================================
 // <EmailBounceNotification />
 // =============================================================================
-const useEmailBounceNotificationStyles = makeStyles((theme: Theme) => ({
+const useEmailBounceNotificationStyles = makeStyles()((theme: Theme) => ({
   updateButton: {
     marginLeft: 16,
   },
@@ -110,7 +111,7 @@ type CombinedProps = Props;
 const EmailBounceNotification: React.FC<CombinedProps> = React.memo((props) => {
   const { text, confirmEmail, changeEmail } = props;
 
-  const classes = useEmailBounceNotificationStyles();
+  const { classes } = useEmailBounceNotificationStyles();
 
   const { enqueueSnackbar } = useSnackbar();
 

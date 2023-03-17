@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ActionMenu from 'src/components/ActionMenu';
-import { makeStyles, useTheme } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
+import { useTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import InlineMenuAction from 'src/components/InlineMenuAction';
@@ -11,7 +12,7 @@ interface Props {
   openRecycleNodeDialog: (nodeID: string, linodeLabel: string) => void;
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   root: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -22,7 +23,7 @@ const useStyles = makeStyles(() => ({
 export const NodeActionMenu: React.FC<Props> = (props) => {
   const { nodeId, instanceLabel, openRecycleNodeDialog } = props;
   const theme = useTheme<Theme>();
-  const classes = useStyles();
+  const { classes } = useStyles();
   const matchesSmDown = useMediaQuery(theme.breakpoints.down('md'));
 
   const actions = [

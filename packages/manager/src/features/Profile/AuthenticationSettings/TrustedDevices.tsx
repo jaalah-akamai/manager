@@ -1,7 +1,7 @@
 import { getTrustedDevices, TrustedDevice } from '@linode/api-v4/lib/profile';
 import * as React from 'react';
 import { compose } from 'recompose';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableBody from 'src/components/core/TableBody';
 import TableHead from 'src/components/core/TableHead';
@@ -15,7 +15,7 @@ import ToggleState from 'src/components/ToggleState';
 import Dialog from './TrustedDevicesDialog';
 import TrustedDevicesTable from './TrustedDevicesTable';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   copy: {
     lineHeight: '20px',
     marginTop: theme.spacing(),
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 type CombinedProps = PaginationProps<TrustedDevice>;
 
 export const TrustedDevices: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const refreshList = () => {
     props.onDelete();
   };

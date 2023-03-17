@@ -6,7 +6,8 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import ActionsPanel from 'src/components/ActionsPanel';
 import Button from 'src/components/Button';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import EnhancedSelect, { Item } from 'src/components/EnhancedSelect/Select';
 import Grid from 'src/components/Grid';
 import Notice from 'src/components/Notice';
@@ -25,23 +26,23 @@ import { Country } from './types';
 
 type ClassNames = 'mainFormContainer' | 'actions';
 
-const styles = () =>
-  createStyles({
-    mainFormContainer: {
-      maxWidth: 860,
-      '& .MuiGrid-item:not(:first-child) label': {
-        marginTop: 0,
-      },
+const styles = () => ({
+  mainFormContainer: {
+    background: 'red !important',
+    maxWidth: 860,
+    '& .MuiGrid-item:not(:first-child) label': {
+      marginTop: 0,
     },
-    actions: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      paddingBottom: 0,
-      '& button': {
-        marginBottom: 0,
-      },
+  },
+  actions: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    paddingBottom: 0,
+    '& button': {
+      marginBottom: 0,
     },
-  });
+  },
+});
 
 interface Props {
   onClose: () => void;
@@ -665,12 +666,9 @@ class UpdateContactInformationForm extends React.Component<
   };
 }
 
-const styled = withStyles(styles);
-
 const enhanced = compose<CombinedProps, Props>(
-  styled,
   withFeatureFlags,
   withNotifications()
 );
 
-export default enhanced(UpdateContactInformationForm);
+export default enhanced(withStyles(UpdateContactInformationForm, styles));

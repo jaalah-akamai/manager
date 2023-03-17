@@ -5,7 +5,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import Breadcrumb, { BreadcrumbProps } from 'src/components/Breadcrumb';
 import Button from 'src/components/Button';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import { lishLaunch } from 'src/features/Lish/lishUtils';
@@ -20,36 +21,35 @@ import LinodePowerControl from '../LinodePowerControl';
 
 type ClassNames = 'breadCrumbs' | 'controls' | 'launchButton';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    breadCrumbs: {
-      position: 'relative',
-      top: -2,
-      [theme.breakpoints.down('md')]: {
-        top: 10,
-      },
+const styles = (theme: Theme) => ({
+  breadCrumbs: {
+    position: 'relative',
+    top: -2,
+    [theme.breakpoints.down('md')]: {
+      top: 10,
     },
-    controls: {
-      position: 'relative',
-      marginTop: `calc(9 - (${theme.spacing(1)} / 2))`, // 4
-      [theme.breakpoints.down('md')]: {
-        margin: 0,
-        left: -8,
-        display: 'flex',
-        flexBasis: '100%',
-      },
+  },
+  controls: {
+    position: 'relative',
+    marginTop: `calc(9 - (${theme.spacing(1)} / 2))`, // 4
+    [theme.breakpoints.down('md')]: {
+      margin: 0,
+      left: -8,
+      display: 'flex',
+      flexBasis: '100%',
     },
-    launchButton: {
-      lineHeight: 1,
-      '&:hover': {
-        backgroundColor: 'transparent',
-        textDecoration: 'underline',
-      },
-      '&:focus > span:first-child': {
-        outline: '1px dotted #999',
-      },
+  },
+  launchButton: {
+    lineHeight: 1,
+    '&:hover': {
+      backgroundColor: 'transparent',
+      textDecoration: 'underline',
     },
-  });
+    '&:focus > span:first-child': {
+      outline: '1px dotted #999',
+    },
+  },
+});
 
 interface Props {
   breadcrumbProps?: Partial<BreadcrumbProps>;
@@ -146,8 +146,6 @@ const LinodeControls: React.FC<CombinedProps> = (props) => {
     </Grid>
   );
 };
-
-const styled = withStyles(styles);
 
 const enhanced = compose<CombinedProps, Props>(
   withRouter,

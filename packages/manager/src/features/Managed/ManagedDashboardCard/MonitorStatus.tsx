@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import MonitorFailed from 'src/assets/icons/monitor-failed.svg';
 import MonitorOK from 'src/assets/icons/monitor-ok.svg';
-import { makeStyles, withTheme, WithTheme } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
+import { withTheme, WithTheme } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
 
-export const useStyles = makeStyles((theme: Theme) => ({
+// TODO jss-to-tss-react codemod: usages of this hook outside of this file will not be converted.
+export const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: `0`,
     textAlign: 'center',
@@ -54,7 +56,7 @@ export interface Props {
 type CombinedProps = Props & WithTheme;
 
 export const MonitorStatus: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { monitors } = props;
 

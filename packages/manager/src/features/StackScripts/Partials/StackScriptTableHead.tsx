@@ -1,14 +1,13 @@
-import classNames from 'classnames';
 import * as React from 'react';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import TableHead from 'src/components/core/TableHead';
 import TableCell from 'src/components/TableCell';
 import TableRow from 'src/components/TableRow';
 import TableSortCell from 'src/components/TableSortCell';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     '& th': {
       backgroundColor: theme.bg.tableHeader,
@@ -113,7 +112,7 @@ interface Props {
 type CombinedProps = Props;
 
 export const StackScriptTableHead: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const {
     currentFilterType,
     isSelecting,
@@ -146,7 +145,7 @@ export const StackScriptTableHead: React.FC<CombinedProps> = (props) => {
             the panels in the StackScript landing page and the one in the
             Linode Create flow.  */}
         <Cell
-          className={classNames({
+          className={cx({
             [classes.tableHead]: true,
             [classes.stackscriptTitles]: true,
             [classes.stackscriptTitlesAccount]: category === 'account',
@@ -181,7 +180,7 @@ export const StackScriptTableHead: React.FC<CombinedProps> = (props) => {
         {!isSelecting && (
           <Hidden lgDown>
             <TableCell
-              className={classNames({
+              className={cx({
                 [classes.tableHead]: true,
                 [classes.images]: true,
                 [classes.imagesAccount]: category === 'account',

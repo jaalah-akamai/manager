@@ -1,7 +1,7 @@
 import * as React from 'react';
 import CircleProgress from 'src/components/CircleProgress';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme, useTheme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ErrorState from 'src/components/ErrorState';
@@ -20,7 +20,7 @@ import {
   useNodeBalancerStats,
 } from 'src/queries/nodebalancers';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   header: {
     padding: theme.spacing(2),
   },
@@ -80,7 +80,7 @@ interface Props {
 }
 
 const TablesPanel: React.FC<Props> = ({ nodeBalancer }) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const theme = useTheme<Theme>();
   const { data: profile } = useProfile();
   const timezone = getUserTimezone(profile);

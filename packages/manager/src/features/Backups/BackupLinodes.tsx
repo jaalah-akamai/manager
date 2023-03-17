@@ -1,7 +1,8 @@
 import { LinodeType } from '@linode/api-v4/lib/linodes';
 import { pathOr } from 'ramda';
 import * as React from 'react';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
+import { WithStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { displayPrice as _displayPrice } from 'src/components/DisplayPrice/DisplayPrice';
@@ -11,14 +12,13 @@ import { ExtendedLinode } from './types';
 
 type ClassNames = 'root' | 'error';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {},
-    error: {
-      color: theme.color.red,
-      fontSize: 13,
-    },
-  });
+const styles = (theme: Theme) => ({
+  root: {},
+  error: {
+    color: theme.color.red,
+    fontSize: 13,
+  },
+});
 
 interface Props {
   linodes: ExtendedLinode[];
@@ -41,39 +41,35 @@ const getPrice = (type?: LinodeType) =>
 export const BackupLinodes: React.FC<CombinedProps> = (props) => {
   const { classes, linodes } = props;
   return (
-    <React.Fragment>
-      {linodes &&
-        linodes.map((linode: ExtendedLinode, idx: number) => {
-          const error = pathOr('', ['linodeError', 'reason'], linode);
-          return (
-            <React.Fragment key={`backup-linode-${idx}`}>
-              <TableRow data-qa-linodes>
-                <TableCell data-qa-linode-label parentColumn="Label">
-                  <Typography variant="body1">{linode.label}</Typography>
-                  {error && (
-                    <Typography variant="body1" className={classes.error}>
-                      {error}
-                    </Typography>
-                  )}
-                </TableCell>
+    linodes &&
+    linodes.map((linode: ExtendedLinode, idx: number) => {
+      const error = pathOr('', ['linodeError', 'reason'], linode);
+      return (
+        <React.Fragment key={`backup-linode-${idx}`}>
+          <TableRow data-qa-linodes>
+            <TableCell data-qa-linode-label parentColumn="Label">
+              <Typography variant="body1">{linode.label}</Typography>
+              {error && (
+                <Typography variant="body1" className={classes.error}>
+                  {error}
+                </Typography>
+              )}
+            </TableCell>
 
-                <TableCell data-qa-linode-plan parentColumn="Plan">
-                  {getLabel(linode.typeInfo)}
-                </TableCell>
-                <TableCell
-                  data-qa-backup-price
-                  parentColumn="Price"
-                >{`${displayPrice(getPrice(linode.typeInfo))}/mo`}</TableCell>
-              </TableRow>
-            </React.Fragment>
-          );
-        })}
-    </React.Fragment>
+            <TableCell data-qa-linode-plan parentColumn="Plan">
+              {getLabel(linode.typeInfo)}
+            </TableCell>
+            <TableCell
+              data-qa-backup-price
+              parentColumn="Price"
+            >{`${displayPrice(getPrice(linode.typeInfo))}/mo`}</TableCell>
+          </TableRow>
+        </React.Fragment>
+      );
+    })
   );
 };
 
 BackupLinodes.displayName = 'BackupLinodes';
 
-const styled = withStyles(styles);
-
-export default styled(BackupLinodes);
+export default withStyles(BackupLinodes, styles);

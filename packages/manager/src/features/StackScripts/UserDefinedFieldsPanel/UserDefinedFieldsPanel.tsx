@@ -2,7 +2,7 @@ import { UserDefinedField } from '@linode/api-v4/lib/stackscripts';
 import { APIError } from '@linode/api-v4/lib/types';
 import * as React from 'react';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from 'src/components/Grid';
@@ -13,9 +13,8 @@ import UserDefinedMultiSelect from './FieldTypes/UserDefinedMultiSelect';
 import UserDefinedSelect from './FieldTypes/UserDefinedSelect';
 import UserDefinedText from './FieldTypes/UserDefinedText';
 import AppInfo from '../../linodes/LinodesCreate/AppInfo';
-import classnames from 'classnames';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     padding: theme.spacing(3),
     marginBottom: theme.spacing(3),
@@ -165,7 +164,7 @@ const handleOpenDrawer = (
 };
 
 const UserDefinedFieldsPanel = (props: CombinedProps) => {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const {
     userDefinedFields,
     openDrawer,
@@ -184,7 +183,7 @@ const UserDefinedFieldsPanel = (props: CombinedProps) => {
 
   return (
     <Paper
-      className={classnames(classes.root, {
+      className={cx(classes.root, {
         [`${classes.marketplaceSpacing}`]: isDrawerOpenable,
       })}
     >

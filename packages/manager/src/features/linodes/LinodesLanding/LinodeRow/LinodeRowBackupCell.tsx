@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import BackupStatus from 'src/components/BackupStatus';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import TableCell from 'src/components/TableCell';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   root: {
     borderTop: 'none',
     padding: '10px 15px',
@@ -22,7 +22,7 @@ interface Props {
 type CombinedProps = Props;
 
 const LinodeRowBackupCell: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const {
     linodeId,

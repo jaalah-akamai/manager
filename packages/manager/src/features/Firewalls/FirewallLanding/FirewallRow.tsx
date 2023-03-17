@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import Hidden from 'src/components/core/Hidden';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import StatusIcon from 'src/components/StatusIcon';
 import TableCell from 'src/components/TableCell';
@@ -13,7 +13,7 @@ import { useAllFirewallDevicesQuery } from 'src/queries/firewalls';
 import capitalize from 'src/utilities/capitalize';
 import ActionMenu, { ActionHandlers } from './FirewallActionMenu';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   link: {
     display: 'block',
     color: theme.textColors.linkActiveLight,
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export type CombinedProps = Firewall & ActionHandlers;
 
 export const FirewallRow: React.FC<CombinedProps> = (props) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const { id, label, status, rules, ...actionHandlers } = props;
 
