@@ -1,28 +1,25 @@
 import * as React from 'react';
 import Button from 'src/components/Button';
-import { withStyles } from 'tss-react/mui';
-import { WithStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Accordion from 'src/components/Accordion';
 
-type ClassNames = 'root' | 'helperText';
-
-const styles = (theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {},
   helperText: {
     marginBottom: theme.spacing(2),
   },
-});
+}));
 
 interface Props {
   openDrawer: () => void;
 }
 
-type CombinedProps = Props & WithStyles<ClassNames>;
+export const ImportGroupsAsTags = (props: Props) => {
+  const { classes } = useStyles();
+  const { openDrawer } = props;
 
-export const ImportGroupsAsTags: React.FC<CombinedProps> = (props) => {
-  const { classes, openDrawer } = props;
   return (
     <Accordion
       className={classes.root}
@@ -47,4 +44,4 @@ export const ImportGroupsAsTags: React.FC<CombinedProps> = (props) => {
   );
 };
 
-export default withStyles(ImportGroupsAsTags, styles);
+export default ImportGroupsAsTags;

@@ -1,14 +1,11 @@
 import * as React from 'react';
 import CopyableTextField from 'src/components/CopyableTextField';
-import { withStyles } from 'tss-react/mui';
-import { WithStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import NoticePanel from './NoticePanel';
 
-type ClassNames = 'root' | 'copySection' | 'copyField';
-
-const styles = (theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {},
   copySection: {
     marginTop: theme.spacing(3),
@@ -16,7 +13,7 @@ const styles = (theme: Theme) => ({
   copyField: {
     marginTop: theme.spacing(0.5),
   },
-});
+}));
 
 interface Props {
   volumePath: string;
@@ -25,10 +22,9 @@ interface Props {
   message?: string;
 }
 
-type CombinedProps = Props & WithStyles<ClassNames>;
-
-const VolumeConfigDrawer: React.FC<CombinedProps> = (props) => {
-  const { classes, message } = props;
+const VolumeConfigDrawer = (props: Props) => {
+  const { classes } = useStyles();
+  const { message } = props;
 
   return (
     <React.Fragment>
@@ -92,4 +88,4 @@ const VolumeConfigDrawer: React.FC<CombinedProps> = (props) => {
   );
 };
 
-export default withStyles(VolumeConfigDrawer, styles);
+export default VolumeConfigDrawer;

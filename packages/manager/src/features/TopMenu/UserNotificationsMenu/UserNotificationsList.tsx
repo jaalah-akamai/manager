@@ -1,67 +1,62 @@
 import { Notification } from '@linode/api-v4/lib/account';
-import { compose, path } from 'ramda';
+import { path } from 'ramda';
 import * as React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { withStyles } from 'tss-react/mui';
-import { WithStyles } from '@mui/styles';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import { dcDisplayNames } from 'src/constants';
 import { reportException } from 'src/exceptionReporting';
 import UserNotificationListItem from './UserNotificationListItem';
 
-type ClassNames = 'emptyText';
-
-const styles = (theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   emptyText: {
     padding: `${theme.spacing(2)} ${theme.spacing(3)}`,
     fontFamily: theme.font.bold,
   },
-});
+}));
 
 interface Props {
   notifications: Notification[];
   closeMenu: () => void;
 }
 
-type CombinedProps = Props & RouteComponentProps<void> & WithStyles<ClassNames>;
+type CombinedProps = Props & RouteComponentProps<void>;
 
-class UserNotificationsList extends React.Component<CombinedProps, {}> {
-  render() {
-    const {
-      classes,
-      notifications,
-      closeMenu,
-      history: { push },
-    } = this.props;
+const UserNotificationsList = ({ notifications, closeMenu }: CombinedProps) => {
+  const { classes } = useStyles();
+  const history = useHistory();
+  const { push } = history;
 
-    if (notifications.length === 0) {
-      return (
-        <Typography className={classes.emptyText}>
-          You have no notifications.
-        </Typography>
-      );
-    }
-
-    return (notifications || []).map((notification, idx) => {
-      const interceptedNotification = interceptNotification(notification);
-      const onClick = createClickHandlerForNotification(
-        interceptedNotification,
-        (targetPath: string) => {
-          closeMenu();
-          push(targetPath);
-        }
-      );
-      return React.createElement(UserNotificationListItem, {
-        key: idx,
-        label: interceptedNotification.label,
-        message: interceptedNotification.message,
-        severity: interceptedNotification.severity,
-        onClick,
-      });
-    });
+  if (notifications.length === 0) {
+    return (
+      <Typography className={classes.emptyText}>
+        You have no notifications.
+      </Typography>
+    );
   }
-}
+
+  return (notifications || []).map((notification, idx) => {
+    const interceptedNotification = interceptNotification(notification);
+    const onClick = createClickHandlerForNotification(
+      interceptedNotification,
+      (targetPath: string) => {
+        closeMenu();
+        push(targetPath);
+      }
+    );
+
+    return (
+      <UserNotificationListItem
+        key={idx}
+        label={interceptedNotification.label}
+        message={interceptedNotification.message}
+        severity={interceptedNotification.severity}
+        onClick={onClick}
+      />
+    );
+  });
+};
 
 const interceptNotification = (notification: Notification): Notification => {
   /** this is an outage to one of the datacenters */
@@ -131,17 +126,14 @@ const createClickHandlerForNotification = (
 
   switch (type) {
     case 'linode':
-      return (e: React.MouseEvent<HTMLElement>) => onClick(`/linodes/${id}`);
+      return () => onClick(`/linodes/${id}`);
 
     case 'ticket':
-      return (e: React.MouseEvent<HTMLElement>) =>
-        onClick(`/support/tickets/${id}`);
+      return () => onClick(`/support/tickets/${id}`);
 
     default:
       return;
   }
 };
 
-const enhanced = compose<any, any, any>(styled, withRouter);
-
-export default enhanced(UserNotificationsList);
+export default UserNotificationsList;

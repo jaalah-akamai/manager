@@ -135,7 +135,7 @@ const FileUpload: React.FC<Props> = (props) => {
     <div
       className={cx({
         [classes.root]: true,
-        [classes.errorState]: props.error,
+        [classes.errorState]: Boolean(props.error),
       })}
       key={props.displayName}
       onClick={handleClickRow}
@@ -157,7 +157,7 @@ const FileUpload: React.FC<Props> = (props) => {
           <Typography
             variant="body1"
             className={cx({
-              [classes.error]: props.error,
+              [classes.error]: Boolean(props.error),
             })}
           >
             {props.displayName}
@@ -168,7 +168,7 @@ const FileUpload: React.FC<Props> = (props) => {
             variant="body1"
             className={cx({
               [classes.fileSize]: true,
-              [classes.error]: props.error,
+              [classes.error]: Boolean(props.error),
             })}
           >
             {readableBytes(props.sizeInBytes).formatted}
@@ -183,7 +183,7 @@ const FileUpload: React.FC<Props> = (props) => {
             <CautionIcon
               className={cx({
                 [classes.iconRight]: true,
-                [classes.error]: props.error,
+                [classes.error]: Boolean(props.error),
               })}
               height={22}
               width={22}

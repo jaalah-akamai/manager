@@ -1,26 +1,12 @@
-import classNames from 'classnames';
 import { NotificationSeverity } from '@linode/api-v4/lib/account';
 import * as React from 'react';
 import ListItem from 'src/components/core/ListItem';
-import { withStyles } from 'tss-react/mui';
-import { WithStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 
-type ClassNames =
-  | 'critical'
-  | 'flag'
-  | 'inner'
-  | 'innerLink'
-  | 'innerTitle'
-  | 'major'
-  | 'minor'
-  | 'noticeText'
-  | 'pointer'
-  | 'root';
-
-const styles = (theme: Theme) => {
-  return {
+const useStyles = makeStyles<void, 'noticeText' | 'innerTitle'>()(
+  (theme: Theme, _params, classes) => ({
     pointer: {
       cursor: 'pointer',
     },
@@ -38,7 +24,7 @@ const styles = (theme: Theme) => {
       },
       '&:hover, &:focus': {
         backgroundColor: theme.palette.primary.main,
-        '& $noticeText, & p, & $innerTitle': {
+        [`& .${classes.noticeText}, & p, & .${classes.innerTitle}`]: {
           color: 'white',
         },
       },
@@ -75,8 +61,8 @@ const styles = (theme: Theme) => {
     flag: {
       marginRight: theme.spacing(2),
     },
-  };
-};
+  })
+);
 
 interface Props {
   label: string;
@@ -85,43 +71,40 @@ interface Props {
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
-type CombinedProps = Props & WithStyles<ClassNames>;
+const UserNotificationListItem = (props: Props) => {
+  const { classes, cx } = useStyles();
+  const { label, message, severity, onClick } = props;
 
-class UserNotificationListItem extends React.Component<CombinedProps> {
-  render() {
-    const { classes, label, message, severity, onClick } = this.props;
-
-    const listItem = (
-      <ListItem
-        className={classNames({
-          [classes.root]: true,
-          [classes[severity]]: true,
-          [classes.pointer]: Boolean(onClick),
-          notice: true,
+  const listItem = (
+    <ListItem
+      className={cx({
+        [classes.root]: true,
+        [classes[severity]]: true,
+        [classes.pointer]: Boolean(onClick),
+        notice: true,
+      })}
+      data-qa-notice
+      component="li"
+      tabIndex={0}
+      onClick={onClick}
+    >
+      <div
+        className={cx({
+          [classes.inner]: true,
+          [classes.innerLink]: Boolean(onClick),
         })}
-        data-qa-notice
-        component="li"
-        tabIndex={0}
-        onClick={onClick}
       >
-        <div
-          className={classNames({
-            [classes.inner]: true,
-            [classes.innerLink]: Boolean(onClick),
-          })}
-        >
-          <Typography variant="h3" className={classes.innerTitle}>
-            {label}
-          </Typography>
-          <Typography variant="body1">{message}</Typography>
-        </div>
-      </ListItem>
-    );
+        <Typography variant="h3" className={classes.innerTitle}>
+          {label}
+        </Typography>
+        <Typography variant="body1">{message}</Typography>
+      </div>
+    </ListItem>
+  );
 
-    return !Boolean(onClick)
-      ? listItem
-      : React.cloneElement(listItem, { button: true });
-  }
-}
+  return !Boolean(onClick)
+    ? listItem
+    : React.cloneElement(listItem, { button: true });
+};
 
-export default withStyles(UserNotificationListItem, styles);
+export default UserNotificationListItem;
