@@ -1,9 +1,11 @@
-import { shallow } from 'enzyme';
 import { assocPath } from 'ramda';
 import * as React from 'react';
 import { reactRouterProps } from 'src/__data__/reactRouterProps';
-import H1Header from 'src/components/H1Header';
 import { CombinedProps, SupportSearchLanding } from './SupportSearchLanding';
+import LinodeThemeWrapper from 'src/LinodeThemeWrapper';
+import { renderWithTheme } from 'src/utilities/testHelpers';
+
+const H1 = 'Search results for "search"';
 
 const classes = {
   root: '',
@@ -23,53 +25,46 @@ const props: CombinedProps = {
   ...reactRouterProps,
 };
 
+const propsWithQuery = assocPath(
+  ['location', 'search'],
+  '?query=search',
+  props
+);
+
 const propsWithMultiWordURLQuery = assocPath(
   ['location', 'search'],
   '?query=search%20two%20words',
   props
 );
-const component = shallow<typeof SupportSearchLanding>(
-  <SupportSearchLanding {...props} />
-);
-// Query is read on mount so we have to mount twice.
-const component2 = shallow<typeof SupportSearchLanding>(
-  <SupportSearchLanding {...propsWithMultiWordURLQuery} />
-);
 
-describe('Component', () => {
-  it('should render', () => {
-    expect(component).toBeDefined();
+// Convert to react testing library test
+describe('SupportSearchLanding', () => {
+  it('should render with generic text if no query provided', () => {
+    const { getByText } = renderWithTheme(
+      <LinodeThemeWrapper>
+        <SupportSearchLanding {...props} />
+      </LinodeThemeWrapper>
+    );
+    expect(getByText(H1)).toBeInTheDocument();
   });
-  it('should set the query from the URL param to state', () => {
-    expect(component.state().query).toMatch('search');
-  });
+
   it('should read multi-word queries correctly', () => {
-    expect(component2.state().query).toMatch('search two words');
+    const { getByText } = renderWithTheme(
+      <LinodeThemeWrapper>
+        <SupportSearchLanding {...propsWithMultiWordURLQuery} />
+      </LinodeThemeWrapper>
+    );
+    expect(
+      getByText('Search results for "search two words"')
+    ).toBeInTheDocument();
   });
+
   it('should display the query text in the header', () => {
-    expect(
-      component.containsMatchingElement(
-        <H1Header
-          title='Search results for "search"'
-          data-qa-support-search-landing-title={true}
-        />
-      )
-    ).toBeTruthy();
-  });
-  it('should display generic text if no query is provided', () => {
-    component.setState({ query: '' });
-    expect(
-      component.containsMatchingElement(
-        <H1Header title="Search" data-qa-support-search-landing-title={true} />
-      )
-    ).toBeTruthy();
-    expect(
-      component.containsMatchingElement(
-        <H1Header
-          title="Search results for"
-          data-qa-support-search-landing-title={true}
-        />
-      )
-    ).toBeFalsy();
+    const { getByText } = renderWithTheme(
+      <LinodeThemeWrapper>
+        <SupportSearchLanding {...propsWithQuery} />
+      </LinodeThemeWrapper>
+    );
+    expect(getByText('Search results for "search"')).toBeInTheDocument();
   });
 });
