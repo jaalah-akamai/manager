@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { makeStyles } from '@mui/styles';
 import Typography from 'src/components/core/Typography';
+import { SxProps } from '@mui/system';
 
 interface Props {
   title: string;
   className?: string;
   dataQaEl?: string;
   renderAsSecondary?: boolean;
+  sx?: SxProps;
 }
 
 const useStyles = makeStyles({
@@ -23,7 +25,7 @@ const useStyles = makeStyles({
 // It should serve as the only source for all H1s
 const H1Header: React.FC<Props> = (props) => {
   const h1Header = React.useRef<HTMLDivElement>(null);
-  const { className, title, dataQaEl, renderAsSecondary } = props;
+  const { className, title, dataQaEl, renderAsSecondary, sx } = props;
   const classes = useStyles();
 
   // React.useEffect(() => {
@@ -41,6 +43,7 @@ const H1Header: React.FC<Props> = (props) => {
       ref={renderAsSecondary ? null : h1Header}
       tabIndex={0}
       data-qa-header={dataQaEl ? dataQaEl : ''}
+      sx={sx}
     >
       {title}
     </Typography>

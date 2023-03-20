@@ -1,39 +1,25 @@
 import * as React from 'react';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
-import { Theme } from '@mui/material/styles';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
 import OtherWays from './Panels/OtherWays';
 import PopularPosts from './Panels/PopularPosts';
 import SearchPanel from './Panels/SearchPanel';
+import { styled } from '@mui/material/styles';
 
-type ClassNames = 'root';
+const Wrapper = styled('div')(({ theme }) => ({
+  [theme.breakpoints.up('lg')]: {
+    padding: `${theme.spacing(2)} ${theme.spacing(14)}`,
+  },
+}));
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      [theme.breakpoints.up('lg')]: {
-        padding: `${theme.spacing(2)} ${theme.spacing(14)}`,
-      },
-    },
-  });
+export const HelpLanding = () => {
+  return (
+    <Wrapper>
+      <DocumentTitleSegment segment="Get Help" />
+      <SearchPanel />
+      <PopularPosts />
+      <OtherWays />
+    </Wrapper>
+  );
+};
 
-type CombinedProps = WithStyles<ClassNames>;
-
-export class HelpLanding extends React.Component<CombinedProps, {}> {
-  render(): JSX.Element {
-    const { classes } = this.props;
-
-    return (
-      <div className={classes.root}>
-        <DocumentTitleSegment segment="Get Help" />
-        <SearchPanel />
-        <PopularPosts />
-        <OtherWays />
-      </div>
-    );
-  }
-}
-
-const styled = withStyles(styles);
-
-export default styled(HelpLanding);
+export default HelpLanding;

@@ -3,7 +3,7 @@ import { compose } from 'ramda';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import InputAdornment from 'src/components/core/InputAdornment';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { withStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Grid from 'src/components/Grid';
 import H1Header from 'src/components/H1Header';
@@ -23,54 +23,15 @@ type ClassNames =
   | 'searchField'
   | 'searchIcon';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      maxWidth: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      position: 'relative',
-    },
-    searchBar: {
-      maxWidth: '100%',
-    },
-    searchBoxInner: {
-      padding: theme.spacing(3),
-      backgroundColor: theme.color.grey2,
-      marginTop: 0,
-      '& > div': {
-        maxWidth: '100%',
-      },
-    },
-    searchHeading: {
-      color: theme.color.black,
-      marginBottom: theme.spacing(2),
-      fontSize: '175%',
-    },
-    searchField: {
-      padding: theme.spacing(3),
-    },
-    searchIcon: {
-      marginRight: 0,
-      '& svg': {
-        color: theme.palette.text.primary,
-      },
-    },
-  });
-
 interface State {
   query: string;
 }
 
-export type CombinedProps = AlgoliaProps &
-  WithStyles<ClassNames> &
-  RouteComponentProps<{}>;
+export type CombinedProps = AlgoliaProps & {
+  classes?: Partial<Record<ClassNames, string>>;
+} & RouteComponentProps<{}>;
 
-export class SupportSearchLanding extends React.Component<
-  CombinedProps,
-  State
-> {
+class _SupportSearchLanding extends React.Component<CombinedProps, State> {
   searchIndex: any = null;
   state: State = {
     query: '',
@@ -100,7 +61,8 @@ export class SupportSearchLanding extends React.Component<
   };
 
   render() {
-    const { classes, searchEnabled, searchError, searchResults } = this.props;
+    const classes = withStyles.getClasses(this.props);
+    const { searchEnabled, searchError, searchResults } = this.props;
     const { query } = this.state;
 
     const [docs, community] = searchResults;
@@ -162,12 +124,45 @@ export class SupportSearchLanding extends React.Component<
   }
 }
 
-const styled = withStyles(styles);
+export const SupportSearchLanding = withStyles(
+  _SupportSearchLanding,
+  (theme: Theme) => ({
+    root: {
+      maxWidth: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      position: 'relative',
+    },
+    searchBar: {
+      maxWidth: '100%',
+    },
+    searchBoxInner: {
+      padding: theme.spacing(3),
+      backgroundColor: theme.color.grey2,
+      marginTop: 0,
+      '& > div': {
+        maxWidth: '100%',
+      },
+    },
+    searchHeading: {
+      color: theme.color.black,
+      marginBottom: theme.spacing(2),
+      fontSize: '175%',
+    },
+    searchField: {
+      padding: theme.spacing(3),
+    },
+    searchIcon: {
+      marginRight: 0,
+      '& svg': {
+        color: theme.palette.text.primary,
+      },
+    },
+  })
+);
+
 const searchable = withSearch({ hitsPerPage: 5, highlight: false });
-const enhanced: any = compose(
-  styled,
-  searchable,
-  withRouter
-)(SupportSearchLanding);
+const enhanced: any = compose(searchable, withRouter)(SupportSearchLanding);
 
 export default enhanced;

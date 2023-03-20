@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Paper from 'src/components/core/Paper';
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import ExternalLink from 'src/components/ExternalLink';
 import Grid from 'src/components/Grid';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     margin: `${theme.spacing(6)} 0`,
   },
@@ -14,8 +14,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: theme.spacing(2),
   },
   post: {
+    font: theme.font.normal,
+    fontSize: theme.typography.body1.fontSize,
+    fontWeight: theme.typography.body1.fontWeight,
+    lineHeight: theme.typography.body1.lineHeight,
     marginBottom: theme.spacing(0.5),
-    ...theme.typography.body1,
   },
   postLink: {
     color: theme.textColors.linkActiveLight,
@@ -32,8 +35,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const PopularPosts: React.FC = () => {
-  const classes = useStyles();
+const PopularPosts = () => {
+  const { classes } = useStyles();
 
   const renderPopularDocs = () => {
     return (

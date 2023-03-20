@@ -28,11 +28,11 @@ const propsWithMultiWordURLQuery = assocPath(
   '?query=search%20two%20words',
   props
 );
-const component = shallow<SupportSearchLanding>(
+const component = shallow<typeof SupportSearchLanding>(
   <SupportSearchLanding {...props} />
 );
 // Query is read on mount so we have to mount twice.
-const component2 = shallow<SupportSearchLanding>(
+const component2 = shallow<typeof SupportSearchLanding>(
   <SupportSearchLanding {...propsWithMultiWordURLQuery} />
 );
 
