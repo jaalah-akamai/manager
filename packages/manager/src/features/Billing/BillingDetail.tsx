@@ -7,7 +7,7 @@ import { Theme } from '@mui/material/styles';
 import setDocs, { SetDocsProps } from 'src/components/DocsSidebar/setDocs';
 import { DocumentTitleSegment } from 'src/components/DocumentTitle';
 import ErrorState from 'src/components/ErrorState';
-import Grid from 'src/components/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 import { AccountsAndPasswords, BillingAndPayments } from 'src/documentation';
 import { useAccount } from 'src/queries/account';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
@@ -69,7 +69,7 @@ export const BillingDetail = (props: CombinedProps) => {
       <DocumentTitleSegment segment={`Account & Billing`} />
       <div data-testid="billing-detail">
         <Grid container>
-          <Grid item xs={12} md={12} lg={12} className={classes.main}>
+          <Grid xs={12} md={12} lg={12} className={classes.main}>
             <BillingSummary
               paymentMethods={paymentMethods}
               balance={account?.balance ?? 0}

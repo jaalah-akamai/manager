@@ -3,7 +3,7 @@ import * as React from 'react';
 import Chip from 'src/components/core/Chip';
 import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
-import Grid from 'src/components/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 import {
   getIcon as getTPPIcon,
   thirdPartyPaymentMap,
@@ -109,7 +109,7 @@ export const PaymentMethodCard = (props: Props) => {
 
   const renderVariant = () => {
     return is_default ? (
-      <Grid item className={classes.chip} xs={3} md={2}>
+      <Grid className={classes.chip} xs={3} md={2}>
         <Chip label="DEFAULT" component="span" size="small" />
       </Grid>
     ) : null;

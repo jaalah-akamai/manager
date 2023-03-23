@@ -10,7 +10,7 @@ import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import DismissibleBanner from 'src/components/DismissibleBanner';
-import Grid from 'src/components/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 import Link from 'src/components/Link';
 import DeletePaymentMethodDialog from 'src/components/PaymentMethodRow/DeletePaymentMethodDialog';
 import PaymentMethods from 'src/features/Billing/BillingPanels/PaymentInfoPanel/PaymentMethods';
@@ -93,15 +93,15 @@ const PaymentInformation = (props: Props) => {
   }, [addPaymentMethodRouteMatch, openAddDrawer]);
 
   return (
-    <Grid item xs={12} md={6}>
+    <Grid xs={12} md={6}>
       <Paper className={classes.summarySection} data-qa-billing-summary>
         <Grid container spacing={2}>
-          <Grid item className={classes.container}>
+          <Grid className={classes.container}>
             <Typography variant="h3" className={classes.title}>
               Payment Methods
             </Typography>
           </Grid>
-          <Grid item>
+          <Grid>
             {!isAkamaiCustomer ? (
               <Button
                 data-testid="payment-info-add-payment-method"

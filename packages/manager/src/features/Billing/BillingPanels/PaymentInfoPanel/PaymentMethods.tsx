@@ -4,7 +4,7 @@ import * as React from 'react';
 import CircleProgress from 'src/components/CircleProgress';
 import { makeStyles } from 'tss-react/mui';
 import Typography from 'src/components/core/Typography';
-import Grid from 'src/components/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 import PaymentMethodRow from 'src/components/PaymentMethodRow';
 import { getAPIErrorOrDefault } from 'src/utilities/errorUtils';
 

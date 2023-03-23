@@ -9,7 +9,7 @@ import * as React from 'react';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import Box from 'src/components/core/Box';
 import Divider from 'src/components/core/Divider';
-import Grid from 'src/components/core/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 import Paper from 'src/components/core/Paper';
 import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
@@ -213,7 +213,7 @@ export const BillingSummary = (props: BillingSummaryProps) => {
   return (
     <>
       <Grid container spacing={2} className={classes.root}>
-        <Grid item {...gridDimensions} sm={6}>
+        <Grid {...gridDimensions} sm={6}>
           <Paper className={classes.paper} variant="outlined">
             <Typography variant="h3">Account Balance</Typography>
             <Divider />
@@ -252,7 +252,7 @@ export const BillingSummary = (props: BillingSummaryProps) => {
           </Paper>
         </Grid>
         {promotions && promotions?.length > 0 ? (
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={4}>
             <Paper className={classes.paper} variant="outlined">
               <Typography variant="h3">Promotions</Typography>
 
@@ -265,7 +265,7 @@ export const BillingSummary = (props: BillingSummaryProps) => {
             </Paper>
           </Grid>
         ) : null}
-        <Grid item {...gridDimensions}>
+        <Grid {...gridDimensions}>
           <Paper className={classes.paper} variant="outlined">
             <Box display="flex" alignItems="center">
               <Typography variant="h3">Accrued Charges</Typography>

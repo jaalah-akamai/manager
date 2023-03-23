@@ -9,7 +9,7 @@ import Button from 'src/components/Button';
 import Paper from 'src/components/core/Paper';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
-import Grid from 'src/components/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 import BillingContactDrawer from './EditBillingContactDrawer';
 
 import { makeStyles } from 'tss-react/mui';
@@ -149,15 +149,15 @@ const ContactInformation = (props: Props) => {
   )?.countryName;
 
   return (
-    <Grid item xs={12} md={6}>
+    <Grid xs={12} md={6}>
       <Paper className={classes.summarySection} data-qa-contact-summary>
         <Grid container spacing={2}>
-          <Grid item className={classes.switchWrapper}>
+          <Grid className={classes.switchWrapper}>
             <Typography variant="h3" className={classes.title}>
               Billing Contact
             </Typography>
           </Grid>
-          <Grid item>
+          <Grid>
             <Button
               className={classes.edit}
               onClick={() => {
@@ -180,7 +180,7 @@ const ContactInformation = (props: Props) => {
             state ||
             zip ||
             country) && (
-            <Grid item className={classes.switchWrapper}>
+            <Grid className={classes.switchWrapper}>
               {(firstName || lastName) && (
                 <Typography
                   className={`${classes.section} ${classes.wordWrap}`}
@@ -219,7 +219,6 @@ const ContactInformation = (props: Props) => {
           )}
 
           <Grid
-            item
             className={cx({
               [classes.switchWrapper]: true,
               [classes.switchWrapperFlex]:
