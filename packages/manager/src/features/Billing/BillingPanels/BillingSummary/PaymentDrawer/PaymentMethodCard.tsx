@@ -13,9 +13,6 @@ import { getIcon as getCreditCardIcon } from 'src/features/Billing/BillingPanels
 import isCreditCardExpired, { formatExpiry } from 'src/utilities/creditCard';
 
 const useStyles = makeStyles()((theme: Theme) => ({
-  paymentMethod: {
-    marginBottom: theme.spacing(),
-  },
   selectionCard: {
     minWidth: '100%',
     padding: 0,
@@ -116,20 +113,18 @@ export const PaymentMethodCard = (props: Props) => {
   };
 
   return (
-    <Grid className={classes.paymentMethod}>
-      <SelectionCard
-        className={cx({
-          [classes.selectionCard]: true,
-          [classes.expired]: cardIsExpired,
-        })}
-        checked={id === paymentMethodId}
-        onClick={() => handlePaymentMethodChange(id, cardIsExpired)}
-        renderIcon={renderIcon}
-        renderVariant={renderVariant}
-        heading={heading}
-        subheadings={[subHeading]}
-      />
-    </Grid>
+    <SelectionCard
+      className={cx({
+        [classes.selectionCard]: true,
+        [classes.expired]: cardIsExpired,
+      })}
+      checked={id === paymentMethodId}
+      onClick={() => handlePaymentMethodChange(id, cardIsExpired)}
+      renderIcon={renderIcon}
+      renderVariant={renderVariant}
+      heading={heading}
+      subheadings={[subHeading]}
+    />
   );
 };
 
