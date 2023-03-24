@@ -1,28 +1,20 @@
 import countryData from 'country-region-data';
 import * as React from 'react';
-import {
-  RouteComponentProps,
-  useHistory,
-  useRouteMatch,
-} from 'react-router-dom';
-import Button from 'src/components/Button';
-import Paper from 'src/components/core/Paper';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { Theme } from '@mui/material/styles';
 import Typography from 'src/components/core/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import BillingContactDrawer from './EditBillingContactDrawer';
-
 import { makeStyles } from 'tss-react/mui';
+import {
+  BillingPaper,
+  BillingBox,
+  BillingActionButton,
+} from '../../BillingDetail';
 
 const useStyles = makeStyles()((theme: Theme) => ({
   title: {
     marginBottom: theme.spacing(2),
-  },
-  summarySection: {
-    padding: theme.spacing(2.5),
-    marginBottom: theme.spacing(2),
-    minHeight: '160px',
-    height: '93%',
   },
   section: {
     marginBottom: theme.spacing(1),
@@ -53,23 +45,9 @@ const useStyles = makeStyles()((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  edit: {
-    color: theme.textColors.linkActiveLight,
-    fontFamily: theme.font.normal,
-    fontSize: '.875rem',
-    fontWeight: 700,
-    minHeight: 'unset',
-    minWidth: 'auto',
-    padding: 0,
-    '&:hover, &:focus': {
-      backgroundColor: 'transparent',
-      color: theme.palette.primary.main,
-      textDecoration: 'underline',
-    },
-  },
 }));
 
-interface Props extends Pick<RouteComponentProps, 'history'> {
+interface Props {
   company: string;
   firstName: string;
   lastName: string;
@@ -150,25 +128,18 @@ const ContactInformation = (props: Props) => {
 
   return (
     <Grid xs={12} md={6}>
-      <Paper className={classes.summarySection} data-qa-contact-summary>
-        <Grid container spacing={2}>
-          <Grid className={classes.switchWrapper}>
-            <Typography variant="h3" className={classes.title}>
-              Billing Contact
-            </Typography>
-          </Grid>
-          <Grid>
-            <Button
-              className={classes.edit}
-              onClick={() => {
-                history.push('/account/billing/edit');
-                handleEditDrawerOpen();
-              }}
-            >
-              Edit
-            </Button>
-          </Grid>
-        </Grid>
+      <BillingPaper variant="outlined" data-qa-contact-summary>
+        <BillingBox>
+          <Typography variant="h3">Billing Contact</Typography>
+          <BillingActionButton
+            onClick={() => {
+              history.push('/account/billing/edit');
+              handleEditDrawerOpen();
+            }}
+          >
+            Edit
+          </BillingActionButton>
+        </BillingBox>
 
         <Grid container spacing={2}>
           {(firstName ||
@@ -246,7 +217,7 @@ const ContactInformation = (props: Props) => {
             )}
           </Grid>
         </Grid>
-      </Paper>
+      </BillingPaper>
       <BillingContactDrawer
         open={editContactDrawerOpen}
         onClose={() => {
