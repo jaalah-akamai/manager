@@ -182,7 +182,7 @@ const ContactInformation = (props: Props) => {
               <StyledTypography data-qa-contact-phone>{phone}</StyledTypography>
             )}
             {taxId && (
-              <StyledTypography>
+              <StyledTypography sx={{ marginTop: 'auto' }}>
                 <strong>Tax ID</strong> {taxId}
               </StyledTypography>
             )}
