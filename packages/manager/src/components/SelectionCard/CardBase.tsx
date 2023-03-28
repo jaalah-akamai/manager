@@ -5,10 +5,11 @@ import { SxProps } from '@mui/system';
 
 const CardBaseGrid = styled(Grid, {
   label: 'CardBaseGrid',
-})(({ theme }) => ({
+})<Partial<Props>>(({ theme, ...props }) => ({
   alignItems: 'center',
-  backgroundColor: theme.bg.offWhite,
+  backgroundColor: props.checked ? theme.bg.lightBlue2 : theme.bg.offWhite,
   border: `1px solid ${theme.bg.main}`,
+  borderColor: props.checked ? theme.palette.primary.main : undefined,
   height: '100%',
   margin: 0,
   minHeight: 60,
@@ -19,9 +20,12 @@ const CardBaseGrid = styled(Grid, {
   width: '100%',
 
   '&:hover': {
-    backgroundColor: theme.bg.main,
-    borderColor: theme.color.border2,
+    backgroundColor: props.checked ? theme.bg.lightBlue2 : theme.bg.main,
+    borderColor: props.checked
+      ? theme.palette.primary.main
+      : theme.color.border2,
   },
+
   '&:before': {
     content: '""',
     display: 'block',
@@ -74,6 +78,7 @@ const CardBaseSubheading = styled('div')(({ theme }) => ({
 }));
 
 interface Props {
+  checked?: boolean;
   heading: string | JSX.Element;
   headingDecoration?: JSX.Element;
   renderIcon?: () => JSX.Element;
@@ -87,6 +92,7 @@ interface Props {
 
 const CardBase = (props: Props) => {
   const {
+    checked,
     heading,
     headingDecoration,
     renderIcon,
@@ -111,7 +117,7 @@ const CardBase = (props: Props) => {
   });
 
   return (
-    <CardBaseGrid container sx={sx} spacing={2}>
+    <CardBaseGrid checked={checked} container sx={sx} spacing={2}>
       {renderIcon && <CardBaseIcon sx={sxIcon}>{renderIcon()}</CardBaseIcon>}
       <CardBaseHeadings sx={sxHeading}>
         <CardBaseHeading data-qa-select-card-heading={heading}>
