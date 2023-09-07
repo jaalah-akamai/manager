@@ -3,7 +3,7 @@ import Close from '@mui/icons-material/Close';
 import { Box, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { action } from '@storybook/addon-actions';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Country } from 'src/components/EnhancedSelect/variants/RegionSelect/utils';
 import { Flag } from 'src/components/Flag';
@@ -15,10 +15,18 @@ import { getRegionCountryGroup } from 'src/utilities/formatRegion';
 import { Autocomplete } from './Autocomplete';
 import { SelectedIcon } from './Autocomplete.styles';
 
-import type { EnhancedAutocompleteProps, OptionType } from './Autocomplete';
+import type { EnhancedAutocompleteProps } from './Autocomplete';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { Linode } from '@linode/api-v4';
+import { linodeFactory } from 'src/factories';
 
 const LABEL = 'Select a Linode';
+
+interface OptionType {
+  data?: any;
+  label: string;
+  value: string;
+}
 
 interface LinodeProps {
   label: string;
@@ -94,7 +102,7 @@ const getRegionsOptions = (
 };
 
 const AutocompleteWithSeparateSelectedOptions = (
-  props: EnhancedAutocompleteProps<OptionType>
+  props: EnhancedAutocompleteProps<OptionType, true>
 ) => {
   const [selectedOptions, setSelectedOptions] = React.useState<OptionType[]>(
     []
@@ -118,7 +126,8 @@ const AutocompleteWithSeparateSelectedOptions = (
     <Stack>
       <Autocomplete
         {...props}
-        onSelectionChange={handleSelectedOptions}
+        multiple
+        onChange={(e, selected) => setSelectedOptions(selected)}
         renderTags={() => null}
         value={selectedOptions}
       />
@@ -149,15 +158,15 @@ const AutocompleteWithSeparateSelectedOptions = (
 
 // Story Config ========================================================
 
-const meta: Meta<EnhancedAutocompleteProps<OptionType>> = {
+const meta: Meta<EnhancedAutocompleteProps<LinodeProps>> = {
   argTypes: {
-    onSelectionChange: {
-      action: 'onSelectionChange',
+    onChange: {
+      action: 'onChange',
     },
   },
   args: {
     label: LABEL,
-    onSelectionChange: action('onSelectionChange'),
+    onChange: action('onChange'),
     options: linodes,
   },
   component: Autocomplete,
@@ -253,7 +262,9 @@ export const NoOptionsMessage: Story = {
   render: (args) => <Autocomplete {...args} />,
 };
 
-export const Regions: Story = {
+type RegionStory = StoryObj<typeof Autocomplete<OptionType>>;
+
+export const Regions: RegionStory = {
   args: {
     groupBy: (option) => option.data.region,
     label: 'Select a Region',
@@ -280,7 +291,7 @@ export const Regions: Story = {
   render: (args) => <Autocomplete {...args} />,
 };
 
-export const CustomRenderOptions: Story = {
+export const CustomRenderOptions: RegionStory = {
   args: {
     label: 'Select a Linode to Clone',
     options: [
@@ -311,25 +322,29 @@ export const CustomRenderOptions: Story = {
   render: (args) => <Autocomplete {...args} />,
 };
 
-export const MultiSelect: Story = {
-  args: {
-    defaultValue: [linodes[0]],
-    multiple: true,
-    onSelectionChange: (selected: OptionType[]) => {
-      action('onSelectionChange')(selected.map((options) => options.value));
-    },
-    placeholder: LABEL,
-    selectAllLabel: 'Linodes',
+type MultiSelectStory = StoryObj<typeof Autocomplete<Linode, true>>;
+
+const linodeList = linodeFactory.buildList(10);
+
+export const MultiSelect: MultiSelectStory = {
+  args: {},
+  render: () => {
+    const Example = () => {
+      const [selectedLinodes, setSelectedLinodes] = useState<Linode[]>([]);
+      return <Autocomplete label="Linodes" multiple onChange={(_, value) => setSelectedLinodes(value)} options={linodeList} value={selectedLinodes} />;
+    };
+
+    return <Example />;
   },
-  render: (args) => <Autocomplete {...args} />,
 };
 
-export const MultiSelectWithSeparateSelectionOptions: Story = {
+type MultiSelectWithSeparateSelectionOptionsStory = StoryObj<typeof Autocomplete<OptionType, true>>;
+
+export const MultiSelectWithSeparateSelectionOptions: MultiSelectWithSeparateSelectionOptionsStory = {
   args: {
-    defaultValue: [linodes[0]],
     multiple: true,
-    onSelectionChange: (selected: OptionType[]) => {
-      action('onSelectionChange')(selected.map((options) => options.value));
+    onChange: (e, selected: OptionType[]) => {
+      action('onChange')(selected.map((options) => options.value));
     },
     placeholder: LABEL,
     selectAllLabel: 'Linodes',

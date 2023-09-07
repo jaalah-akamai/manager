@@ -1,7 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import React from 'react';
 
-import { TextField } from 'src/components/TextField';
 import { renderWithTheme } from 'src/utilities/testHelpers';
 
 import { Autocomplete } from './Autocomplete';
@@ -21,9 +20,8 @@ describe('Autocomplete Component', () => {
     renderWithTheme(
       <Autocomplete
         label="Test Label"
-        onSelectionChange={handleSelectionChange}
+        onChange={handleSelectionChange}
         options={options}
-        renderInput={(params) => <TextField label="test" {...params} />}
       />
     );
 
@@ -35,9 +33,8 @@ describe('Autocomplete Component', () => {
     renderWithTheme(
       <Autocomplete
         label="Test Label"
-        onSelectionChange={handleSelectionChange}
+        onChange={handleSelectionChange}
         options={options}
-        renderInput={(params) => <TextField label="test" {...params} />}
       />
     );
 
@@ -61,9 +58,8 @@ describe('Autocomplete Component', () => {
       <Autocomplete
         errorText={errorMessage}
         label="Test Label"
-        onSelectionChange={handleSelectionChange}
+        onChange={handleSelectionChange}
         options={options}
-        renderInput={(params) => <TextField label="test" {...params} />}
       />
     );
 
@@ -75,9 +71,8 @@ describe('Autocomplete Component', () => {
     renderWithTheme(
       <Autocomplete
         label="Test Label"
-        onSelectionChange={handleSelectionChange}
+        onChange={handleSelectionChange}
         options={options}
-        renderInput={(params) => <TextField label="test" {...params} />}
       />
     );
 
@@ -91,9 +86,8 @@ describe('Autocomplete Component', () => {
         <Autocomplete
           label="Test Label"
           loading
-          onSelectionChange={handleSelectionChange}
+          onChange={handleSelectionChange}
           options={[]}
-          renderInput={(params) => <TextField label="test" {...params} />}
         />
       );
 
@@ -109,9 +103,8 @@ describe('Autocomplete Component', () => {
       renderWithTheme(
         <Autocomplete
           label="Test Label"
-          onSelectionChange={handleSelectionChange}
+          onChange={handleSelectionChange}
           options={[]}
-          renderInput={(params) => <TextField label="test" {...params} />}
         />
       );
 
@@ -129,9 +122,8 @@ describe('Autocomplete Component', () => {
       renderWithTheme(
         <Autocomplete
           label="Test Label"
-          onSelectionChange={handleSelectionChange}
+          onChange={handleSelectionChange}
           options={options}
-          renderInput={(params) => <TextField label="test" {...params} />}
         />
       );
 
@@ -149,9 +141,8 @@ describe('Autocomplete Component', () => {
         <Autocomplete
           errorText="This is an error"
           label="Test Label"
-          onSelectionChange={handleSelectionChange}
+          onChange={handleSelectionChange}
           options={[]}
-          renderInput={(params) => <TextField label="test" {...params} />}
         />
       );
 
