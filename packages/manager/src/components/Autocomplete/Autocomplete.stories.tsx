@@ -1,3 +1,4 @@
+import { Linode } from '@linode/api-v4';
 import { Region } from '@linode/api-v4/lib/regions';
 import Close from '@mui/icons-material/Close';
 import { Box, Stack } from '@mui/material';
@@ -10,23 +11,40 @@ import { Flag } from 'src/components/Flag';
 import { IconButton } from 'src/components/IconButton';
 import { List } from 'src/components/List';
 import { ListItem } from 'src/components/ListItem';
+import { linodeFactory } from 'src/factories';
 import { getRegionCountryGroup } from 'src/utilities/formatRegion';
 
 import { Autocomplete } from './Autocomplete';
 import { SelectedIcon } from './Autocomplete.styles';
 
-import type { EnhancedAutocompleteProps, OptionType } from './Autocomplete';
+import type {
+  DataShape,
+  EnhancedAutocompleteProps,
+  OptionType,
+} from './Autocomplete';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 const LABEL = 'Select a Linode';
 
-interface LinodeProps {
-  label: string;
-  value: string;
-}
-
-const linodes: LinodeProps[] = [
+const options: OptionType<DataShape, { isTruthy: boolean }>[] = [
   {
+    data: {
+      country: 'us',
+      flag: <Flag country="us" />,
+      region: 'North America',
+    },
+    label: 'Linode123',
+    value: 'linode123',
+  },
+  {
+    data: linodeFactory.build(),
+    label: 'Linode1234',
+    value: 'linode1234',
+  },
+  {
+    data: {
+      isTruthy: false,
+    },
     label: 'Linode-001',
     value: 'linode-001',
   },
@@ -158,7 +176,7 @@ const meta: Meta<EnhancedAutocompleteProps<OptionType>> = {
   args: {
     label: LABEL,
     onSelectionChange: action('onSelectionChange'),
-    options: linodes,
+    options,
   },
   component: Autocomplete,
   decorators: [
@@ -239,9 +257,87 @@ const GroupItems = styled('ul')({
 
 export const Default: Story = {
   args: {
-    defaultValue: linodes[0],
+    defaultValue: options[0],
   },
   render: (args) => <Autocomplete {...args} />,
+};
+
+/**
+ * The preferred shape of the data prop is an object with data, label and value.
+ */
+export const LinodeSelect: Story = {
+  args: {
+    options: [
+      {
+        data: linodeFactory.build(),
+        label: 'linode-1',
+        value: '1',
+      },
+      {
+        data: linodeFactory.build(),
+        label: 'linode-2',
+        value: '2',
+      },
+      {
+        data: linodeFactory.build(),
+        label: 'linode-3',
+        value: '3',
+      },
+      {
+        data: linodeFactory.build(),
+        label: 'linode-4',
+        value: '4',
+      },
+      {
+        data: linodeFactory.build(),
+        label: 'linode-5',
+        value: '5',
+      },
+    ],
+  },
+  render: (args) => <Autocomplete {...args} />,
+};
+
+const SomeComponent = (props: any) => {
+  const { options }: { options: Linode[] } = props;
+
+  // In this example, data (options) can come from RQ or anywhere, but we need to derive a value.
+  const optionsWithValue = options.map((option) => {
+    return { data: option, label: option.label, value: option.label };
+  });
+
+  // Technically spreading the option will work too since Linodes have labels,
+  // but the shape of the data is not ideal since all other properties are applied at the root level
+
+  // const optionsWithValue = options.map((option) => {
+  //   return { ...option, value: option.label };
+  // });
+
+  return (
+    <Autocomplete
+      {...props}
+      options={optionsWithValue}
+      renderInput={() => null}
+    />
+  );
+};
+
+/**
+ * Since linodes have labels, we only need to define a value and can spread the rest of the linode object into the options prop.
+ * Here we are deriving the value from the linode's label since the linode object does not have a value property.
+ */
+export const LinodeSelectDerivedValue: Story = {
+  render: (args) => (
+    <SomeComponent
+      {...args}
+      options={[
+        linodeFactory.build(),
+        linodeFactory.build(),
+        linodeFactory.build(),
+        linodeFactory.build(),
+      ]}
+    />
+  ),
 };
 
 export const NoOptionsMessage: Story = {
@@ -255,7 +351,7 @@ export const NoOptionsMessage: Story = {
 
 export const Regions: Story = {
   args: {
-    groupBy: (option) => option.data.region,
+    groupBy: (option: OptionType<'country'>) => option.data?.region || '',
     label: 'Select a Region',
     options: getRegionsOptions(fakeRegionsData),
     placeholder: 'Select a Region',
@@ -265,11 +361,11 @@ export const Regions: Story = {
         <GroupItems>{params.children}</GroupItems>
       </li>
     ),
-    renderOption: (props, option, { selected }) => {
+    renderOption: (props, option: OptionType<'country'>, { selected }) => {
       return (
         <StyledListItem {...props}>
           <Box alignItems={'center'} display={'flex'} flexGrow={1}>
-            <StyledFlag>{option.data.flag}</StyledFlag>
+            <StyledFlag>{option.data?.flag}</StyledFlag>
             {option.label}
           </Box>
           <SelectedIcon visible={selected} />
@@ -313,7 +409,7 @@ export const CustomRenderOptions: Story = {
 
 export const MultiSelect: Story = {
   args: {
-    defaultValue: [linodes[0]],
+    defaultValue: [options[0]],
     multiple: true,
     onSelectionChange: (selected: OptionType[]) => {
       action('onSelectionChange')(selected.map((options) => options.value));
@@ -326,7 +422,7 @@ export const MultiSelect: Story = {
 
 export const MultiSelectWithSeparateSelectionOptions: Story = {
   args: {
-    defaultValue: [linodes[0]],
+    defaultValue: [options[0]],
     multiple: true,
     onSelectionChange: (selected: OptionType[]) => {
       action('onSelectionChange')(selected.map((options) => options.value));

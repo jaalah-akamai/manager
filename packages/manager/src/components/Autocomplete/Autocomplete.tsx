@@ -1,4 +1,4 @@
-import { APIError } from '@linode/api-v4';
+import { APIError, Linode } from '@linode/api-v4';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MuiAutocomplete from '@mui/material/Autocomplete';
@@ -22,11 +22,39 @@ import type {
   AutocompleteRenderOptionState,
 } from '@mui/material/Autocomplete';
 
-export interface OptionType<T = any> {
-  data?: T;
+interface CountryData {
+  country: string;
+  flag: JSX.Element;
+  region: string;
+}
+
+export type DataShape = 'country' | 'linode' | undefined;
+
+interface CommonData {
   label: string;
   value: string;
 }
+
+/**
+ * OptionType represents an option with dynamic data based on the value of T.
+ * - If T is 'country', it includes CountryData as the data property.
+ * - If T is 'linode', it includes Linode as the data property.
+ * - Otherwise, it allows the flexibility of defining the data type at usage,
+ *   defaulting to a generic Record<string, any> (Data).
+ *
+ * CommonData is always included with label and value properties.
+ *
+ * @template T - The type that determines the structure of the data property.
+ * @template Data - The generic data structure used when T is not 'country' or 'linode'.
+ */
+
+export type OptionType<T = DataShape, Data = Record<string, any>> = {
+  data?: T extends 'country'
+    ? CountryData
+    : T extends 'linode'
+    ? Linode | Linode[] | null
+    : Data;
+} & CommonData;
 
 interface DefaultNoOptionsMessage {
   errorText: APIError[] | null | string;
@@ -212,7 +240,6 @@ export const Autocomplete = (props: EnhancedAutocompleteProps<OptionType>) => {
     ) => {
       const selectAllOption = option.value === 'all';
       const ListItem = selectAllOption ? StyledListItem : 'li';
-
       return renderOption ? (
         renderOption(props, option, state, ownerState)
       ) : (
