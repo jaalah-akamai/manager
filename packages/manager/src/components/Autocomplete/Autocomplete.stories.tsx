@@ -175,7 +175,9 @@ const meta: Meta<EnhancedAutocompleteProps<OptionType>> = {
   },
   args: {
     label: LABEL,
-    onSelectionChange: action('onSelectionChange'),
+    onSelectionChange: () => {
+      action('onSelectionChange');
+    },
     options,
   },
   component: Autocomplete,

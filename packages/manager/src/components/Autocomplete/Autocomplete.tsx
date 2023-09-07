@@ -19,6 +19,7 @@ import type {
   AutocompleteChangeReason,
   AutocompleteOwnerState,
   AutocompleteProps,
+  AutocompleteRenderInputParams,
   AutocompleteRenderOptionState,
 } from '@mui/material/Autocomplete';
 
@@ -52,7 +53,7 @@ export type OptionType<T = DataShape, Data = Record<string, any>> = {
   data?: T extends 'country'
     ? CountryData
     : T extends 'linode'
-    ? Linode | Linode[] | null
+    ? Linode | null
     : Data;
 } & CommonData;
 
@@ -77,13 +78,23 @@ interface HandleChangeParams extends AutocompleteOnChange {
   onSelectionChange: (selection: OptionType | OptionType[]) => void;
 }
 
-export interface EnhancedAutocompleteProps<T extends OptionType>
-  extends AutocompleteProps<
+/**
+ * We don't want to make this a required prop because we're defining a default
+ * value for it in the component. However, we will provide the same optional
+ * prop to allow custom rendering of the input element.
+ */
+type AutocompletePropsWithoutRenderInput<T extends OptionType> = Omit<
+  AutocompleteProps<
     T,
     boolean | undefined,
     boolean | undefined,
     boolean | undefined
-  > {
+  >,
+  'renderInput'
+>;
+
+export interface EnhancedAutocompleteProps<T extends OptionType>
+  extends AutocompletePropsWithoutRenderInput<T> {
   /** Provides a hint with error styling to assist users. */
   errorText?: string;
   /** Provides a hint with normal styling to assist users. */
@@ -95,9 +106,11 @@ export interface EnhancedAutocompleteProps<T extends OptionType>
   /** Callback function triggered when the input field loses focus. */
   onBlur?: (e: React.FocusEvent) => void;
   /** Callback function triggered when the selection of options changes. */
-  onSelectionChange: (selected: T[]) => void;
+  onSelectionChange: (selected: T | T[]) => void;
   /** Placeholder text displayed in the input field. */
   placeholder?: string;
+  /** Custom rendering function for the input element. */
+  renderInput?: (params: AutocompleteRenderInputParams) => React.ReactNode;
   /** Custom rendering function for the label of an option. */
   renderOptionLabel?: (option: T) => string;
   /** Indicates whether the input is required, displaying an appropriate indicator. */
