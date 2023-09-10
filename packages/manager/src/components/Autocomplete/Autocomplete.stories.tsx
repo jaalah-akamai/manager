@@ -374,6 +374,7 @@ const AssignSubnetsExample = (props: EnhancedAutocompleteProps<Linode>) => {
   const [linodeConfigs, setLinodeConfigs] = React.useState<Config[]>([]);
   const [selectedConfig, setSelectedConfig] = React.useState<Config>();
   const [allConfigs, setAllConfigs] = React.useState<Config[]>([]);
+  const [conjoinedLabels, setConjoinedLabels] = React.useState<string[]>([]);
 
   const checkLinodeHasConfigs = React.useCallback(() => {
     // 1. Use react query to get configs for linode
@@ -392,6 +393,7 @@ const AssignSubnetsExample = (props: EnhancedAutocompleteProps<Linode>) => {
   // 1. For selected linode, we need to get it's configuration profile
   // 2. If the linode has multiple configs, we need to show another select
   // 3. When the user selects a config, we combine the linode label with config label
+  // 4. If linode has already been assigned, do not display it in the list of linodes unless it has multiple configs. Then only show the config that has not been assigned.
 
   // Function to remove an option from the list of selected options
   const removeOption = (optionToRemove: Config) => {
@@ -407,6 +409,11 @@ const AssignSubnetsExample = (props: EnhancedAutocompleteProps<Linode>) => {
     if (selectedConfig === null || selectedConfig === undefined) {
       return;
     }
+
+    setConjoinedLabels([
+      ...conjoinedLabels,
+      `${selectedLinode?.label} (${selectedConfig?.label})`,
+    ]);
     setAllConfigs([...allConfigs, selectedConfig]);
   };
 
@@ -448,9 +455,9 @@ const AssignSubnetsExample = (props: EnhancedAutocompleteProps<Linode>) => {
           <SelectedOptionsHeader>{`Linodes to be Unassigned from Subnet (${allConfigs.length})`}</SelectedOptionsHeader>
 
           <SelectedOptionsList>
-            {allConfigs.map((config) => (
+            {allConfigs.map((config, idx) => (
               <SelectedOptionsListItem alignItems="center" key={config.id}>
-                <StyledLabel>{config.label}</StyledLabel>
+                <StyledLabel>{conjoinedLabels[idx]}</StyledLabel>
                 <IconButton
                   aria-label={`remove ${config.id}`}
                   disableRipple
