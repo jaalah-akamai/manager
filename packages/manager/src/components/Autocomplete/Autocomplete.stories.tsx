@@ -1,4 +1,4 @@
-import { Linode } from '@linode/api-v4';
+import { Config, Linode } from '@linode/api-v4';
 import { Region } from '@linode/api-v4/lib/regions';
 import Close from '@mui/icons-material/Close';
 import { Box, Stack } from '@mui/material';
@@ -6,12 +6,13 @@ import { styled } from '@mui/material/styles';
 import { action } from '@storybook/addon-actions';
 import React, { useState } from 'react';
 
+import { Button } from 'src/components/Button/Button';
 import { Country } from 'src/components/EnhancedSelect/variants/RegionSelect/utils';
 import { Flag } from 'src/components/Flag';
 import { IconButton } from 'src/components/IconButton';
 import { List } from 'src/components/List';
 import { ListItem } from 'src/components/ListItem';
-import { linodeFactory } from 'src/factories';
+import { configFactory, linodeFactory } from 'src/factories';
 import { getRegionCountryGroup } from 'src/utilities/formatRegion';
 
 import { Autocomplete } from './Autocomplete';
@@ -355,4 +356,114 @@ export const MultiSelectWithSeparateSelectionOptions: MultiSelectWithSeparateSel
     selectAllLabel: 'Linodes',
   },
   render: (args) => <AutocompleteWithSeparateSelectedOptions {...args} />,
+};
+
+type MultiStepStory = StoryObj<EnhancedAutocompleteProps<Linode>>;
+const myLinode = linodeFactory.buildList(1);
+const configs = configFactory.buildList(4);
+export const MultiStep: MultiStepStory = {
+  args: {
+    placeholder: LABEL,
+    selectAllLabel: 'Linodes',
+  },
+  render: (args) => <AssignSubnetsExample {...args} />,
+};
+
+const AssignSubnetsExample = (props: EnhancedAutocompleteProps<Linode>) => {
+  const [selectedLinode, setSelectedLinode] = React.useState<Linode>();
+  const [linodeConfigs, setLinodeConfigs] = React.useState<Config[]>([]);
+  const [selectedConfig, setSelectedConfig] = React.useState<Config>();
+  const [allConfigs, setAllConfigs] = React.useState<Config[]>([]);
+
+  const checkLinodeHasConfigs = React.useCallback(() => {
+    // 1. Use react query to get configs for linode
+    // 2. If the linode has multiple configs, we need to show another select
+    if (configs.length > 1) {
+      setLinodeConfigs(configs);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    checkLinodeHasConfigs();
+  }, [selectedLinode, checkLinodeHasConfigs]);
+
+  // console.log('>>', selectedLinode, selectedConfig);
+
+  // 1. For selected linode, we need to get it's configuration profile
+  // 2. If the linode has multiple configs, we need to show another select
+  // 3. When the user selects a config, we combine the linode label with config label
+
+  // Function to remove an option from the list of selected options
+  const removeOption = (optionToRemove: Config) => {
+    const updatedSelectedOptions = allConfigs.filter(
+      (option) => option.id !== optionToRemove.id
+    );
+
+    // Call onSelectionChange to update the selected options
+    setAllConfigs(updatedSelectedOptions);
+  };
+
+  const addConfigToAllConfigs = () => {
+    if (selectedConfig === null || selectedConfig === undefined) {
+      return;
+    }
+    setAllConfigs([...allConfigs, selectedConfig]);
+  };
+
+  React.useEffect(() => {
+    // If all configs changes, let's clear the selected config and selected linode
+    setSelectedConfig(undefined);
+    setSelectedLinode(undefined);
+  }, [allConfigs]);
+
+  return (
+    <Stack>
+      <Autocomplete
+        {...props}
+        inputValue={selectedLinode?.label || ''}
+        onChange={(_, value: Linode) => setSelectedLinode(value)}
+        options={myLinode}
+        renderTags={() => null}
+        value={selectedLinode || null}
+      />
+      {selectedLinode && linodeConfigs && linodeConfigs.length > 0 && (
+        <Autocomplete
+          onChange={(_, value: Config) => {
+            return setSelectedConfig(value);
+          }}
+          inputValue={selectedConfig?.label || ''}
+          label="Configs"
+          options={linodeConfigs}
+          renderTags={() => null}
+          value={selectedConfig || null}
+        />
+      )}
+      <Box marginTop={2}>
+        <Button buttonType="primary" onClick={addConfigToAllConfigs}>
+          Assign Linode
+        </Button>
+      </Box>
+      {allConfigs.length > 0 && (
+        <>
+          <SelectedOptionsHeader>{`Linodes to be Unassigned from Subnet (${allConfigs.length})`}</SelectedOptionsHeader>
+
+          <SelectedOptionsList>
+            {allConfigs.map((config) => (
+              <SelectedOptionsListItem alignItems="center" key={config.id}>
+                <StyledLabel>{config.label}</StyledLabel>
+                <IconButton
+                  aria-label={`remove ${config.id}`}
+                  disableRipple
+                  onClick={() => removeOption(config)}
+                  size="medium"
+                >
+                  <Close />
+                </IconButton>
+              </SelectedOptionsListItem>
+            ))}
+          </SelectedOptionsList>
+        </>
+      )}
+    </Stack>
+  );
 };
