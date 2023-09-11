@@ -24,13 +24,16 @@ import { useSubnetsQuery } from 'src/queries/vpcs';
 
 import { SubnetLinodeRow, SubnetLinodeTableRowHead } from './SubnetLinodeRow';
 
+import type { Subnet } from '@linode/api-v4/lib/vpcs/types';
+
 interface Props {
+  onUnassignSubnet: (subnet: Subnet) => void;
   vpcId: number;
 }
 
 const preferenceKey = 'vpc-subnets';
 
-export const VPCSubnetsTable = ({ vpcId }: Props) => {
+export const VPCSubnetsTable = ({ onUnassignSubnet, vpcId }: Props) => {
   const [subnetsFilterText, setSubnetsFilterText] = React.useState('');
 
   const pagination = usePagination(1, preferenceKey);
@@ -137,7 +140,9 @@ export const VPCSubnetsTable = ({ vpcId }: Props) => {
             <TableCell>{subnet.linodes.length}</TableCell>
           </Hidden>
           <TableCell align="right">
-            <SubnetsActionMenu></SubnetsActionMenu>
+            <SubnetsActionMenu
+              onUnassignSubnet={() => onUnassignSubnet(subnet)}
+            ></SubnetsActionMenu>
           </TableCell>
         </>
       );

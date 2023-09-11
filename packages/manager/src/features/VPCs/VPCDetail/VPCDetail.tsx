@@ -16,6 +16,7 @@ import { truncate } from 'src/utilities/truncate';
 import { VPCDeleteDialog } from '../VPCLanding/VPCDeleteDialog';
 import { VPCEditDrawer } from '../VPCLanding/VPCEditDrawer';
 import { getUniqueLinodesFromSubnets } from '../utils';
+import { UnassignSubnetDrawer } from './UnassignSubnetDrawer';
 import {
   StyledActionButton,
   StyledDescriptionBox,
@@ -35,6 +36,19 @@ const VPCDetail = () => {
   const [editVPCDrawerOpen, setEditVPCDrawerOpen] = React.useState(false);
   const [deleteVPCDialogOpen, setDeleteVPCDialogOpen] = React.useState(false);
   const [showFullDescription, setShowFullDescription] = React.useState(false);
+  const [selectedSubnet, setSelectedSubnet] = React.useState(undefined);
+
+  const [
+    isAssignSubnetDrawerOpen,
+    setIsAssignSubnetDrawerOpen,
+  ] = React.useState(false);
+
+  const handleOnAssignSubnet = (subnet: any) => {
+    setIsAssignSubnetDrawerOpen(true);
+    setSelectedSubnet(subnet);
+  };
+
+  console.log({ isAssignSubnetDrawerOpen });
 
   if (isLoading) {
     return <CircleProgress />;
@@ -174,6 +188,14 @@ const VPCDetail = () => {
         open={editVPCDrawerOpen}
         vpc={vpc}
       />
+      <UnassignSubnetDrawer
+        onClose={() => {
+          console.log('running');
+          setIsAssignSubnetDrawerOpen(false);
+        }}
+        open={isAssignSubnetDrawerOpen}
+        subnet={selectedSubnet}
+      />
       <Box
         sx={(theme) => ({
           [theme.breakpoints.up('lg')]: {
@@ -184,7 +206,7 @@ const VPCDetail = () => {
       >
         <Typography variant="h2">Subnets ({vpc.subnets.length})</Typography>
       </Box>
-      <VPCSubnetsTable vpcId={vpc.id} />
+      <VPCSubnetsTable onUnassignSubnet={handleOnAssignSubnet} vpcId={vpc.id} />
     </>
   );
 };

@@ -3,10 +3,18 @@ import * as React from 'react';
 
 import { Action, ActionMenu } from 'src/components/ActionMenu';
 
-export const SubnetsActionMenu = ({}) => {
+interface SubnetsActionMenuProps {
+  onUnassignSubnet: () => void;
+}
+
+export const SubnetsActionMenu = ({
+  onUnassignSubnet,
+}: SubnetsActionMenuProps) => {
   const handleAssignLinode = () => {};
 
-  const handleUnassignLinode = () => {};
+  const handleUnassignLinode = () => {
+    onUnassignSubnet();
+  };
 
   const handleEdit = () => {};
 
