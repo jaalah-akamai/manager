@@ -181,7 +181,7 @@ export const UnassignSubnetDrawer = React.memo((props: Props) => {
                 }}
                 buttonType="unstyled"
                 csvRef={csvRef}
-                data={assignedLinodes ?? []}
+                data={selectedLinodes}
                 filename={`linodes-unassigned-${formattedDate}.csv`}
                 headers={headers}
                 onClick={downloadCSV}
