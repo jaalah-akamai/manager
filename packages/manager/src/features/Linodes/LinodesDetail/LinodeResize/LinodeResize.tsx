@@ -1,6 +1,6 @@
 import { Disk, LinodeType } from '@linode/api-v4/lib/linodes';
 import { APIError } from '@linode/api-v4/lib/types';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import * as React from 'react';
@@ -9,8 +9,13 @@ import { Box } from 'src/components/Box';
 import { Button } from 'src/components/Button/Button';
 import { Checkbox } from 'src/components/Checkbox';
 import { Dialog } from 'src/components/Dialog/Dialog';
+import { FormControl } from 'src/components/FormControl';
+import { FormControlLabel } from 'src/components/FormControlLabel';
+import { FormLabel } from 'src/components/FormLabel';
 import { Link } from 'src/components/Link';
 import { Notice } from 'src/components/Notice/Notice';
+import { Radio } from 'src/components/Radio/Radio';
+import { RadioGroup } from 'src/components/RadioGroup';
 import { TooltipIcon } from 'src/components/TooltipIcon';
 import { TypeToConfirm } from 'src/components/TypeToConfirm/TypeToConfirm';
 import { Typography } from 'src/components/Typography';
@@ -42,6 +47,7 @@ interface Props {
 
 export const LinodeResize = (props: Props) => {
   const { linodeId, onClose, open } = props;
+  const theme = useTheme();
 
   const { data: linode } = useLinodeQuery(
     linodeId ?? -1,
@@ -122,6 +128,7 @@ export const LinodeResize = (props: Props) => {
   }, [resizeError]);
 
   const hostMaintenance = linode?.status === 'stopped';
+  const isLinodeOffline = linode?.status === 'offline';
   const unauthorized =
     getPermissionsForLinode(grants, linodeId || 0) === 'read_only';
 
@@ -189,6 +196,59 @@ export const LinodeResize = (props: Props) => {
             types={currentTypes.map(extendType)}
           />
         </StyledDiv>
+
+        <Box
+          sx={{
+            backgroundColor: theme.bg.offWhite,
+            marginBottom: '8px',
+            padding: '16px 22px 0 22px',
+          }}
+        >
+          <Typography variant="h2">
+            Choose Your Resize Type
+            <TooltipIcon
+              status="help"
+              text={`The resize of your VM will happen within a 96 hour window of the date selected. The resizing may take some time depending on the size of the disk. The notification bell in the top right of the page will notify you when the resizing is complete. Your VM will resize within 15 minutes when you select “Resize Now”. `}
+            />
+          </Typography>
+          <Box
+            sx={{
+              marginTop: 0,
+            }}
+            component="p"
+          >
+            New text here explaining what a warm resize is and what a cold
+            resize and the expectations..Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam.
+          </Box>
+          <FormControl sx={{ marginTop: 0 }}>
+            <FormLabel id="resize-migration-types" sx={{ marginBottom: 0 }}>
+              Migration Types
+            </FormLabel>
+            <RadioGroup
+              aria-labelledby="resize-migration-types"
+              row
+              value={'warm'}
+            >
+              <FormControlLabel
+                control={<Radio />}
+                disabled={isLinodeOffline}
+                key={'warm'}
+                label={'Warm'}
+                value={'warm'}
+              />
+              <FormControlLabel
+                control={<Radio />}
+                disabled={isLinodeOffline}
+                key={'cold'}
+                label={'Cold'}
+                value={'cold'}
+              />
+            </RadioGroup>
+          </FormControl>
+        </Box>
+
         <Typography
           sx={{ alignItems: 'center', display: 'flex', minHeight: '44px' }}
           variant="h2"
