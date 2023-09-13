@@ -1,13 +1,20 @@
-import { Disk, LinodeType } from '@linode/api-v4/lib/linodes';
+import {
+  Disk,
+  LinodeType,
+  MigrationTypes,
+  ResizeLinodePayload,
+} from '@linode/api-v4/lib/linodes';
 import { APIError } from '@linode/api-v4/lib/types';
 import { styled, useTheme } from '@mui/material/styles';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import * as React from 'react';
 
+import { ActionsPanel } from 'src/components/ActionsPanel/ActionsPanel';
 import { Box } from 'src/components/Box';
 import { Button } from 'src/components/Button/Button';
 import { Checkbox } from 'src/components/Checkbox';
+import { ConfirmationDialog } from 'src/components/ConfirmationDialog/ConfirmationDialog';
 import { Dialog } from 'src/components/Dialog/Dialog';
 import { FormControl } from 'src/components/FormControl';
 import { FormControlLabel } from 'src/components/FormControlLabel';
@@ -31,6 +38,7 @@ import { usePreferences } from 'src/queries/preferences';
 import { useGrants } from 'src/queries/profile';
 import { useRegionsQuery } from 'src/queries/regions';
 import { useAllTypes } from 'src/queries/types';
+import { capitalize } from 'src/utilities/capitalize';
 import { extendType } from 'src/utilities/extendType';
 import { getPermissionsForLinode } from 'src/utilities/linodes';
 import scrollErrorIntoView from 'src/utilities/scrollErrorIntoView';
@@ -38,12 +46,19 @@ import scrollErrorIntoView from 'src/utilities/scrollErrorIntoView';
 import { HostMaintenanceError } from '../HostMaintenanceError';
 import { LinodePermissionsError } from '../LinodePermissionsError';
 
+import type { ButtonProps } from 'src/components/Button/Button';
+
 interface Props {
   linodeId?: number;
   linodeLabel?: string;
   onClose: () => void;
   open: boolean;
 }
+
+const migrationTypeOptions: { [key in MigrationTypes]: key } = {
+  cold: 'cold',
+  warm: 'warm',
+};
 
 export const LinodeResize = (props: Props) => {
   const { linodeId, onClose, open } = props;
@@ -67,6 +82,10 @@ export const LinodeResize = (props: Props) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [confirmationText, setConfirmationText] = React.useState('');
+  const [
+    isConfirmationDialogOpen,
+    setConfirmationDialogOpen,
+  ] = React.useState<boolean>(false);
 
   const {
     error: resizeError,
@@ -76,9 +95,10 @@ export const LinodeResize = (props: Props) => {
 
   const { data: regionsData } = useRegionsQuery();
 
-  const formik = useFormik({
+  const formik = useFormik<ResizeLinodePayload>({
     initialValues: {
       allow_auto_disk_resize: shouldEnableAutoResizeDiskOption(disks ?? [])[1],
+      migration_type: migrationTypeOptions.warm,
       type: '',
     },
     async onSubmit(values) {
@@ -95,6 +115,7 @@ export const LinodeResize = (props: Props) => {
        */
       await resizeLinode({
         allow_auto_disk_resize: values.allow_auto_disk_resize && !isSmaller,
+        migration_type: values.migration_type,
         type: values.type,
       });
       resetEventsPolling();
@@ -155,6 +176,16 @@ export const LinodeResize = (props: Props) => {
     types?.filter((thisType) => !Boolean(thisType.successor)) ?? [];
 
   const error = getError(resizeError);
+
+  const resizeButtonProps: ButtonProps =
+    formik.values.migration_type === 'cold'
+      ? {
+          loading: isLoading,
+          type: 'submit',
+        }
+      : {
+          onClick: () => setConfirmationDialogOpen(true),
+        };
 
   return (
     <Dialog
@@ -227,23 +258,26 @@ export const LinodeResize = (props: Props) => {
               Migration Types
             </FormLabel>
             <RadioGroup
+              onChange={(e, value) =>
+                formik.setFieldValue('migration_type', value)
+              }
               aria-labelledby="resize-migration-types"
               row
-              value={'warm'}
+              value={formik.values.migration_type}
             >
               <FormControlLabel
                 control={<Radio />}
                 disabled={isLinodeOffline}
-                key={'warm'}
-                label={'Warm'}
-                value={'warm'}
+                key={migrationTypeOptions.warm}
+                label={capitalize(migrationTypeOptions.warm)}
+                value={migrationTypeOptions.warm}
               />
               <FormControlLabel
                 control={<Radio />}
                 disabled={isLinodeOffline}
-                key={'cold'}
-                label={'Cold'}
-                value={'cold'}
+                key={migrationTypeOptions.cold}
+                label={capitalize(migrationTypeOptions.cold)}
+                value={migrationTypeOptions.cold}
               />
             </RadioGroup>
           </FormControl>
@@ -335,12 +369,38 @@ export const LinodeResize = (props: Props) => {
             }
             buttonType="primary"
             data-qa-resize
-            loading={isLoading}
-            type="submit"
+            {...resizeButtonProps}
           >
             Resize Linode
           </Button>
         </Box>
+        <ConfirmationDialog
+          actions={
+            <ActionsPanel
+              primaryButtonProps={{
+                label: 'Continue',
+                loading: isLoading,
+                onClick: () => {
+                  formik.handleSubmit();
+                },
+              }}
+              secondaryButtonProps={{
+                label: 'Cancel',
+                onClick: () => setConfirmationDialogOpen(false),
+              }}
+            />
+          }
+          onClose={() => setConfirmationDialogOpen(false)}
+          open={isConfirmationDialogOpen}
+          title="Enable this feature?"
+        >
+          <Typography variant="subtitle1">
+            The linode will be rebooted once this migration (resize) is done.
+          </Typography>
+          <Typography variant="subtitle1">
+            Yes, I understand, please proceed with the warm migration.
+          </Typography>
+        </ConfirmationDialog>
       </form>
     </Dialog>
   );

@@ -394,8 +394,12 @@ export interface LinodeDiskCreationData {
   stackscript_data?: any;
 }
 
+export type MigrationTypes = 'warm' | 'cold';
+
 export interface ResizeLinodePayload {
   type: string;
   /** @default true */
   allow_auto_disk_resize?: boolean;
+  /** @default 'warm' */
+  migration_type?: MigrationTypes;
 }
