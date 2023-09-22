@@ -121,6 +121,15 @@ export const VPCSubnetsTable = (props: Props) => {
     setSubnetAssignLinodesDrawerOpen(true);
   };
 
+  React.useEffect(() => {
+    if (subnets && selectedSubnet) {
+      const updatedSubnet = subnets.data.find(
+        (subnet) => subnet.id === selectedSubnet.id
+      );
+      setSelectedSubnet(updatedSubnet);
+    }
+  }, [subnets, selectedSubnet]);
+
   if (isLoading) {
     return <CircleProgress />;
   }
@@ -260,13 +269,15 @@ export const VPCSubnetsTable = (props: Props) => {
         page={pagination.page}
         pageSize={pagination.pageSize}
       />
-      <SubnetAssignLinodesDrawer
-        onClose={() => setSubnetAssignLinodesDrawerOpen(false)}
-        open={subnetAssignLinodesDrawerOpen}
-        subnet={selectedSubnet}
-        vpcId={vpcId}
-        vpcRegion={vpcRegion}
-      />
+      {/* {subnetAssignLinodesDrawerOpen && ( */}
+        <SubnetAssignLinodesDrawer
+          onClose={() => setSubnetAssignLinodesDrawerOpen(false)}
+          open={subnetAssignLinodesDrawerOpen}
+          subnet={selectedSubnet}
+          vpcId={vpcId}
+          vpcRegion={vpcRegion}
+        />
+      {/* )} */}
       <SubnetDeleteDialog
         onClose={() => setDeleteSubnetDialogOpen(false)}
         open={deleteSubnetDialogOpen}
