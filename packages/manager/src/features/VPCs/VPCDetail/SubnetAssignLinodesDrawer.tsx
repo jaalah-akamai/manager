@@ -64,16 +64,16 @@ export const SubnetAssignLinodesDrawer = (
     unassignLinodesErrors,
   } = useUnassignLinode();
   const csvRef = React.useRef<any>();
+  const newInterfaceId = React.useRef<number>(-1);
   const formattedDate = useFormattedDate();
 
   const [assignLinodesErrors, setAssignLinodesErrors] = React.useState<
     Record<string, string | undefined>
   >({});
 
-  // We only want to keep track the linodes we've assigned to a subnet while this drawer is open, so
-  // we need to store that information in local state instead of using the subnet's assigned linodes
-  // (which keeps track of all linodes assigned to a subnet, not just the ones currently being assigned).
-  // If we close the drawer and then reopen it, this value should be [].
+  // While the drawer is open, we maintain a local list of assigned Linodes.
+  // This is distinct from the subnet's global list of assigned Linodes, which encompasses all assignments.
+  // The local list resets to empty when the drawer is closed and reopened.
   const [
     assignedLinodesAndConfigData,
     setAssignedLinodesAndConfigData,
@@ -97,8 +97,6 @@ export const SubnetAssignLinodesDrawer = (
     { key: 'id', label: 'Linode ID' },
   ];
 
-  const newInterfaceId = React.useRef<number>(-1);
-
   const downloadCSV = async () => {
     await getCSVData();
     csvRef.current.link.click();
@@ -111,10 +109,6 @@ export const SubnetAssignLinodesDrawer = (
       region: vpcRegion,
     }
   );
-
-  React.useEffect(() => {
-    console.log(assignedLinodesAndConfigData);
-  }, [assignedLinodesAndConfigData]);
 
   // We need to filter to the linodes from this region that are not already
   // assigned to this subnet
@@ -236,14 +230,10 @@ export const SubnetAssignLinodesDrawer = (
   });
 
   React.useEffect(() => {
+    // Return early if no Linode is selected
     if (!values.selectedLinode) {
       return;
     }
-
-    // Reset the form and clear Linode configurations when a Linode is selected
-    resetForm();
-    setLinodeConfigs([]);
-
     // Check if the selected Linode is already assigned to the subnet
     if (
       values.selectedLinode &&
@@ -270,7 +260,9 @@ export const SubnetAssignLinodesDrawer = (
         newLinodeData,
       ]);
 
-      // Reset form values after assigning the Linode
+      // Reset the form, clear its values, and remove any previously selected Linode configurations when a Linode is chosen
+      resetForm();
+      setLinodeConfigs([]);
       setValues({
         chosenIP: '',
         selectedConfig: null,
@@ -312,36 +304,19 @@ export const SubnetAssignLinodesDrawer = (
     getLinodeConfigData(values.selectedLinode);
   }, [values.selectedLinode, getLinodeConfigData]);
 
-  React.useEffect(() => {
-    if (open) {
-      resetForm();
-      setAssignedLinodesAndConfigData([]);
-      setLinodeConfigs([]);
-      setAssignLinodesErrors({});
-      setUnassignLinodesErrors([]);
-      setAutoAssignIPv4(true);
-    }
-  }, [
-    open,
-    resetForm,
-    // setAssignedLinodesAndConfigData,
-    // setLinodeConfigs,
-    // setUnassignLinodesErrors,
-  ]);
-
-  // const handleOnClose = () => {
-  //   onClose();
-  //   resetForm();
-  //   setAssignedLinodesAndConfigData([]);
-  //   setLinodeConfigs([]);
-  //   setAssignLinodesErrors({});
-  //   setUnassignLinodesErrors([]);
-  //   setAutoAssignIPv4(true);
-  // };
+  const handleOnClose = () => {
+    onClose();
+    resetForm();
+    setAssignedLinodesAndConfigData([]);
+    setLinodeConfigs([]);
+    setAssignLinodesErrors({});
+    setUnassignLinodesErrors([]);
+    setAutoAssignIPv4(true);
+  };
 
   return (
     <Drawer
-      onClose={onClose}
+      onClose={handleOnClose}
       open={open}
       title={`Assign Linodes to subnet: ${subnet?.label} (${subnet?.ipv4})`}
     >
@@ -459,8 +434,7 @@ export const SubnetAssignLinodesDrawer = (
         text={'Download List of Assigned Linodes (.csv)'}
       />
       <StyledButtonBox>
-        <Button buttonType="outlined" onClick={onClose
-        }>
+        <Button buttonType="outlined" onClick={handleOnClose}>
           Done
         </Button>
       </StyledButtonBox>

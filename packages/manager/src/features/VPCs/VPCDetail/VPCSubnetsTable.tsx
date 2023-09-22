@@ -269,7 +269,7 @@ export const VPCSubnetsTable = (props: Props) => {
         page={pagination.page}
         pageSize={pagination.pageSize}
       />
-      {/* {subnetAssignLinodesDrawerOpen && ( */}
+      {subnetAssignLinodesDrawerOpen && (
         <SubnetAssignLinodesDrawer
           onClose={() => setSubnetAssignLinodesDrawerOpen(false)}
           open={subnetAssignLinodesDrawerOpen}
@@ -277,7 +277,7 @@ export const VPCSubnetsTable = (props: Props) => {
           vpcId={vpcId}
           vpcRegion={vpcRegion}
         />
-      {/* )} */}
+      )}
       <SubnetDeleteDialog
         onClose={() => setDeleteSubnetDialogOpen(false)}
         open={deleteSubnetDialogOpen}
