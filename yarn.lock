@@ -2281,10 +2281,10 @@
   resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
-"@linode/design-language-system@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@linode/design-language-system/-/design-language-system-0.0.9.tgz#f7e3545ea06d87930459b60d9eefc06f7d2c53f6"
-  integrity sha512-8wOChR2G9RTGRs3DfKcmfW4jxJu9uTlWAQJrg59RxC7XpBvQlA9kZUtnSVXEsw1hSGbEq08yHCdwQX83s2qQag==
+"@linode/design-language-system@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@linode/design-language-system/-/design-language-system-0.0.11.tgz#9b7a5ef48e9f234d0035fec55cd5a4216bcf74db"
+  integrity sha512-x6ha8lTSu1UNiqqg5jh6tj6m8VZiPXblbfGc/mjUy9ptixDm1ctBIgOO1366jb6rEJnesh/015yOq3Eqo3P8sA==
   dependencies:
     style-dictionary "^3.7.2"
 
