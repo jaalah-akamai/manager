@@ -2,8 +2,10 @@ import { isEmpty } from 'ramda';
 import * as React from 'react';
 
 import AbuseTicketBanner from 'src/components/AbuseTicketBanner';
+import { CAPABILITY_CHILD } from 'src/features/Account/constants';
 import { useDismissibleNotifications } from 'src/hooks/useDismissibleNotifications';
 import { useFlags } from 'src/hooks/useFlags';
+import { useSecurityQuestions } from 'src/queries/securityQuestions';
 
 import { APIMaintenanceBanner } from './APIMaintenanceBanner';
 import { ComplianceBanner } from './ComplianceBanner';
@@ -11,10 +13,31 @@ import { ComplianceUpdateModal } from './ComplianceUpdateModal';
 import { EmailBounceNotificationSection } from './EmailBounce';
 import { RegionStatusBanner } from './RegionStatusBanner';
 import { TaxCollectionBanner } from './TaxCollectionBanner';
+import { VerificationDetailsBanner } from './VerificationDetailsBanner';
 
-export const GlobalNotifications = () => {
+import type { AccountCapability, Profile } from '@linode/api-v4';
+
+export const GlobalNotifications = ({
+  capabilities,
+  profile,
+}: {
+  capabilities: AccountCapability[] | undefined;
+  profile: Profile | undefined;
+}) => {
   const flags = useFlags();
+  const { data: securityQuestions } = useSecurityQuestions();
   const suppliedMaintenances = flags.apiMaintenance?.maintenances; // The data (ID, and sometimes the title and body) we supply regarding maintenance events in LD.
+  const isChildAccount =
+    Boolean(flags.parentChildAccountAccess);
+    // &&
+    // capabilities?.includes(CAPABILITY_CHILD);
+  const hasSecurityQuestions =
+    securityQuestions?.security_questions.filter((q) => q.response !== null)
+      .length === 3;
+  const hasVerifiedPhoneNumber = profile?.verified_phone_number !== null;
+
+  const isVerified =
+    isChildAccount && hasVerifiedPhoneNumber && hasSecurityQuestions;
 
   const { hasDismissedNotifications } = useDismissibleNotifications();
 
@@ -35,6 +58,12 @@ export const GlobalNotifications = () => {
       <AbuseTicketBanner />
       <ComplianceBanner />
       <ComplianceUpdateModal />
+      {!isVerified && (
+        <VerificationDetailsBanner
+          hasSecurityQuestions={hasSecurityQuestions}
+          hasVerifiedPhoneNumber={hasVerifiedPhoneNumber}
+        />
+      )}
       {!isEmpty(suppliedMaintenances) && !hasDismissedMaintenances ? (
         <APIMaintenanceBanner suppliedMaintenances={suppliedMaintenances} />
       ) : null}
