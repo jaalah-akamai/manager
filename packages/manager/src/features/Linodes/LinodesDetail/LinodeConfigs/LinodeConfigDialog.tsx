@@ -64,6 +64,7 @@ import {
   handleGeneralErrors,
 } from 'src/utilities/formikErrorUtils';
 import { getSelectedOptionFromGroupedOptions } from 'src/utilities/getSelectedOptionFromGroupedOptions';
+import { ExtendedIP } from 'src/utilities/ipUtils';
 import { scrollErrorIntoView } from 'src/utilities/scrollErrorIntoView';
 
 import {
@@ -116,6 +117,7 @@ interface Props {
 }
 
 const defaultInterface = {
+  ip_ranges: [],
   ipam_address: '',
   label: '',
   purpose: 'none',
@@ -640,6 +642,13 @@ export const LinodeConfigDialog = (props: Props) => {
     [setFieldValue]
   );
 
+  const handleIPRangeChange = React.useCallback(
+    (_ipRanges: ExtendedIP[]) => {
+      setFieldValue('ipRanges', _ipRanges);
+    },
+    [setFieldValue]
+  );
+
   const handleToggleCustomRoot = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setUseCustomRoot(e.target.checked);
@@ -1021,6 +1030,8 @@ export const LinodeConfigDialog = (props: Props) => {
                       handleChange={(newInterface: Interface) =>
                         handleInterfaceChange(idx, newInterface)
                       }
+                      additionalIPv4RangesForVPC={thisInterface.ip_ranges ?? []}
+                      handleIPRangeChange={handleIPRangeChange}
                       ipamAddress={thisInterface.ipam_address}
                       key={`eth${idx}-interface`}
                       label={thisInterface.label}

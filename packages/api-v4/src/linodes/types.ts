@@ -163,6 +163,12 @@ export interface ConfigInterfaceIPv6 {
   vpc?: string;
 }
 
+// TODO: VPC - Let's export this and remove reference in utilities/ipUtils.ts
+interface ExtendedIP {
+  address: string;
+  error?: string;
+}
+
 export interface Interface {
   id: number;
   label: string | null;
@@ -174,7 +180,7 @@ export interface Interface {
   vpc_id?: number | null;
   ipv4?: ConfigInterfaceIPv4;
   ipv6?: ConfigInterfaceIPv6;
-  ip_ranges?: string[];
+  ip_ranges?: ExtendedIP[];
 }
 
 export type InterfacePayload = Omit<Interface, 'id' | 'active'>;

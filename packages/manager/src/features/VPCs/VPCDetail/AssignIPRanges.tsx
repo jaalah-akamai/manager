@@ -1,9 +1,11 @@
+import { useTheme } from '@mui/material/styles';
 import * as React from 'react';
 
 import { Divider } from 'src/components/Divider';
 import { Link } from 'src/components/Link';
 import { MultipleIPInput } from 'src/components/MultipleIPInput/MultipleIPInput';
 import { Notice } from 'src/components/Notice/Notice';
+import { TooltipIcon } from 'src/components/TooltipIcon';
 import { Typography } from 'src/components/Typography';
 import {
   ASSIGN_IPV4_RANGES_DESCRIPTION,
@@ -22,6 +24,7 @@ interface Props {
 
 export const AssignIPRanges = (props: Props) => {
   const { handleIPRangeChange, ipRanges, ipRangesError, sx } = props;
+  const theme = useTheme();
 
   return (
     <>
@@ -32,17 +35,25 @@ export const AssignIPRanges = (props: Props) => {
       <Typography
         sx={(theme) => ({
           fontFamily: theme.font.bold,
-          paddingBottom: theme.spacing(),
         })}
       >
         {ASSIGN_IPV4_RANGES_TITLE}
-      </Typography>
-      <Typography variant="body1">
-        {ASSIGN_IPV4_RANGES_DESCRIPTION}{' '}
-        <Link to="https://www.linode.com/docs/guides/how-to-understand-ip-addresses/">
-          Learn more
-        </Link>
-        .
+        <TooltipIcon
+          sxTooltipIcon={{
+            marginLeft: theme.spacing(0.5),
+            padding: theme.spacing(0.5),
+          }}
+          text={
+            <>
+              {ASSIGN_IPV4_RANGES_DESCRIPTION}{' '}
+              <Link to="https://www.linode.com/docs/guides/how-to-understand-ip-addresses/">
+                Learn more
+              </Link>
+            </>
+          }
+          interactive
+          status="help"
+        />
       </Typography>
       <MultipleIPInput
         buttonText="Add IPv4 Range"
