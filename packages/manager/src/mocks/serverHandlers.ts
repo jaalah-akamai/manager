@@ -99,6 +99,7 @@ import {
   vpcFactory,
 } from 'src/factories';
 import { accountAgreementsFactory } from 'src/factories/accountAgreements';
+import { accountLoginFactory } from 'src/factories/accountLogin';
 import { accountUserFactory } from 'src/factories/accountUsers';
 import { grantFactory, grantsFactory } from 'src/factories/grants';
 import { pickRandom } from 'src/utilities/random';
@@ -735,9 +736,14 @@ export const handlers = [
 
       if (orFilters) {
         const filteredLinodes = linodes.filter((linode) => {
-          return orFilters.some(
+          const filteredById = orFilters.some(
             (filter: { id: number }) => filter.id === linode.id
           );
+          const filteredByRegion = orFilters.some(
+            (filter: { region: string }) => filter.region === linode.region
+          );
+
+          return (filteredById || filteredByRegion) ?? linodes;
         });
 
         return res(ctx.json(makeResourcePage(filteredLinodes)));
@@ -1451,6 +1457,22 @@ export const handlers = [
       )
     );
   }),
+  rest.get('*/account/logins', (req, res, ctx) => {
+    const failedRestrictedAccountLogin = accountLoginFactory.build({
+      restricted: true,
+      status: 'failed',
+    });
+    const successfulAccountLogins = accountLoginFactory.buildList(25);
+
+    return res(
+      ctx.json(
+        makeResourcePage([
+          failedRestrictedAccountLogin,
+          ...successfulAccountLogins,
+        ])
+      )
+    );
+  }),
   rest.get('*/account/payment-methods', (req, res, ctx) => {
     const defaultPaymentMethod = paymentMethodFactory.build({
       data: { card_type: 'MasterCard' },
@@ -2004,20 +2026,37 @@ export const handlers = [
     return res(ctx.json({}));
   }),
   rest.post('*/placement/groups/:placementGroupId/assign', (req, res, ctx) => {
-    if (req.params.placementGroupId === 'undefined') {
+    if (req.params.placementGroupId === '-1') {
       return res(ctx.status(404));
     }
 
-    return res(ctx.json({}));
+    const response = placementGroupFactory.build({
+      affinity_type: 'anti_affinity',
+      id: Number(req.params.placementGroupId) ?? -1,
+      label: 'pg-1',
+      linode_ids: [
+        ...[0, 1, 2, 3, 5, 6, 7, 8, 43],
+        (req.body as any).linodes[0],
+      ],
+    });
+
+    return res(ctx.json(response));
   }),
   rest.post(
     '*/placement/groups/:placementGroupId/unassign',
     (req, res, ctx) => {
-      if (req.params.placementGroupId === 'undefined') {
+      if (req.params.placementGroupId === '-1') {
         return res(ctx.status(404));
       }
 
-      return res(ctx.json({}));
+      const response = placementGroupFactory.build({
+        affinity_type: 'anti_affinity',
+        id: Number(req.params.placementGroupId) ?? -1,
+        label: 'pg-1',
+        linode_ids: [0, 1, 2, 3, 5, 6, 7, 8, 43],
+      });
+
+      return res(ctx.json(response));
     }
   ),
   ...entityTransfers,
