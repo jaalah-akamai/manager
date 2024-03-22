@@ -22,10 +22,21 @@ interface SessionExpirationDialogProps {
 export const SessionExpirationDialog = React.memo(
   ({ isOpen, onClose }: SessionExpirationDialogProps) => {
     const history = useHistory();
+    // const { data, error, isLoading } = useTokenQuery(
+    //   {
+    //     page: pagination.page,
+    //     page_size: pagination.pageSize,
+    //   },
+    //   { '+order': order, '+order_by': orderBy }
+    // );
+    // const selectedToken = data?.data.find(
+    //   (token) => token.id === selectedTokenId
+    // );
+    // const { error, isLoading, mutateAsync } = useRevokeQuery(selectedToken?.id ?? -1);
+
     const sessionExpirationContext = React.useContext(
       _sessionExpirationContext
     );
-    const [minutesRemaining, setMinutesRemaining] = React.useState<number>(0);
     const [timeRemaining, setTimeRemaining] = React.useState('');
     // Function to "refresh" the token (for demonstration)
     const refreshToken = () => {
@@ -39,9 +50,13 @@ export const SessionExpirationDialog = React.memo(
 
     // Function to "log out" the user
     const logout = () => {
-      // console.log('User logged out');
-      // localStorage.removeItem('token_expiry'); // Clean up
-      // handleClose();
+      mutateAsync().then(() => {
+        onClose();
+        enqueueSnackbar(`Successfully revoked ${token?.label}`, {
+          variant: 'success',
+        });
+      });
+      onClose();
     };
 
     useEffect(() => {
@@ -57,6 +72,8 @@ export const SessionExpirationDialog = React.memo(
         const diff = parseAPIDate(expiryString)
           .diffNow(['minutes', 'seconds'])
           .toObject();
+
+        console.log({minutes: diff.minutes, seconds: diff.seconds})
 
         // Format the remaining time as MM:SS, ensuring minutes and seconds are correctly rounded
         const minutes = Math.max(0, Math.floor(diff.minutes ?? 0));
