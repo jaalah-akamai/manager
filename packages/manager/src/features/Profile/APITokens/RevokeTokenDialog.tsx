@@ -30,8 +30,13 @@ export const RevokeTokenDialog = ({ onClose, open, token, type }: Props) => {
   const { error, isLoading, mutateAsync } = useRevokeQuery(token?.id ?? -1);
   const { enqueueSnackbar } = useSnackbar();
 
+  React.useEffect(() => {
+    console.log({token});
+  }, [open])
+
   const onRevoke = () => {
     mutateAsync().then(() => {
+      console.log({token})
       onClose();
       enqueueSnackbar(`Successfully revoked ${token?.label}`, {
         variant: 'success',

@@ -1,6 +1,8 @@
 export const PARENT_USER = 'parent user';
 export const ADMINISTRATOR = 'account administrator';
 export const CUSTOMER_SUPPORT = 'customer support';
+export const PARENT_STORAGE_EXPIRY_KEY = 'authentication/parent_token/expire';
+export const PROXY_STORAGE_EXPIRY_KEY = 'authentication/proxy_token/expire';
 
 export const grantTypeMap = {
   account: 'Account',

@@ -7,7 +7,7 @@ import { Notice } from 'src/components/Notice/Notice';
 import { Typography } from 'src/components/Typography';
 import { PARENT_USER_SESSION_EXPIRED } from 'src/features/Account/constants';
 import {
-  isParentTokenValid,
+  isTokenValid,
   setTokenInLocalStorage,
   updateCurrentTokenBasedOnUserType,
 } from 'src/features/Account/utils';
@@ -15,6 +15,7 @@ import { useCurrentToken } from 'src/hooks/useAuthentication';
 import { sendSwitchToParentAccountEvent } from 'src/utilities/analytics';
 import { getStorage, setStorage } from 'src/utilities/storage';
 
+import { PARENT_STORAGE_EXPIRY_KEY } from './constants';
 import { ChildAccountList } from './SwitchAccounts/ChildAccountList';
 
 import type { Token } from '@linode/api-v4';
@@ -143,7 +144,7 @@ export const SwitchAccountDrawer = (props: Props) => {
   );
 
   const handleSwitchToParentAccount = React.useCallback(() => {
-    if (!isParentTokenValid()) {
+    if (!isTokenValid(PARENT_STORAGE_EXPIRY_KEY)) {
       const expiredTokenError: APIError = {
         field: 'token',
         reason: PARENT_USER_SESSION_EXPIRED,

@@ -75,13 +75,16 @@ export const getRestrictedResourceText = ({
 /**
  * Determine whether the tokens used for switchable accounts are still valid.
  */
-export const isParentTokenValid = (): boolean => {
+export const isTokenValid = (key: string): boolean => {
+  if (!getStorage(key)) {
+    return false
+  }
+
   const now = new Date().toISOString();
 
   // From a proxy user, check whether parent token is still valid before switching.
   if (
-    now >
-    new Date(getStorage('authentication/parent_token/expire')).toISOString()
+    now > new Date(getStorage(key)).toISOString()
 
     // TODO: Parent/Child: FOR MSW ONLY, REMOVE WHEN API IS READY
     // ================================================================
