@@ -1,5 +1,7 @@
-import { Duration } from 'luxon';
+import { Token } from '@linode/api-v4/lib/profile/types';
 import { DateTime } from 'luxon';
+import { Duration } from 'luxon';
+import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -9,30 +11,61 @@ import { Typography } from 'src/components/Typography';
 import { sessionExpirationContext as _sessionExpirationContext } from 'src/context/sessionExpirationContext';
 import { PROXY_STORAGE_EXPIRY_KEY } from 'src/features/Account/constants';
 import { getTimeRemaining } from 'src/features/EntityTransfers/EntityTransfersLanding/ConfirmTransferDialog';
+import { useOrder } from 'src/hooks/useOrder';
+import { usePagination } from 'src/hooks/usePagination';
+import {
+  useRevokeAppAccessTokenMutation,
+  useRevokePersonalAccessTokenMutation,
+} from 'src/queries/tokens';
+import {
+  useAppTokensQuery,
+  usePersonalAccessTokensQuery,
+} from 'src/queries/tokens';
 import { sendSwitchAccountSessionExpiryEvent } from 'src/utilities/analytics';
 import { parseAPIDate } from 'src/utilities/date';
 import { pluralize } from 'src/utilities/pluralize';
 import { getStorage, setStorage } from 'src/utilities/storage';
+
+import { APITokenType } from './APITokenTable';
 
 interface SessionExpirationDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const PREFERENCE_KEY = 'api-tokens';
+
 export const SessionExpirationDialog = React.memo(
   ({ isOpen, onClose }: SessionExpirationDialogProps) => {
     const history = useHistory();
-    // const { data, error, isLoading } = useTokenQuery(
-    //   {
-    //     page: pagination.page,
-    //     page_size: pagination.pageSize,
-    //   },
-    //   { '+order': order, '+order_by': orderBy }
-    // );
-    // const selectedToken = data?.data.find(
-    //   (token) => token.id === selectedTokenId
-    // );
-    // const { error, isLoading, mutateAsync } = useRevokeQuery(selectedToken?.id ?? -1);
+    const [selectedTokenId, setSelectedTokenId] = React.useState<number>();
+    const { enqueueSnackbar } = useSnackbar();
+    const { handleOrderChange, order, orderBy } = useOrder(
+      {
+        order: 'desc',
+        orderBy: 'created',
+      },
+      `${PREFERENCE_KEY}-order}`,
+      'token'
+    );
+    const pagination = usePagination(1, PREFERENCE_KEY);
+    const { data, error, isLoading } = usePersonalAccessTokensQuery(
+      {
+        page: pagination.page,
+        page_size: pagination.pageSize,
+      },
+      { '+order': order, '+order_by': orderBy }
+    );
+
+    console.log({tokens: data})
+    const selectedToken = data?.data.find(
+      (token) => token.id === selectedTokenId
+    );
+    const {
+      error: revokeError,
+      isLoading: revokeLoading,
+      mutateAsync,
+    } = useRevokePersonalAccessTokenMutation(selectedToken?.id ?? -1);
 
     const sessionExpirationContext = React.useContext(
       _sessionExpirationContext
@@ -73,7 +106,7 @@ export const SessionExpirationDialog = React.memo(
           .diffNow(['minutes', 'seconds'])
           .toObject();
 
-        console.log({minutes: diff.minutes, seconds: diff.seconds})
+        console.log({ minutes: diff.minutes, seconds: diff.seconds });
 
         // Format the remaining time as MM:SS, ensuring minutes and seconds are correctly rounded
         const minutes = Math.max(0, Math.floor(diff.minutes ?? 0));
@@ -107,17 +140,17 @@ export const SessionExpirationDialog = React.memo(
     const actions = (
       <ActionsPanel
         primaryButtonProps={{
-          label: 'Log Out',
+          label: 'Continue Working',
           onClick: () => {
             // sendSwitchAccountSessionExpiryEvent('Log Out');
-            history.push('/logout');
+            // history.push('/logout');
           },
         }}
         secondaryButtonProps={{
-          label: 'Refresh',
+          label: 'Log Out',
           onClick: () => {
             // sendSwitchAccountSessionExpiryEvent('Refresh');
-            onClose();
+            history.push('/logout');
           },
         }}
       />
@@ -133,12 +166,12 @@ export const SessionExpirationDialog = React.memo(
         data-testid="session-expiration-dialog"
         maxWidth="xs"
         open={isOpen}
-        title="Keep Working?"
+        title="Session is expiring soon!"
       >
         <Typography>
           You will be logged out due to inactivity in{' '}
-          {pluralize('minute', 'minutes', timeRemaining)}. Do you want to keep
-          working?
+          {pluralize('minute', 'minutes', timeRemaining)}. Do you want to
+          continue working?
         </Typography>
       </ConfirmationDialog>
     );

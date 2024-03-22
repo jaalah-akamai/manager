@@ -5,6 +5,7 @@ import { StyledLinkButton } from 'src/components/Button/StyledLinkButton';
 import { Drawer } from 'src/components/Drawer';
 import { Notice } from 'src/components/Notice/Notice';
 import { Typography } from 'src/components/Typography';
+import { PROXY_STORAGE_EXPIRY_KEY } from 'src/features/Account/constants';
 import { PARENT_USER_SESSION_EXPIRED } from 'src/features/Account/constants';
 import {
   isTokenValid,
