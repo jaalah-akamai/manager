@@ -1,4 +1,3 @@
-import { createChildAccountPersonalAccessToken } from '@linode/api-v4';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 
@@ -6,11 +5,15 @@ import { StyledLinkButton } from 'src/components/Button/StyledLinkButton';
 import { Drawer } from 'src/components/Drawer';
 import { Notice } from 'src/components/Notice/Notice';
 import { Typography } from 'src/components/Typography';
-import { PARENT_USER_SESSION_EXPIRED } from 'src/features/Account/constants';
 import {
-  isParentTokenValid,
+  PARENT_STORAGE_EXPIRY_KEY,
+  PARENT_USER_SESSION_EXPIRED,
+} from 'src/features/Account/constants';
+import {
+  isTokenValid,
   setTokenInLocalStorage,
   updateCurrentTokenBasedOnUserType,
+  getProxyToken,
 } from 'src/features/Account/utils';
 import { useCurrentToken } from 'src/hooks/useAuthentication';
 import { useRevokePersonalAccessTokenMutation } from 'src/queries/tokens';
@@ -20,7 +23,11 @@ import { getStorage, setStorage } from 'src/utilities/storage';
 import { ChildAccountList } from './SwitchAccounts/ChildAccountList';
 
 import type { Token } from '@linode/api-v4';
-import type { APIError, ChildAccountPayload, UserType } from '@linode/api-v4';
+import type {
+  APIError,
+  ChildAccountPayload,
+  UserType,
+} from '@linode/api-v4';
 import type { State as AuthState } from 'src/store/authentication';
 
 interface Props {
@@ -91,38 +98,6 @@ export const SwitchAccountDrawer = (props: Props) => {
     });
   };
 
-  /**
-   * Headers are required for proxy users when obtaining a proxy token.
-   * For 'proxy' userType, use the stored parent token in the request.
-   */
-  const getProxyToken = React.useCallback(
-    async ({
-      euuid,
-      token,
-      userType,
-    }: {
-      euuid: ChildAccountPayload['euuid'];
-      token: string;
-      userType: Omit<UserType, 'child'>;
-    }) => {
-      try {
-        return await createChildAccountPersonalAccessToken({
-          euuid,
-          headers:
-            userType === 'proxy'
-              ? {
-                  Authorization: token,
-                }
-              : undefined,
-        });
-      } catch (error) {
-        setIsProxyTokenError(error as APIError[]);
-        throw error;
-      }
-    },
-    []
-  );
-
   const refreshPage = React.useCallback(() => {
     location.reload();
   }, []);
@@ -142,7 +117,7 @@ export const SwitchAccountDrawer = (props: Props) => {
       isProxyUser: boolean;
     }) => {
       try {
-        // We don't need to worry about this if we're a proxy user.
+        // When switching from parent to proxy, we need to store the parent token
         if (!isProxyUser) {
           const parentToken: Token = {
             created: getStorage('authentication/created'),
@@ -189,7 +164,7 @@ export const SwitchAccountDrawer = (props: Props) => {
   );
 
   const handleSwitchToParentAccount = React.useCallback(async () => {
-    if (!isParentTokenValid()) {
+    if (!isTokenValid(PARENT_STORAGE_EXPIRY_KEY)) {
       const expiredTokenError: APIError = {
         field: 'token',
         reason: PARENT_USER_SESSION_EXPIRED,
