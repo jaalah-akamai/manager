@@ -41,6 +41,8 @@ const reducer = reducerWithInitialState(defaultState)
   .case(handleStartSession, (state, payload) => {
     const { expires, scopes, token } = payload;
 
+    console.log('????')
+
     /** set local storage */
     scopesInLocalStorage.set(scopes || '');
     tokenInLocalStorage.set(token || '');
@@ -62,6 +64,7 @@ const reducer = reducerWithInitialState(defaultState)
     const expiryDateFromLocalStorage = expiryInLocalStorage.get();
     const expiryDate = new Date(expiryDateFromLocalStorage);
     if (expiryDateFromLocalStorage && expiryDate < new Date()) {
+      console.log('1')
       /**
        * the case where the user refreshes the page and has a expiry time in localstorage
        * but it's  expired
@@ -84,6 +87,7 @@ const reducer = reducerWithInitialState(defaultState)
 
     /** if we have no token in local storage, send us to login */
     if (!token) {
+      console.log('2')
       redirectToLogin(location.pathname, location.search);
     }
 
@@ -100,7 +104,7 @@ const reducer = reducerWithInitialState(defaultState)
   .case(handleLogout, (state) => {
     /** clear local storage and redux state */
     clearLocalStorage();
-
+    console.log('3')
     return {
       ...state,
       expiration: null,
@@ -110,6 +114,7 @@ const reducer = reducerWithInitialState(defaultState)
     };
   })
   .case(handleRefreshTokens, (state) => {
+    console.log('4')
     /** get local storage values and append to redux state */
     const [localToken, localScopes, localExpiry] =
       (tokenInLocalStorage.get(),

@@ -15,33 +15,36 @@ import { usePersonalAccessTokensQuery } from 'src/queries/tokens';
  * and sets its ID for potential revocation actions.
  *
  * @returns {object} An object containing:
- * - `getPendingRevocationToken`: A function to fetch and set the pending revocation token ID based on current conditions.
  * - `pendingRevocationTokenId`: The ID of the token currently marked for pending revocation, or `undefined` if none.
  */
-export const usePendingRevocationToken = () => {
+export const usePendingRevocationToken = ({
+  isProxyUser,
+}: {
+  isProxyUser: boolean;
+}) => {
   const [pendingRevocationToken, setPendingRevocationToken] = React.useState<
     Token | undefined
   >(undefined);
   const currentTokenWithBearer = useCurrentToken() ?? '';
   const { data: personalAccessTokens } = usePersonalAccessTokensQuery();
 
-  const getPendingRevocationToken = async () => {
-    if (!personalAccessTokens?.data) {
-      console.log('No tokens available for revocation.');
+  const getPendingRevocationToken = React.useCallback(async () => {
+    // Skip the logic if not a proxy user or if personal access tokens are not available.
+    if (!isProxyUser || !personalAccessTokens?.data) {
       return;
     }
-
     const token = await getPersonalAccessTokenForRevocation(
-      personalAccessTokens?.data,
+      personalAccessTokens.data,
       currentTokenWithBearer
     );
-
-    console.log('Setting new pending revocation token:', token);
     setPendingRevocationToken(token);
-  };
+  }, [currentTokenWithBearer, isProxyUser, personalAccessTokens]);
+
+  React.useEffect(() => {
+    getPendingRevocationToken();
+  }, [personalAccessTokens, getPendingRevocationToken]);
 
   return {
-    getPendingRevocationToken,
     pendingRevocationToken,
   };
 };

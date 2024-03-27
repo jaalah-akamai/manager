@@ -201,7 +201,7 @@ export const MainContent = () => {
 
   const SessionExpirationProvider = sessionExpirationContext.Provider;
   const sessionExpirationContextValue = useDialogContext({
-    isOpen: true,
+    isOpen: false,
   });
 
   const [menuIsOpen, toggleMenu] = React.useState<boolean>(false);

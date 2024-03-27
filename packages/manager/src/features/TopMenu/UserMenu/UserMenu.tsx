@@ -59,11 +59,6 @@ export const UserMenu = React.memo(() => {
     null
   );
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
-  const {
-    getPendingRevocationToken,
-    pendingRevocationToken,
-  } = usePendingRevocationToken();
-
   const { data: account } = useAccount();
   const { data: profile } = useProfile();
   const { data: grants } = useGrants();
@@ -79,6 +74,7 @@ export const UserMenu = React.memo(() => {
   const hasParentChildAccountAccess = Boolean(flags.parentChildAccountAccess);
   const isParentUser = profile?.user_type === 'parent';
   const isProxyUser = profile?.user_type === 'proxy';
+  const { pendingRevocationToken } = usePendingRevocationToken({ isProxyUser });
   const isChildAccountAccessRestricted = useRestrictedGlobalGrantCheck({
     globalGrantType: 'child_account_access',
   });
@@ -203,10 +199,6 @@ export const UserMenu = React.memo(() => {
       return sessionContext.updateState({
         isOpen: true,
       });
-    }
-
-    if (isProxyUser) {
-      getPendingRevocationToken();
     }
 
     setIsDrawerOpen(true);

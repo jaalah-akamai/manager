@@ -56,15 +56,13 @@ const AccountLanding = () => {
   const flags = useFlags();
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
   const sessionContext = React.useContext(switchAccountSessionContext);
-  const {
-    getPendingRevocationToken,
-    pendingRevocationToken,
-  } = usePendingRevocationToken();
 
   const isAkamaiAccount = account?.billing_source === 'akamai';
   const isProxyUser = profile?.user_type === 'proxy';
   const isChildUser = profile?.user_type === 'child';
   const isParentUser = profile?.user_type === 'parent';
+
+  const { pendingRevocationToken } = usePendingRevocationToken({ isProxyUser });
 
   const isReadOnly =
     useRestrictedGlobalGrantCheck({
@@ -116,10 +114,6 @@ const AccountLanding = () => {
       return sessionContext.updateState({
         isOpen: true,
       });
-    }
-
-    if (isProxyUser) {
-      getPendingRevocationToken();
     }
 
     setIsDrawerOpen(true);

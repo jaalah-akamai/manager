@@ -5,12 +5,13 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { Duration } from 'luxon';
 import { DateTime } from 'luxon';
+import { Duration } from 'luxon';
 import { useSnackbar } from 'notistack';
+import { set } from 'ramda';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-
+import {handleRefreshTokens} from 'src/store/authentication/authentication.actions';
 import { ActionsPanel } from 'src/components/ActionsPanel/ActionsPanel';
 import { ConfirmationDialog } from 'src/components/ConfirmationDialog/ConfirmationDialog';
 import { Notice } from 'src/components/Notice/Notice';
@@ -30,12 +31,12 @@ import { usePendingRevocationToken } from 'src/hooks/usePendingRevocationToken';
 import { useAccount } from 'src/queries/account';
 import { profileQueries } from 'src/queries/profile';
 import {
-  useAppTokensQuery,
-  usePersonalAccessTokensQuery,
-} from 'src/queries/tokens';
-import {
   useRevokeAppAccessTokenMutation,
   useRevokePersonalAccessTokenMutation,
+} from 'src/queries/tokens';
+import {
+  useAppTokensQuery,
+  usePersonalAccessTokensQuery,
 } from 'src/queries/tokens';
 import { sendSwitchAccountSessionExpiryEvent } from 'src/utilities/analytics';
 import { parseAPIDate } from 'src/utilities/date';
@@ -55,6 +56,7 @@ const PREFERENCE_KEY = 'api-tokens';
 export const SessionExpirationDialog = React.memo(
   ({ currentToken, isOpen, onClose, onOpen }: SessionExpirationDialogProps) => {
     const currentTokenId = currentToken?.id;
+    const [showSessionDialog, setShowSessionDialog] = React.useState(false);
     const history = useHistory();
     const queryClient = useQueryClient();
     const [selectedTokenId, setSelectedTokenId] = React.useState<number>();
@@ -95,7 +97,17 @@ export const SessionExpirationDialog = React.memo(
     const sessionExpirationContext = React.useContext(
       _sessionExpirationContext
     );
-    const [timeRemaining, setTimeRemaining] = React.useState('');
+    const [timeRemaining, setTimeRemaining] = React.useState<{
+      minutes: number;
+      seconds: number;
+    }>({
+      minutes: 15,
+      seconds: 0,
+    });
+
+    const formattedTimeRemaining = `${timeRemaining.minutes}:${
+      timeRemaining.seconds < 10 ? '0' : ''
+    }${timeRemaining.seconds}`;
 
     const handleProxyTokenRevocation = React.useCallback(
       async (currentTokenLabel: string | undefined) => {
@@ -142,7 +154,8 @@ export const SessionExpirationDialog = React.memo(
           userType: 'proxy',
         });
 
-        queryClient.invalidateQueries(profileQueries.personalAccessTokens._def);
+        // handleRefreshTokens();
+        location.reload();
       } catch (error) {
         return setIsProxyTokenError(error);
       }
@@ -176,16 +189,11 @@ export const SessionExpirationDialog = React.memo(
         // Format the remaining time as MM:SS, ensuring minutes and seconds are correctly rounded
         const minutes = Math.max(0, Math.floor(diff.minutes ?? 0));
         const seconds = Math.max(0, Math.floor(diff.seconds ?? 0) % 60); // Ensure seconds don't exceed 60
-        const formattedTimeRemaining = `${minutes}:${
-          seconds < 10 ? '0' : ''
-        }${seconds}`;
 
-        setTimeRemaining(formattedTimeRemaining);
-
-        // Determine when to show the expiration warning
-        if (minutes <= 5 && seconds <= 59) {
-          sessionExpirationContext.updateState({ isOpen: true });
-        }
+        setTimeRemaining({
+          minutes,
+          seconds,
+        });
 
         // Set or reset the timeout to check every second for real-time countdown accuracy
         timeoutId = setTimeout(checkTokenExpiry, 1000);
@@ -202,19 +210,13 @@ export const SessionExpirationDialog = React.memo(
       };
     }, []);
 
-    // React.useEffect(() => {
-    //   if (Boolean(sessionExpirationContext.isOpen)) {
-    //     getPendingRevocationToken()
-    //   }
-    // } , [Boolean(sessionExpirationContext.isOpen)])
-
-    React.useEffect(() => {
-      console.log("OPEN");
-    }, []);
-
-    React.useEffect(() => {
-      console.log({ currentToken });
-    }, [currentToken]);
+    useEffect(() => {
+     // Determine when to show the expiration warning
+     if (timeRemaining.minutes <= 14 && timeRemaining.seconds <= 50 && !showSessionDialog) {
+        setShowSessionDialog(true);
+        onOpen();
+      }
+    }, [timeRemaining, showSessionDialog, sessionExpirationContext]);
 
     const actions = (
       <ActionsPanel
@@ -242,7 +244,7 @@ export const SessionExpirationDialog = React.memo(
           // sendSwitchAccountSessionExpiryEvent('Close');
           onClose();
         }}
-        onOpen={onOpen}
+        // onOpen={onOpen}
         actions={actions}
         data-testid="session-expiration-dialog"
         maxWidth="xs"
@@ -254,7 +256,7 @@ export const SessionExpirationDialog = React.memo(
         )}
         <Typography>
           You will be logged out due to inactivity in{' '}
-          {pluralize('minute', 'minutes', timeRemaining)}. Do you want to
+          {pluralize('minute', 'minutes', formattedTimeRemaining)}. Do you want to
           continue working?
         </Typography>
       </ConfirmationDialog>
