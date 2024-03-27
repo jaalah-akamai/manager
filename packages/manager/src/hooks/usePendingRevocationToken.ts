@@ -27,6 +27,7 @@ export const usePendingRevocationToken = () => {
 
   const getPendingRevocationToken = async () => {
     if (!personalAccessTokens?.data) {
+      console.log('No tokens available for revocation.');
       return;
     }
 
@@ -35,6 +36,7 @@ export const usePendingRevocationToken = () => {
       currentTokenWithBearer
     );
 
+    console.log('Setting new pending revocation token:', token);
     setPendingRevocationToken(token);
   };
 

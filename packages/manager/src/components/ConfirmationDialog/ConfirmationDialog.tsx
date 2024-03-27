@@ -34,6 +34,7 @@ export interface ConfirmationDialogProps extends DialogProps {
   actions?: ((props: any) => JSX.Element) | JSX.Element;
   error?: JSX.Element | string;
   onClose: () => void;
+  onOpen?: () => void;
   title: string;
 }
 
@@ -49,7 +50,15 @@ export interface ConfirmationDialogProps extends DialogProps {
 export const ConfirmationDialog = (props: ConfirmationDialogProps) => {
   const { classes } = useStyles();
 
-  const { actions, children, error, onClose, title, ...dialogProps } = props;
+  const {
+    actions,
+    children,
+    error,
+    onClose,
+    onOpen,
+    title,
+    ...dialogProps
+  } = props;
 
   return (
     <Dialog
@@ -60,6 +69,7 @@ export const ConfirmationDialog = (props: ConfirmationDialogProps) => {
         }
       }}
       PaperProps={{ role: undefined }}
+      TransitionProps={{ onEntered: onOpen }}
       className={classes.root}
       data-qa-dialog
       data-qa-drawer
