@@ -18,6 +18,7 @@ import { EmailBounceNotificationSection } from './EmailBounce';
 import { RegionStatusBanner } from './RegionStatusBanner';
 import { TaxCollectionBanner } from './TaxCollectionBanner';
 import { VerificationDetailsBanner } from './VerificationDetailsBanner';
+import { usePendingRevocationToken } from 'src/hooks/usePendingRevocationToken';
 
 export const GlobalNotifications = () => {
   const flags = useFlags();
@@ -31,6 +32,10 @@ export const GlobalNotifications = () => {
   const { data: securityQuestions } = useSecurityQuestions({
     enabled: isChildUser,
   });
+  const {
+    getPendingRevocationToken,
+    pendingRevocationTokenId,
+  } = usePendingRevocationToken();
   const suppliedMaintenances = flags.apiMaintenance?.maintenances; // The data (ID, and sometimes the title and body) we supply regarding maintenance events in LD.
 
   const hasSecurityQuestions =
@@ -52,6 +57,10 @@ export const GlobalNotifications = () => {
     [_hasDismissedNotifications, suppliedMaintenances]
   );
 
+  const handleSessionExpirationDialogOpen = () => {
+    getPendingRevocationToken();
+  };
+
   return (
     <>
       <EmailBounceNotificationSection />
@@ -69,6 +78,8 @@ export const GlobalNotifications = () => {
               sessionExpirationContext.updateState({ isOpen: false })
             }
             isOpen={Boolean(sessionExpirationContext.isOpen)}
+            onOpen={handleSessionExpirationDialogOpen}
+            tokenId={pendingRevocationTokenId}
           />
         </>
       )}

@@ -1,6 +1,12 @@
 import { Token } from '@linode/api-v4/lib/profile/types';
-import { DateTime } from 'luxon';
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { Duration } from 'luxon';
+import { DateTime } from 'luxon';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -12,12 +18,6 @@ import { Typography } from 'src/components/Typography';
 import { sessionExpirationContext as _sessionExpirationContext } from 'src/context/sessionExpirationContext';
 import { PROXY_STORAGE_EXPIRY_KEY } from 'src/features/Account/constants';
 import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
-import {
   getProxyToken,
   isTokenValid,
   setTokenInLocalStorage,
@@ -26,6 +26,7 @@ import {
 import { getTimeRemaining } from 'src/features/EntityTransfers/EntityTransfersLanding/ConfirmTransferDialog';
 import { useOrder } from 'src/hooks/useOrder';
 import { usePagination } from 'src/hooks/usePagination';
+import { usePendingRevocationToken } from 'src/hooks/usePendingRevocationToken';
 import { useAccount } from 'src/queries/account';
 import { profileQueries } from 'src/queries/profile';
 import {
@@ -45,12 +46,14 @@ import type { APIError, ChildAccountPayload, UserType } from '@linode/api-v4';
 interface SessionExpirationDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpen: () => void;
+  tokenId: number | undefined;
 }
 
 const PREFERENCE_KEY = 'api-tokens';
 
 export const SessionExpirationDialog = React.memo(
-  ({ isOpen, onClose }: SessionExpirationDialogProps) => {
+  ({ isOpen, onClose, tokenId }: SessionExpirationDialogProps) => {
     const history = useHistory();
     const queryClient = useQueryClient();
     const [selectedTokenId, setSelectedTokenId] = React.useState<number>();
@@ -81,22 +84,44 @@ export const SessionExpirationDialog = React.memo(
     const selectedToken = data?.data.find(
       (token) => token.id === selectedTokenId
     );
+
     const {
       error: revokeError,
       isLoading: revokeLoading,
-      mutateAsync,
-    } = useRevokePersonalAccessTokenMutation(selectedToken?.id ?? -1);
+      mutateAsync: revokeToken,
+    } = useRevokePersonalAccessTokenMutation(tokenId ?? -1);
 
     const sessionExpirationContext = React.useContext(
       _sessionExpirationContext
     );
     const [timeRemaining, setTimeRemaining] = React.useState('');
+
+    const handleProxyTokenRevocation = React.useCallback(
+      async (tokenId: number | undefined) => {
+        try {
+          await revokeToken();
+          enqueueSnackbar(`Successfully revoked ${tokenId}.`, {
+            variant: 'success',
+          });
+        } catch (error) {
+          enqueueSnackbar('Failed to revoke token.', {
+            variant: 'error',
+          });
+        }
+      },
+      [enqueueSnackbar, revokeToken]
+    );
+
     // Function to "refresh" the token (for demonstration)
     const refreshToken = async ({
       euuid,
+      tokenId
     }: {
       euuid: ChildAccountPayload['euuid'];
+      tokenId: number | undefined;
     }) => {
+      await handleProxyTokenRevocation(tokenId);
+
       try {
         const proxyToken = await getProxyToken({
           euuid,
@@ -124,13 +149,13 @@ export const SessionExpirationDialog = React.memo(
 
     // Function to "log out" the user
     const logout = () => {
-      mutateAsync().then(() => {
-        onClose();
-        enqueueSnackbar(`Successfully revoked ${token?.label}`, {
-          variant: 'success',
-        });
-      });
-      onClose();
+      // mutateAsync().then(() => {
+      //   onClose();
+      //   enqueueSnackbar(`Successfully revoked ${token?.label}`, {
+      //     variant: 'success',
+      //   });
+      // });
+      // onClose();
     };
 
     useEffect(() => {
@@ -176,6 +201,16 @@ export const SessionExpirationDialog = React.memo(
       };
     }, []);
 
+    // React.useEffect(() => {
+    //   if (Boolean(sessionExpirationContext.isOpen)) {
+    //     getPendingRevocationToken()
+    //   }
+    // } , [Boolean(sessionExpirationContext.isOpen)])
+
+    React.useEffect(() => {
+      console.log({ tokenId });
+    }, [tokenId]);
+
     const actions = (
       <ActionsPanel
         primaryButtonProps={{
@@ -183,6 +218,7 @@ export const SessionExpirationDialog = React.memo(
           onClick: () =>
             refreshToken({
               euuid,
+              tokenId
             }),
         }}
         secondaryButtonProps={{
