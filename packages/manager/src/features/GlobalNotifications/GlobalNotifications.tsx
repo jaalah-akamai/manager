@@ -32,7 +32,7 @@ export const GlobalNotifications = () => {
   const { data: securityQuestions } = useSecurityQuestions({
     enabled: isChildUser,
   });
-  const { pendingRevocationToken } = usePendingRevocationToken({ isProxyUser });
+  // const { pendingRevocationToken } = usePendingRevocationToken({ isProxyUser });
   const suppliedMaintenances = flags.apiMaintenance?.maintenances; // The data (ID, and sometimes the title and body) we supply regarding maintenance events in LD.
 
   const hasSecurityQuestions =
@@ -54,19 +54,19 @@ export const GlobalNotifications = () => {
     [_hasDismissedNotifications, suppliedMaintenances]
   );
 
-  const handleSessionExpirationDialogOpen = () => {
-    console.log('here')
-    sessionExpirationContext.updateState({ isOpen: true });
-  };
+  // const handleSessionExpirationDialogOpen = () => {
+  //   console.log('here')
+  //   sessionExpirationContext.updateState({ isOpen: true });
+  // };
 
   // React.useEffect(() => {
   //   getPendingRevocationToken();
   //   console.log('>>>?', personalAccessTokens?.data)
   // }, [])
 
-  React.useEffect(() => {
-    console.log({pendingRevocationToken})
-  }, [pendingRevocationToken])
+  // React.useEffect(() => {
+  //   console.log({pendingRevocationToken})
+  // }, [pendingRevocationToken])
 
   return (
     <>
@@ -84,9 +84,9 @@ export const GlobalNotifications = () => {
             onClose={() =>
               sessionExpirationContext.updateState({ isOpen: false })
             }
-            currentToken={pendingRevocationToken}
+            // currentToken={pendingRevocationToken}
             isOpen={Boolean(sessionExpirationContext.isOpen)}
-            onOpen={handleSessionExpirationDialogOpen}
+            // onOpen={handleSessionExpirationDialogOpen}
           />
         </>
       )}

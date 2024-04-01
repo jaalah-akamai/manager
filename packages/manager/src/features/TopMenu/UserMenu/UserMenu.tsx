@@ -24,7 +24,7 @@ import { useParentTokenManagement } from 'src/features/Account/SwitchAccounts/us
 import { useFlags } from 'src/hooks/useFlags';
 import { usePendingRevocationToken } from 'src/hooks/usePendingRevocationToken';
 import { useRestrictedGlobalGrantCheck } from 'src/hooks/useRestrictedGlobalGrantCheck';
-import { useAccount } from 'src/queries/account';
+import { useAccount } from 'src/queries/account/account';
 import { useGrants, useProfile } from 'src/queries/profile';
 import { sendSwitchAccountEvent } from 'src/utilities/analytics';
 import { getStorage, setStorage } from 'src/utilities/storage';
@@ -59,6 +59,11 @@ export const UserMenu = React.memo(() => {
     null
   );
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
+  const {
+    getPendingRevocationToken,
+    pendingRevocationToken,
+  } = usePendingRevocationToken();
+
   const { data: account } = useAccount();
   const { data: profile } = useProfile();
   const { data: grants } = useGrants();
@@ -74,7 +79,6 @@ export const UserMenu = React.memo(() => {
   const hasParentChildAccountAccess = Boolean(flags.parentChildAccountAccess);
   const isParentUser = profile?.user_type === 'parent';
   const isProxyUser = profile?.user_type === 'proxy';
-  const { pendingRevocationToken } = usePendingRevocationToken({ isProxyUser });
   const isChildAccountAccessRestricted = useRestrictedGlobalGrantCheck({
     globalGrantType: 'child_account_access',
   });
@@ -199,6 +203,10 @@ export const UserMenu = React.memo(() => {
       return sessionContext.updateState({
         isOpen: true,
       });
+    }
+
+    if (isProxyUser) {
+      getPendingRevocationToken();
     }
 
     setIsDrawerOpen(true);
@@ -337,10 +345,10 @@ export const UserMenu = React.memo(() => {
         </Stack>
       </Popover>
       <SwitchAccountDrawer
-        isProxyUser={isProxyUser}
         onClose={() => setIsDrawerOpen(false)}
         open={isDrawerOpen}
         proxyToken={pendingRevocationToken}
+        userType={profile?.user_type}
       />
     </>
   );

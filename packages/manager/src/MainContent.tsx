@@ -10,6 +10,7 @@ import { Box } from 'src/components/Box';
 import { MainContentBanner } from 'src/components/MainContentBanner';
 import { MaintenanceScreen } from 'src/components/MaintenanceScreen';
 import { NotFound } from 'src/components/NotFound';
+import { SIDEBAR_WIDTH } from 'src/components/PrimaryNav/SideMenu';
 import { SideMenu } from 'src/components/PrimaryNav/SideMenu';
 import { SuspenseLoader } from 'src/components/SuspenseLoader';
 import { useDialogContext } from 'src/context/useDialogContext';
@@ -76,7 +77,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
   content: {
     flex: 1,
     [theme.breakpoints.up('md')]: {
-      marginLeft: 190,
+      marginLeft: SIDEBAR_WIDTH,
     },
     transition: 'margin-left .1s linear',
   },
@@ -201,7 +202,7 @@ export const MainContent = () => {
 
   const SessionExpirationProvider = sessionExpirationContext.Provider;
   const sessionExpirationContextValue = useDialogContext({
-    isOpen: false,
+    isOpen: true,
   });
 
   const [menuIsOpen, toggleMenu] = React.useState<boolean>(false);
@@ -229,12 +230,6 @@ export const MainContent = () => {
       account?.capabilities ?? []
     ) ||
     (checkRestrictedUser && !enginesLoading && !enginesError);
-
-  const showVPCs = isFeatureEnabled(
-    'VPCs',
-    Boolean(flags.vpc),
-    account?.capabilities ?? []
-  );
 
   const { isACLBEnabled } = useIsACLBEnabled();
 
@@ -390,7 +385,7 @@ export const MainContent = () => {
                             {flags.selfServeBetas && (
                               <Route component={BetaRoutes} path="/betas" />
                             )}
-                            {showVPCs && <Route component={VPC} path="/vpcs" />}
+                            <Route component={VPC} path="/vpcs" />
                             <Redirect exact from="/" to={defaultRoot} />
                             {/** We don't want to break any bookmarks. This can probably be removed eventually. */}
                             <Redirect from="/dashboard" to={defaultRoot} />

@@ -1,10 +1,7 @@
-import { createChildAccountPersonalAccessToken } from '@linode/api-v4';
-
 import { getStorage, setStorage } from 'src/utilities/storage';
 
 import { ADMINISTRATOR, PARENT_USER } from './constants';
 
-import type { APIError, ChildAccountPayload, UserType } from '@linode/api-v4';
 import type { GlobalGrantTypes, GrantLevel, Token } from '@linode/api-v4';
 import type { GrantTypeMap } from 'src/features/Account/types';
 
@@ -69,17 +66,28 @@ export const getRestrictedResourceText = ({
   return message;
 };
 
+// TODO: Parent/Child: FOR MSW ONLY, REMOVE WHEN API IS READY
+// ================================================================
+// const mockExpiredTime =
+//   'Mon Nov 20 2023 22:50:52 GMT-0800 (Pacific Standard Time)';
+// ================================================================
+
 /**
  * Determine whether the tokens used for switchable accounts are still valid.
  */
-export const isTokenValid = (key: string): boolean => {
-  if (!getStorage(key)) {
-    return false;
-  }
-
+export const isTokenValid = (): boolean => {
   const now = new Date().toISOString();
 
-  if (now > new Date(getStorage(key)).toISOString()) {
+  // From a proxy user, check whether parent token is still valid before switching.
+  if (
+    now >
+    new Date(getStorage('authentication/parent_token/expire')).toISOString()
+
+    // TODO: Parent/Child: FOR MSW ONLY, REMOVE WHEN API IS READY
+    // ================================================================
+    // new Date(mockExpiredTime).toISOString()
+    // ================================================================
+  ) {
     return false;
   }
   return true;
@@ -133,41 +141,16 @@ export const updateCurrentTokenBasedOnUserType = ({
  * typically used when switching between accounts. Searching local storage
  * for the token is necessary because the token is not persisted in state.
  */
-export async function getPersonalAccessTokenForRevocation(
-  tokens: Token[],
+export function getPersonalAccessTokenForRevocation(
+  tokens: Token[] | undefined,
   currentTokenWithBearer: string
-): Promise<Token | undefined> {
+): Token | undefined {
+  if (!tokens) {
+    return;
+  }
   return tokens.find(
     (token) =>
       token.token &&
       currentTokenWithBearer.replace('Bearer ', '').startsWith(token.token)
   );
 }
-
-/**
- * Headers are required for proxy users when obtaining a proxy token.
- * For 'proxy' userType, use the stored parent token in the request.
- */
-export const getProxyToken = async ({
-  euuid,
-  token,
-  userType,
-}: {
-  euuid: ChildAccountPayload['euuid'];
-  token: string;
-  userType: Omit<UserType, 'child'>;
-}) => {
-  try {
-    return await createChildAccountPersonalAccessToken({
-      euuid,
-      headers:
-        userType === 'proxy'
-          ? {
-              Authorization: token,
-            }
-          : undefined,
-    });
-  } catch (error) {
-    return error;
-  }
-};

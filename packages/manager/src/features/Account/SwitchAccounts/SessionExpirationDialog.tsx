@@ -1,17 +1,8 @@
 import { Token } from '@linode/api-v4/lib/profile/types';
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { DateTime } from 'luxon';
-import { Duration } from 'luxon';
 import { useSnackbar } from 'notistack';
-import { set } from 'ramda';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import {handleRefreshTokens} from 'src/store/authentication/authentication.actions';
+
 import { ActionsPanel } from 'src/components/ActionsPanel/ActionsPanel';
 import { ConfirmationDialog } from 'src/components/ConfirmationDialog/ConfirmationDialog';
 import { Notice } from 'src/components/Notice/Notice';
@@ -19,84 +10,65 @@ import { Typography } from 'src/components/Typography';
 import { sessionExpirationContext as _sessionExpirationContext } from 'src/context/sessionExpirationContext';
 import { PROXY_STORAGE_EXPIRY_KEY } from 'src/features/Account/constants';
 import {
-  getProxyToken,
-  isTokenValid,
+  getPersonalAccessTokenForRevocation,
   setTokenInLocalStorage,
   updateCurrentTokenBasedOnUserType,
 } from 'src/features/Account/utils';
-import { getTimeRemaining } from 'src/features/EntityTransfers/EntityTransfersLanding/ConfirmTransferDialog';
-import { useOrder } from 'src/hooks/useOrder';
-import { usePagination } from 'src/hooks/usePagination';
-import { usePendingRevocationToken } from 'src/hooks/usePendingRevocationToken';
-import { useAccount } from 'src/queries/account';
-import { profileQueries } from 'src/queries/profile';
+import { useCurrentToken } from 'src/hooks/useAuthentication';
 import {
-  useRevokeAppAccessTokenMutation,
+  useAccount,
+  useCreateChildAccountPersonalAccessTokenMutation,
+} from 'src/queries/account/account';
+import {
+  usePersonalAccessTokensQuery,
   useRevokePersonalAccessTokenMutation,
 } from 'src/queries/tokens';
-import {
-  useAppTokensQuery,
-  usePersonalAccessTokensQuery,
-} from 'src/queries/tokens';
-import { sendSwitchAccountSessionExpiryEvent } from 'src/utilities/analytics';
 import { parseAPIDate } from 'src/utilities/date';
 import { pluralize } from 'src/utilities/pluralize';
-import { getStorage, setStorage } from 'src/utilities/storage';
+import { getStorage } from 'src/utilities/storage';
 
-import type { APIError, ChildAccountPayload, UserType } from '@linode/api-v4';
+import type { APIError, ChildAccountPayload } from '@linode/api-v4';
+
 interface SessionExpirationDialogProps {
-  currentToken: Token | undefined;
   isOpen: boolean;
   onClose: () => void;
-  onOpen: () => void;
 }
 
-const PREFERENCE_KEY = 'api-tokens';
-
 export const SessionExpirationDialog = React.memo(
-  ({ currentToken, isOpen, onClose, onOpen }: SessionExpirationDialogProps) => {
-    const currentTokenId = currentToken?.id;
-    const [showSessionDialog, setShowSessionDialog] = React.useState(false);
+  ({ isOpen, onClose }: SessionExpirationDialogProps) => {
+    const { data: personalAccessTokens } = usePersonalAccessTokensQuery();
     const history = useHistory();
-    const queryClient = useQueryClient();
-    const [selectedTokenId, setSelectedTokenId] = React.useState<number>();
-    const [isProxyTokenError, setIsProxyTokenError] = React.useState<
-      APIError[]
-    >([]);
+    const [continueWorkingLoading, setContinueWorkingLoading] = React.useState(
+      false
+    );
+    const [logoutLoading, setLogoutLoading] = React.useState(false);
+    const [error, setError] = React.useState<APIError[]>([]);
     const { enqueueSnackbar } = useSnackbar();
-    const { handleOrderChange, order, orderBy } = useOrder(
-      {
-        order: 'desc',
-        orderBy: 'created',
-      },
-      `${PREFERENCE_KEY}-order}`,
-      'token'
-    );
-    const pagination = usePagination(1, PREFERENCE_KEY);
-    const { data, error, isLoading } = usePersonalAccessTokensQuery(
-      {
-        page: pagination.page,
-        page_size: pagination.pageSize,
-      },
-      { '+order': order, '+order_by': orderBy }
-    );
 
     const { data: account } = useAccount();
     const euuid = account?.euuid ?? '';
 
-    const selectedToken = data?.data.find(
-      (token) => token.id === selectedTokenId
+    const currentTokenWithBearer = useCurrentToken() ?? '';
+
+    const pendingRevocationToken = getPersonalAccessTokenForRevocation(
+      personalAccessTokens?.data,
+      currentTokenWithBearer
     );
 
     const {
-      error: revokeError,
-      isLoading: revokeLoading,
-      mutateAsync: revokeToken,
-    } = useRevokePersonalAccessTokenMutation(currentTokenId ?? -1);
+      error: createProxyTokenError,
+      mutateAsync: createProxyToken,
+    } = useCreateChildAccountPersonalAccessTokenMutation({
+      euuid,
+      headers: {
+        Authorization: getStorage('authentication/parent_token/token'),
+      },
+    });
 
-    const sessionExpirationContext = React.useContext(
-      _sessionExpirationContext
-    );
+    const {
+      mutateAsync: revokeProxyToken,
+    } = useRevokePersonalAccessTokenMutation(pendingRevocationToken?.id ?? -1);
+
     const [timeRemaining, setTimeRemaining] = React.useState<{
       minutes: number;
       seconds: number;
@@ -109,37 +81,43 @@ export const SessionExpirationDialog = React.memo(
       timeRemaining.seconds < 10 ? '0' : ''
     }${timeRemaining.seconds}`;
 
-    const handleProxyTokenRevocation = React.useCallback(
-      async (currentTokenLabel: string | undefined) => {
-        try {
-          await revokeToken();
-          enqueueSnackbar(`Successfully revoked ${currentTokenLabel}.`, {
-            variant: 'success',
-          });
-        } catch (error) {
-          enqueueSnackbar(`Failed to revoke ${currentTokenLabel}.`, {
-            variant: 'error',
-          });
-        }
-      },
-      [enqueueSnackbar, revokeToken]
-    );
-
-    // Function to "refresh" the token (for demonstration)
-    const refreshToken = async ({
-      currentTokenLabel,
-      euuid,
+    const handleRevokeToken = async ({
+      tokenLabel,
     }: {
-      currentTokenLabel: string | undefined;
-      euuid: ChildAccountPayload['euuid'];
+      tokenLabel: string | undefined;
     }) => {
-      await handleProxyTokenRevocation(currentTokenLabel);
+      try {
+        await revokeProxyToken();
+        enqueueSnackbar(`Successfully revoked ${tokenLabel}.`, {
+          variant: 'success',
+        });
+      } catch (error) {
+        enqueueSnackbar(`Failed to revoke ${tokenLabel}.`, {
+          variant: 'error',
+        });
+        throw error;
+      }
+    };
+
+    const handleRefreshToken = async ({
+      euuid,
+      pendingRevocationToken,
+    }: {
+      euuid: ChildAccountPayload['euuid'];
+      pendingRevocationToken: Token | undefined;
+    }) => {
+      setContinueWorkingLoading(true);
 
       try {
-        const proxyToken = await getProxyToken({
+        await handleRevokeToken({
+          tokenLabel: pendingRevocationToken?.label ?? '',
+        });
+
+        const proxyToken = await createProxyToken({
           euuid,
-          token: getStorage('authentication/parent_token/token'),
-          userType: 'proxy',
+          headers: {
+            Authorization: getStorage('authentication/parent_token/token'),
+          },
         });
 
         setTokenInLocalStorage({
@@ -154,22 +132,30 @@ export const SessionExpirationDialog = React.memo(
           userType: 'proxy',
         });
 
-        // handleRefreshTokens();
         location.reload();
       } catch (error) {
-        return setIsProxyTokenError(error);
+        setError(error);
+      } finally {
+        setContinueWorkingLoading(false);
       }
     };
 
-    // Function to "log out" the user
-    const logout = () => {
-      // mutateAsync().then(() => {
-      //   onClose();
-      //   enqueueSnackbar(`Successfully revoked ${token?.label}`, {
-      //     variant: 'success',
-      //   });
-      // });
-      // onClose();
+    const handleLogout = async ({
+      pendingRevocationToken,
+    }: {
+      pendingRevocationToken: Token | undefined;
+    }) => {
+      setLogoutLoading(true);
+      try {
+        await handleRevokeToken({
+          tokenLabel: pendingRevocationToken?.label ?? '',
+        });
+        history.push('/logout');
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLogoutLoading(false);
+      }
     };
 
     useEffect(() => {
@@ -210,30 +196,21 @@ export const SessionExpirationDialog = React.memo(
       };
     }, []);
 
-    useEffect(() => {
-     // Determine when to show the expiration warning
-     if (timeRemaining.minutes <= 14 && timeRemaining.seconds <= 50 && !showSessionDialog) {
-        setShowSessionDialog(true);
-        onOpen();
-      }
-    }, [timeRemaining, showSessionDialog, sessionExpirationContext]);
-
     const actions = (
       <ActionsPanel
         primaryButtonProps={{
           label: 'Continue Working',
+          loading: continueWorkingLoading,
           onClick: () =>
-            refreshToken({
-              currentTokenLabel: currentToken?.label,
+            handleRefreshToken({
               euuid,
+              pendingRevocationToken,
             }),
         }}
         secondaryButtonProps={{
           label: 'Log Out',
-          onClick: () => {
-            // sendSwitchAccountSessionExpiryEvent('Refresh');
-            history.push('/logout');
-          },
+          loading: logoutLoading,
+          onClick: () => handleLogout({ pendingRevocationToken }),
         }}
       />
     );
@@ -241,23 +218,20 @@ export const SessionExpirationDialog = React.memo(
     return (
       <ConfirmationDialog
         onClose={() => {
-          // sendSwitchAccountSessionExpiryEvent('Close');
           onClose();
         }}
-        // onOpen={onOpen}
         actions={actions}
         data-testid="session-expiration-dialog"
+        error={createProxyTokenError?.[0].reason}
         maxWidth="xs"
         open={isOpen}
         title="Session is expiring soon!"
       >
-        {isProxyTokenError.length > 0 && (
-          <Notice text={isProxyTokenError[0].reason} variant="error" />
-        )}
+        {error.length > 0 && <Notice text={error[0].reason} variant="error" />}
         <Typography>
-          You will be logged out due to inactivity in{' '}
-          {pluralize('minute', 'minutes', formattedTimeRemaining)}. Do you want to
-          continue working?
+          Your session will expire in{' '}
+          {pluralize('minute', 'minutes', formattedTimeRemaining)}. Do you want
+          to continue working?
         </Typography>
       </ConfirmationDialog>
     );
