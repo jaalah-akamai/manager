@@ -7,7 +7,7 @@ import { Notice } from 'src/components/Notice/Notice';
 import { Typography } from 'src/components/Typography';
 import { PARENT_USER_SESSION_EXPIRED } from 'src/features/Account/constants';
 import {
-  isTokenValid,
+  isParentTokenValid,
   updateCurrentTokenBasedOnUserType,
 } from 'src/features/Account/utils';
 import { useCurrentToken } from 'src/hooks/useAuthentication';
@@ -113,7 +113,7 @@ export const SwitchAccountDrawer = (props: Props) => {
   );
 
   const handleSwitchToParentAccount = React.useCallback(async () => {
-    if (!isTokenValid()) {
+    if (!isParentTokenValid()) {
       const expiredTokenError: APIError = {
         field: 'token',
         reason: PARENT_USER_SESSION_EXPIRED,

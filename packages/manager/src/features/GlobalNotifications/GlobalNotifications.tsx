@@ -7,7 +7,6 @@ import { switchAccountSessionContext } from 'src/context/switchAccountSessionCon
 import { SwitchAccountSessionDialog } from 'src/features/Account/SwitchAccounts/SwitchAccountSessionDialog';
 import { useDismissibleNotifications } from 'src/hooks/useDismissibleNotifications';
 import { useFlags } from 'src/hooks/useFlags';
-import { usePendingRevocationToken } from 'src/hooks/usePendingRevocationToken';
 import { useProfile } from 'src/queries/profile';
 import { useSecurityQuestions } from 'src/queries/securityQuestions';
 
@@ -19,7 +18,6 @@ import { EmailBounceNotificationSection } from './EmailBounce';
 import { RegionStatusBanner } from './RegionStatusBanner';
 import { TaxCollectionBanner } from './TaxCollectionBanner';
 import { VerificationDetailsBanner } from './VerificationDetailsBanner';
-import { usePersonalAccessTokensQuery } from 'src/queries/tokens';
 export const GlobalNotifications = () => {
   const flags = useFlags();
   const { data: profile } = useProfile();
@@ -32,7 +30,6 @@ export const GlobalNotifications = () => {
   const { data: securityQuestions } = useSecurityQuestions({
     enabled: isChildUser,
   });
-  // const { pendingRevocationToken } = usePendingRevocationToken({ isProxyUser });
   const suppliedMaintenances = flags.apiMaintenance?.maintenances; // The data (ID, and sometimes the title and body) we supply regarding maintenance events in LD.
 
   const hasSecurityQuestions =
@@ -54,20 +51,6 @@ export const GlobalNotifications = () => {
     [_hasDismissedNotifications, suppliedMaintenances]
   );
 
-  // const handleSessionExpirationDialogOpen = () => {
-  //   console.log('here')
-  //   sessionExpirationContext.updateState({ isOpen: true });
-  // };
-
-  // React.useEffect(() => {
-  //   getPendingRevocationToken();
-  //   console.log('>>>?', personalAccessTokens?.data)
-  // }, [])
-
-  // React.useEffect(() => {
-  //   console.log({pendingRevocationToken})
-  // }, [pendingRevocationToken])
-
   return (
     <>
       <EmailBounceNotificationSection />
@@ -84,9 +67,7 @@ export const GlobalNotifications = () => {
             onClose={() =>
               sessionExpirationContext.updateState({ isOpen: false })
             }
-            // currentToken={pendingRevocationToken}
             isOpen={Boolean(sessionExpirationContext.isOpen)}
-            // onOpen={handleSessionExpirationDialogOpen}
           />
         </>
       )}

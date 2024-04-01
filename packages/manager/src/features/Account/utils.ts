@@ -75,7 +75,7 @@ export const getRestrictedResourceText = ({
 /**
  * Determine whether the tokens used for switchable accounts are still valid.
  */
-export const isTokenValid = (): boolean => {
+export const isParentTokenValid = (): boolean => {
   const now = new Date().toISOString();
 
   // From a proxy user, check whether parent token is still valid before switching.
