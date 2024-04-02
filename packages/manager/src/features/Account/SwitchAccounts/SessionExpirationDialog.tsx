@@ -6,7 +6,6 @@ import { ActionsPanel } from 'src/components/ActionsPanel/ActionsPanel';
 import { ConfirmationDialog } from 'src/components/ConfirmationDialog/ConfirmationDialog';
 import { Typography } from 'src/components/Typography';
 import { sessionExpirationContext as _sessionExpirationContext } from 'src/context/sessionExpirationContext';
-import { PROXY_STORAGE_EXPIRY_KEY } from 'src/features/Account/constants';
 import { useParentChildAuthentication } from 'src/features/Account/SwitchAccounts/useParentChildAuthentication';
 import {
   getPersonalAccessTokenForRevocation,
