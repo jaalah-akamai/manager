@@ -9,7 +9,7 @@ import { PARENT_USER_SESSION_EXPIRED } from 'src/features/Account/constants';
 import {
   isParentTokenValid,
   updateCurrentTokenBasedOnUserType,
-} from 'src/features/Account/utils';
+} from 'src/features/Account/SwitchAccounts/utils';
 import { useCurrentToken } from 'src/hooks/useAuthentication';
 import { useRevokePersonalAccessTokenMutation } from 'src/queries/tokens';
 import { sendSwitchToParentAccountEvent } from 'src/utilities/analytics';

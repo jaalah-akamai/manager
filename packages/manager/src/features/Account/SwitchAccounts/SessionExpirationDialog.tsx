@@ -11,7 +11,7 @@ import { enqueueTokenRevocation } from 'src/features/Account/SwitchAccounts/util
 import {
   getPersonalAccessTokenForRevocation,
   setTokenInLocalStorage,
-} from 'src/features/Account/utils';
+} from 'src/features/Account/SwitchAccounts/utils';
 import { useCurrentToken } from 'src/hooks/useAuthentication';
 import { useAccount } from 'src/queries/account/account';
 import { usePersonalAccessTokensQuery } from 'src/queries/tokens';

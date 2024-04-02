@@ -1,9 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
 import {
   isParentTokenValid,
   updateCurrentTokenBasedOnUserType,
-} from 'src/features/Account/utils';
+} from 'src/features/Account/SwitchAccounts/utils';
 import { useCreateChildAccountPersonalAccessTokenMutation } from 'src/queries/account/account';
 import { useRevokePersonalAccessTokenMutation } from 'src/queries/tokens';
 import { getStorage } from 'src/utilities/storage';

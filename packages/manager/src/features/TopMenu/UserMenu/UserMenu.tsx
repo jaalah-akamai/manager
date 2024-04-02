@@ -20,7 +20,7 @@ import { Typography } from 'src/components/Typography';
 import { switchAccountSessionContext } from 'src/context/switchAccountSessionContext';
 import { SwitchAccountButton } from 'src/features/Account/SwitchAccountButton';
 import { SwitchAccountDrawer } from 'src/features/Account/SwitchAccountDrawer';
-import { useParentTokenManagement } from 'src/features/Account/SwitchAccounts/useParentTokenManagement';
+import { useIsParentTokenExpired } from 'src/features/Account/SwitchAccounts/useIsParentTokenExpired';
 import { useFlags } from 'src/hooks/useFlags';
 import { usePendingRevocationToken } from 'src/hooks/usePendingRevocationToken';
 import { useRestrictedGlobalGrantCheck } from 'src/hooks/useRestrictedGlobalGrantCheck';
@@ -94,7 +94,7 @@ export const UserMenu = React.memo(() => {
     profile,
   });
 
-  const { isParentTokenExpired } = useParentTokenManagement({ isProxyUser });
+  const { isParentTokenExpired } = useIsParentTokenExpired({ isProxyUser });
 
   // Used for fetching parent profile and account data by making a request with the parent's token.
   const proxyHeaders =
