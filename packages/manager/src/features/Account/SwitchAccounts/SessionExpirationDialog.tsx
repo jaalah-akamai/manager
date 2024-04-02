@@ -1,33 +1,23 @@
-import { Token } from '@linode/api-v4/lib/profile/types';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { ActionsPanel } from 'src/components/ActionsPanel/ActionsPanel';
 import { ConfirmationDialog } from 'src/components/ConfirmationDialog/ConfirmationDialog';
-import { Notice } from 'src/components/Notice/Notice';
 import { Typography } from 'src/components/Typography';
 import { PROXY_STORAGE_EXPIRY_KEY } from 'src/features/Account/constants';
+import { useParentChildAuthentication } from 'src/features/Account/SwitchAccounts/useParentChildAuthentication';
+import { enqueueTokenRevocation } from 'src/features/Account/SwitchAccounts/utils';
 import {
   getPersonalAccessTokenForRevocation,
-  isParentTokenValid,
   setTokenInLocalStorage,
-  updateCurrentTokenBasedOnUserType,
 } from 'src/features/Account/utils';
 import { useCurrentToken } from 'src/hooks/useAuthentication';
-import {
-  useAccount,
-  useCreateChildAccountPersonalAccessTokenMutation,
-} from 'src/queries/account/account';
-import {
-  usePersonalAccessTokensQuery,
-  useRevokePersonalAccessTokenMutation,
-} from 'src/queries/tokens';
+import { useAccount } from 'src/queries/account/account';
+import { usePersonalAccessTokensQuery } from 'src/queries/tokens';
 import { parseAPIDate } from 'src/utilities/date';
 import { pluralize } from 'src/utilities/pluralize';
 import { getStorage, setStorage } from 'src/utilities/storage';
-
-import type { APIError, ChildAccountPayload } from '@linode/api-v4';
 
 interface SessionExpirationDialogProps {
   isOpen: boolean;
@@ -36,7 +26,6 @@ interface SessionExpirationDialogProps {
 
 export const SessionExpirationDialog = React.memo(
   ({ isOpen, onClose }: SessionExpirationDialogProps) => {
-    const [error, setError] = React.useState<APIError[]>([]);
     const [timeRemaining, setTimeRemaining] = React.useState<{
       minutes: number;
       seconds: number;
@@ -61,58 +50,46 @@ export const SessionExpirationDialog = React.memo(
       personalAccessTokens?.data,
       currentTokenWithBearer
     );
+    const pendingRevocationTokenLabel = pendingRevocationToken?.label;
 
     const {
-      error: createProxyTokenError,
-      mutateAsync: createProxyToken,
-    } = useCreateChildAccountPersonalAccessTokenMutation({
+      createToken,
+      createTokenError,
+      revokeToken,
+      revokeTokenError,
+      updateToken,
+      validateParentToken,
+    } = useParentChildAuthentication({
       euuid,
-      headers: {
-        Authorization: getStorage('authentication/parent_token/token'),
-      },
+      tokenIdToRevoke: pendingRevocationToken?.id ?? -1,
     });
-    const {
-      mutateAsync: revokeProxyToken,
-    } = useRevokePersonalAccessTokenMutation(pendingRevocationToken?.id ?? -1);
+
+    const revokeTokenErrorReason = revokeTokenError?.[0]?.reason;
+    const createTokenErrorReason = createTokenError?.[0]?.reason;
 
     const formattedTimeRemaining = `${timeRemaining.minutes}:${
       timeRemaining.seconds < 10 ? '0' : ''
     }${timeRemaining.seconds}`;
 
-    const handleRevokeToken = async ({
-      tokenLabel,
-    }: {
-      tokenLabel: string | undefined;
-    }) => {
-      try {
-        await revokeProxyToken();
-        enqueueSnackbar(`Successfully revoked ${tokenLabel}.`, {
-          variant: 'success',
-        });
-      } catch (error) {
-        enqueueSnackbar(`Failed to revoke ${tokenLabel}.`, {
-          variant: 'error',
-        });
-        throw error;
-      }
-    };
+    const handleEnqueueTokenRevocation = React.useCallback(async () => {
+      await enqueueTokenRevocation({
+        enqueueSnackbar,
+        revokeToken,
+        tokenLabel: pendingRevocationTokenLabel,
+      });
+    }, [enqueueSnackbar, pendingRevocationTokenLabel, revokeToken]);
 
-    const handleRefreshToken = async ({
-      euuid,
-    }: {
-      euuid: ChildAccountPayload['euuid'];
-    }) => {
+    const handleRefreshToken = async () => {
       setContinueWorkingLoading(true);
 
       try {
-        await revokeProxyToken();
+        await revokeToken();
 
-        const proxyToken = await createProxyToken({
-          euuid,
-          headers: {
-            Authorization: getStorage('authentication/parent_token/token'),
-          },
-        });
+        const proxyToken = await createToken();
+
+        if (!proxyToken) {
+          throw new Error(createTokenErrorReason);
+        }
 
         setTokenInLocalStorage({
           prefix: 'authentication/proxy_token',
@@ -122,44 +99,35 @@ export const SessionExpirationDialog = React.memo(
           },
         });
 
-        updateCurrentTokenBasedOnUserType({
-          userType: 'proxy',
-        });
+        updateToken({ userType: 'proxy' });
 
         location.reload();
       } catch (error) {
-        setError(error);
+        // Swallow error
       } finally {
         setContinueWorkingLoading(false);
       }
     };
 
-    const handleLogout = async ({
-      pendingRevocationToken,
-    }: {
-      pendingRevocationToken: Token | undefined;
-    }) => {
+    const handleLogout = async () => {
       setLogoutLoading(true);
 
-      if (!isParentTokenValid()) {
+      if (!validateParentToken()) {
         history.push('/logout');
       }
 
       try {
-        // Revoke proxy token before switching to parent account.
-        await handleRevokeToken({
-          tokenLabel: pendingRevocationToken?.label,
-        });
+        await handleEnqueueTokenRevocation();
 
-        updateCurrentTokenBasedOnUserType({ userType: 'parent' });
+        updateToken({ userType: 'parent' });
 
         // Reset flag for proxy user to display success toast once.
-        setStorage('proxy_user', 'false');
+        setStorage('is_proxy_user', 'false');
 
         onClose();
         refreshPage();
       } catch (error) {
-        setError(error);
+        // Swallow error
       } finally {
         setLogoutLoading(false);
       }
@@ -212,15 +180,12 @@ export const SessionExpirationDialog = React.memo(
         primaryButtonProps={{
           label: 'Continue Working',
           loading: continueWorkingLoading,
-          onClick: () =>
-            handleRefreshToken({
-              euuid,
-            }),
+          onClick: handleRefreshToken,
         }}
         secondaryButtonProps={{
           label: 'Log Out',
           loading: logoutLoading,
-          onClick: () => handleLogout({ pendingRevocationToken }),
+          onClick: handleLogout,
         }}
       />
     );
@@ -232,12 +197,11 @@ export const SessionExpirationDialog = React.memo(
         }}
         actions={actions}
         data-testid="session-expiration-dialog"
-        error={createProxyTokenError?.[0].reason}
+        error={createTokenErrorReason || revokeTokenErrorReason}
         maxWidth="xs"
         open={isOpen}
         title="Session is expiring soon!"
       >
-        {error.length > 0 && <Notice text={error[0].reason} variant="error" />}
         <Typography>
           Your session will expire in{' '}
           {pluralize('minute', 'minutes', formattedTimeRemaining)}. Do you want

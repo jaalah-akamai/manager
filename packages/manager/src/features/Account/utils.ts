@@ -66,12 +66,6 @@ export const getRestrictedResourceText = ({
   return message;
 };
 
-// TODO: Parent/Child: FOR MSW ONLY, REMOVE WHEN API IS READY
-// ================================================================
-// const mockExpiredTime =
-//   'Mon Nov 20 2023 22:50:52 GMT-0800 (Pacific Standard Time)';
-// ================================================================
-
 /**
  * Determine whether the tokens used for switchable accounts are still valid.
  */
@@ -82,11 +76,6 @@ export const isParentTokenValid = (): boolean => {
   if (
     now >
     new Date(getStorage('authentication/parent_token/expire')).toISOString()
-
-    // TODO: Parent/Child: FOR MSW ONLY, REMOVE WHEN API IS READY
-    // ================================================================
-    // new Date(mockExpiredTime).toISOString()
-    // ================================================================
   ) {
     return false;
   }

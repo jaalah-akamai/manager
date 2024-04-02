@@ -17,6 +17,7 @@ import { getStorage, setStorage } from 'src/utilities/storage';
 
 import { ChildAccountList } from './SwitchAccounts/ChildAccountList';
 import {
+  enqueueTokenRevocation,
   updateParentTokenInLocalStorage,
   updateProxyTokenInLocalStorage,
 } from './SwitchAccounts/utils';
@@ -52,17 +53,12 @@ export const SwitchAccountDrawer = (props: Props) => {
   const currentParentTokenWithBearer =
     getStorage('authentication/parent_token/token') ?? '';
 
-  const handleProxyTokenRevocation = React.useCallback(async () => {
-    try {
-      await revokeToken();
-      enqueueSnackbar(`Successfully revoked ${proxyTokenLabel}.`, {
-        variant: 'success',
-      });
-    } catch (error) {
-      enqueueSnackbar(`Failed to revoke ${proxyTokenLabel}.`, {
-        variant: 'error',
-      });
-    }
+  const handleEnqueueTokenRevocation = React.useCallback(async () => {
+    enqueueTokenRevocation({
+      enqueueSnackbar,
+      revokeToken,
+      tokenLabel: proxyTokenLabel,
+    });
   }, [enqueueSnackbar, proxyTokenLabel, revokeToken]);
 
   const refreshPage = React.useCallback(() => {
@@ -87,7 +83,7 @@ export const SwitchAccountDrawer = (props: Props) => {
 
       if (isProxyUser) {
         // Revoke proxy token before switching accounts.
-        await handleProxyTokenRevocation();
+        await handleEnqueueTokenRevocation();
       } else {
         // Before switching to a child account, update the parent token in local storage.
         updateParentTokenInLocalStorage({ currentTokenWithBearer });
@@ -109,7 +105,7 @@ export const SwitchAccountDrawer = (props: Props) => {
       onClose(event);
       refreshPage();
     },
-    [handleProxyTokenRevocation, refreshPage]
+    [handleEnqueueTokenRevocation, refreshPage]
   );
 
   const handleSwitchToParentAccount = React.useCallback(async () => {
@@ -125,16 +121,16 @@ export const SwitchAccountDrawer = (props: Props) => {
     }
 
     // Revoke proxy token before switching to parent account.
-    await handleProxyTokenRevocation();
+    await handleEnqueueTokenRevocation();
 
     updateCurrentTokenBasedOnUserType({ userType: 'parent' });
 
     // Reset flag for proxy user to display success toast once.
-    setStorage('proxy_user', 'false');
+    setStorage('is_proxy_user', 'false');
 
     onClose();
     refreshPage();
-  }, [onClose, handleProxyTokenRevocation, refreshPage]);
+  }, [onClose, handleEnqueueTokenRevocation, refreshPage]);
 
   return (
     <Drawer onClose={onClose} open={open} title="Switch Account">

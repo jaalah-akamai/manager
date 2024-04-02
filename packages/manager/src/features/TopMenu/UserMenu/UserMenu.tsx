@@ -124,9 +124,9 @@ export const UserMenu = React.memo(() => {
 
   React.useEffect(() => {
     // Run after we've switched to a proxy user.
-    if (isProxyUser && !getStorage('proxy_user')) {
+    if (isProxyUser && !getStorage('is_proxy_user')) {
       // Flag for proxy user to display success toast once.
-      setStorage('proxy_user', 'true');
+      setStorage('is_proxy_user', 'true');
 
       enqueueSnackbar(`Account switched to ${companyNameOrEmail}.`, {
         variant: 'success',

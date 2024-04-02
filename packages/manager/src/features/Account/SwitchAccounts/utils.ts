@@ -75,3 +75,25 @@ export const updateProxyTokenInLocalStorage = async ({
     userType: 'proxy',
   });
 };
+
+export const enqueueTokenRevocation = async ({
+  enqueueSnackbar,
+  revokeToken,
+  tokenLabel,
+}: {
+  enqueueSnackbar: (
+    message: string,
+    options?: { variant: 'error' | 'success' }
+  ) => void;
+  revokeToken: () => {};
+  tokenLabel: string | undefined;
+}) => {
+  try {
+    await revokeToken();
+    enqueueSnackbar(`Successfully revoked ${tokenLabel}.`, {
+      variant: 'success',
+    });
+  } catch (error) {
+    enqueueSnackbar(`Failed to revoke ${tokenLabel}.`, { variant: 'error' });
+  }
+};
