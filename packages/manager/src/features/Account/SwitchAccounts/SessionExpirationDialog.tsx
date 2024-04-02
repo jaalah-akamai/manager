@@ -146,7 +146,7 @@ export const SessionExpirationDialog = React.memo(
       let timeoutId: NodeJS.Timeout | undefined;
 
       const checkTokenExpiry = () => {
-        const expiryString = getStorage(PROXY_STORAGE_EXPIRY_KEY);
+        const expiryString = getStorage('authentication/proxy_token/expire');
         if (!expiryString) {
           return;
         }
