@@ -11,12 +11,10 @@ import { getStorage } from 'src/utilities/storage';
 import type { UserType } from '@linode/api-v4';
 
 interface useAuthenticationProps {
-  euuid: string;
   tokenIdToRevoke: number;
 }
 
 export const useParentChildAuthentication = ({
-  euuid,
   tokenIdToRevoke,
 }: useAuthenticationProps) => {
   const {
@@ -29,19 +27,22 @@ export const useParentChildAuthentication = ({
     mutateAsync: createProxyToken,
   } = useCreateChildAccountPersonalAccessTokenMutation();
 
-  const createToken = useCallback(async () => {
-    try {
-      return await createProxyToken({
-        euuid,
-        headers: {
-          Authorization: getStorage('authentication/parent_token/token'),
-        },
-      });
-    } catch (error) {
-      // Swallow error
-      return null;
-    }
-  }, [createProxyToken, euuid]);
+  const createToken = useCallback(
+    async (euuid: string) => {
+      try {
+        return await createProxyToken({
+          euuid,
+          headers: {
+            Authorization: getStorage('authentication/parent_token/token'),
+          },
+        });
+      } catch (error) {
+        // Swallow error
+        return null;
+      }
+    },
+    [createProxyToken]
+  );
 
   const revokeToken = useCallback(async () => {
     try {

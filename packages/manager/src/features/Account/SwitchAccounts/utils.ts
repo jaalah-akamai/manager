@@ -44,33 +44,33 @@ export const updateParentTokenInLocalStorage = ({
  * Headers are required for proxy users when obtaining a proxy token.
  * For 'proxy' userType, use the stored parent token in the request.
  */
-export const updateProxyTokenInLocalStorage = async ({
-  euuid,
-  token,
-  userType,
-}: ProxyTokenCreationParams) => {
-  const proxyToken = await createChildAccountPersonalAccessToken({
-    euuid,
-    headers:
-      userType === 'proxy'
-        ? {
-            Authorization: token,
-          }
-        : undefined,
-  });
+// export const updateProxyTokenInLocalStorage = async ({
+//   euuid,
+//   token,
+//   userType,
+// }: ProxyTokenCreationParams) => {
+//   const proxyToken = await createChildAccountPersonalAccessToken({
+//     euuid,
+//     headers:
+//       userType === 'proxy'
+//         ? {
+//             Authorization: token,
+//           }
+//         : undefined,
+//   });
 
-  setTokenInLocalStorage({
-    prefix: 'authentication/proxy_token',
-    token: {
-      ...proxyToken,
-      token: `Bearer ${proxyToken.token}`,
-    },
-  });
+//   setTokenInLocalStorage({
+//     prefix: 'authentication/proxy_token',
+//     token: {
+//       ...proxyToken,
+//       token: `Bearer ${proxyToken.token}`,
+//     },
+//   });
 
-  updateCurrentTokenBasedOnUserType({
-    userType: 'proxy',
-  });
-};
+//   updateCurrentTokenBasedOnUserType({
+//     userType: 'proxy',
+//   });
+// };
 
 export const enqueueTokenRevocation = async ({
   enqueueSnackbar,

@@ -64,7 +64,6 @@ export const SessionExpirationDialog = React.memo(
       updateToken,
       validateParentToken,
     } = useParentChildAuthentication({
-      euuid,
       tokenIdToRevoke: pendingRevocationToken?.id ?? -1,
     });
 
@@ -83,13 +82,13 @@ export const SessionExpirationDialog = React.memo(
       });
     }, [enqueueSnackbar, pendingRevocationTokenLabel, revokeToken]);
 
-    const handleRefreshToken = async () => {
+    const handleRefreshToken = async ({ euuid }: { euuid: string }) => {
       setContinueWorkingLoading(true);
 
       try {
         await revokeToken();
 
-        const proxyToken = await createToken();
+        const proxyToken = await createToken(euuid);
 
         if (!proxyToken) {
           throw new Error(createTokenErrorReason);
@@ -107,6 +106,7 @@ export const SessionExpirationDialog = React.memo(
 
         location.reload();
       } catch (error) {
+        console.log('XXXXXXX',error)
         // Swallow error
       } finally {
         setContinueWorkingLoading(false);
@@ -191,7 +191,10 @@ export const SessionExpirationDialog = React.memo(
         primaryButtonProps={{
           label: 'Continue Working',
           loading: continueWorkingLoading,
-          onClick: handleRefreshToken,
+          onClick: () =>
+            handleRefreshToken({
+              euuid,
+            }),
         }}
         secondaryButtonProps={{
           label: 'Log Out',
