@@ -5,13 +5,14 @@ import { useHistory } from 'react-router-dom';
 import { ActionsPanel } from 'src/components/ActionsPanel/ActionsPanel';
 import { ConfirmationDialog } from 'src/components/ConfirmationDialog/ConfirmationDialog';
 import { Typography } from 'src/components/Typography';
+import { sessionExpirationContext as _sessionExpirationContext } from 'src/context/sessionExpirationContext';
 import { PROXY_STORAGE_EXPIRY_KEY } from 'src/features/Account/constants';
 import { useParentChildAuthentication } from 'src/features/Account/SwitchAccounts/useParentChildAuthentication';
-import { enqueueTokenRevocation } from 'src/features/Account/SwitchAccounts/utils';
 import {
   getPersonalAccessTokenForRevocation,
   setTokenInLocalStorage,
 } from 'src/features/Account/SwitchAccounts/utils';
+import { enqueueTokenRevocation } from 'src/features/Account/SwitchAccounts/utils';
 import { useCurrentToken } from 'src/hooks/useAuthentication';
 import { useAccount } from 'src/queries/account/account';
 import { usePersonalAccessTokensQuery } from 'src/queries/tokens';
@@ -26,6 +27,10 @@ interface SessionExpirationDialogProps {
 
 export const SessionExpirationDialog = React.memo(
   ({ isOpen, onClose }: SessionExpirationDialogProps) => {
+    const sessionExpirationContext = React.useContext(
+      _sessionExpirationContext
+    );
+
     const [timeRemaining, setTimeRemaining] = React.useState<{
       minutes: number;
       seconds: number;
@@ -174,6 +179,13 @@ export const SessionExpirationDialog = React.memo(
         }
       };
     }, []);
+
+    useEffect(() => {
+      if (timeRemaining.minutes < 5) {
+        sessionExpirationContext.updateState({ isOpen: true });
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [timeRemaining.minutes, sessionExpirationContext.updateState]);
 
     const actions = (
       <ActionsPanel
