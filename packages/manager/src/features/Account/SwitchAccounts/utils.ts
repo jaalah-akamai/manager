@@ -1,5 +1,3 @@
-import { createChildAccountPersonalAccessToken } from '@linode/api-v4';
-
 import { getStorage, setStorage } from 'src/utilities/storage';
 
 import type { Token, UserType } from '@linode/api-v4';
@@ -38,60 +36,6 @@ export const updateParentTokenInLocalStorage = ({
     prefix: 'authentication/parent_token',
     token: parentToken,
   });
-};
-
-/**
- * Headers are required for proxy users when obtaining a proxy token.
- * For 'proxy' userType, use the stored parent token in the request.
- */
-// export const updateProxyTokenInLocalStorage = async ({
-//   euuid,
-//   token,
-//   userType,
-// }: ProxyTokenCreationParams) => {
-//   const proxyToken = await createChildAccountPersonalAccessToken({
-//     euuid,
-//     headers:
-//       userType === 'proxy'
-//         ? {
-//             Authorization: token,
-//           }
-//         : undefined,
-//   });
-
-//   setTokenInLocalStorage({
-//     prefix: 'authentication/proxy_token',
-//     token: {
-//       ...proxyToken,
-//       token: `Bearer ${proxyToken.token}`,
-//     },
-//   });
-
-//   updateCurrentTokenBasedOnUserType({
-//     userType: 'proxy',
-//   });
-// };
-
-export const enqueueTokenRevocation = async ({
-  enqueueSnackbar,
-  revokeToken,
-  tokenLabel,
-}: {
-  enqueueSnackbar: (
-    message: string,
-    options?: { variant: 'error' | 'success' }
-  ) => void;
-  revokeToken: () => {};
-  tokenLabel: string | undefined;
-}) => {
-  try {
-    await revokeToken();
-    enqueueSnackbar(`Successfully revoked ${tokenLabel}.`, {
-      variant: 'success',
-    });
-  } catch (error) {
-    enqueueSnackbar(`Failed to revoke ${tokenLabel}.`, { variant: 'error' });
-  }
 };
 
 /**

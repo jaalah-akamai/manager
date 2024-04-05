@@ -1,4 +1,3 @@
-import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -11,7 +10,6 @@ import {
   getPersonalAccessTokenForRevocation,
   setTokenInLocalStorage,
 } from 'src/features/Account/SwitchAccounts/utils';
-import { enqueueTokenRevocation } from 'src/features/Account/SwitchAccounts/utils';
 import { useCurrentToken } from 'src/hooks/useAuthentication';
 import { useAccount } from 'src/queries/account/account';
 import { usePersonalAccessTokensQuery } from 'src/queries/tokens';
@@ -45,7 +43,6 @@ export const SessionExpirationDialog = React.memo(
 
     const { data: personalAccessTokens } = usePersonalAccessTokensQuery();
     const history = useHistory();
-    const { enqueueSnackbar } = useSnackbar();
     const { data: account } = useAccount();
     const currentTokenWithBearer = useCurrentToken() ?? '';
 
@@ -54,45 +51,34 @@ export const SessionExpirationDialog = React.memo(
       personalAccessTokens?.data,
       currentTokenWithBearer
     );
-    const pendingRevocationTokenLabel = pendingRevocationToken?.label;
 
     const {
       createToken,
       createTokenError,
       revokeToken,
-      revokeTokenError,
-      updateToken,
+      updateCurrentToken,
       validateParentToken,
     } = useParentChildAuthentication({
       tokenIdToRevoke: pendingRevocationToken?.id ?? -1,
     });
 
-    const revokeTokenErrorReason = revokeTokenError?.[0]?.reason;
     const createTokenErrorReason = createTokenError?.[0]?.reason;
 
     const formattedTimeRemaining = `${timeRemaining.minutes}:${
       timeRemaining.seconds < 10 ? '0' : ''
     }${timeRemaining.seconds}`;
 
-    const handleEnqueueTokenRevocation = React.useCallback(async () => {
-      await enqueueTokenRevocation({
-        enqueueSnackbar,
-        revokeToken,
-        tokenLabel: pendingRevocationTokenLabel,
-      });
-    }, [enqueueSnackbar, pendingRevocationTokenLabel, revokeToken]);
-
     const handleRefreshToken = async ({ euuid }: { euuid: string }) => {
       setContinueWorkingLoading(true);
 
       try {
-        await revokeToken();
+        try {
+          await revokeToken();
+        } catch (error) {
+          // Swallow error: Allow user account switching; tokens expire naturally.
+        }
 
         const proxyToken = await createToken(euuid);
-
-        if (!proxyToken) {
-          throw new Error(createTokenErrorReason);
-        }
 
         setTokenInLocalStorage({
           prefix: 'authentication/proxy_token',
@@ -102,12 +88,11 @@ export const SessionExpirationDialog = React.memo(
           },
         });
 
-        updateToken({ userType: 'proxy' });
-
+        updateCurrentToken({ userType: 'proxy' });
+        onClose();
         location.reload();
       } catch (error) {
-        console.log('XXXXXXX',error)
-        // Swallow error
+        // Error is handled by createTokenError.
       } finally {
         setContinueWorkingLoading(false);
       }
@@ -121,25 +106,20 @@ export const SessionExpirationDialog = React.memo(
       }
 
       try {
-        await handleEnqueueTokenRevocation();
-
-        updateToken({ userType: 'parent' });
-
-        // Reset flag for proxy user to display success toast once.
-        setStorage('is_proxy_user', 'false');
-
-        onClose();
-        refreshPage();
+        await revokeToken();
       } catch (error) {
-        // Swallow error
-      } finally {
-        setLogoutLoading(false);
+        // Swallow error: Allow user account switching; tokens expire naturally.
       }
-    };
 
-    const refreshPage = React.useCallback(() => {
+      updateCurrentToken({ userType: 'parent' });
+
+      // Reset flag for proxy user to display success toast once.
+      setStorage('is_proxy_user', 'false');
+      setLogoutLoading(false);
+
+      onClose();
       location.reload();
-    }, []);
+    };
 
     useEffect(() => {
       let timeoutId: NodeJS.Timeout | undefined;
@@ -180,7 +160,7 @@ export const SessionExpirationDialog = React.memo(
     }, []);
 
     useEffect(() => {
-      if (timeRemaining.minutes < 5) {
+      if (timeRemaining.minutes < 15) {
         sessionExpirationContext.updateState({ isOpen: true });
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -211,7 +191,7 @@ export const SessionExpirationDialog = React.memo(
         }}
         actions={actions}
         data-testid="session-expiration-dialog"
-        error={createTokenErrorReason || revokeTokenErrorReason}
+        error={createTokenErrorReason}
         maxWidth="xs"
         open={isOpen}
         title="Session is expiring soon!"

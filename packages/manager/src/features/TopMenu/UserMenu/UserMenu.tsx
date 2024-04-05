@@ -22,7 +22,6 @@ import { SwitchAccountButton } from 'src/features/Account/SwitchAccountButton';
 import { SwitchAccountDrawer } from 'src/features/Account/SwitchAccountDrawer';
 import { useIsParentTokenExpired } from 'src/features/Account/SwitchAccounts/useIsParentTokenExpired';
 import { useFlags } from 'src/hooks/useFlags';
-import { usePendingRevocationToken } from 'src/hooks/usePendingRevocationToken';
 import { useRestrictedGlobalGrantCheck } from 'src/hooks/useRestrictedGlobalGrantCheck';
 import { useAccount } from 'src/queries/account/account';
 import { useGrants, useProfile } from 'src/queries/profile';
@@ -30,6 +29,7 @@ import { sendSwitchAccountEvent } from 'src/utilities/analytics';
 import { getStorage, setStorage } from 'src/utilities/storage';
 
 import { getCompanyNameOrEmail } from './utils';
+
 interface MenuLink {
   display: string;
   hide?: boolean;
@@ -59,10 +59,6 @@ export const UserMenu = React.memo(() => {
     null
   );
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
-  const {
-    getPendingRevocationToken,
-    pendingRevocationToken,
-  } = usePendingRevocationToken();
 
   const { data: account } = useAccount();
   const { data: profile } = useProfile();
@@ -205,10 +201,6 @@ export const UserMenu = React.memo(() => {
       });
     }
 
-    if (isProxyUser) {
-      getPendingRevocationToken();
-    }
-
     setIsDrawerOpen(true);
   };
 
@@ -347,7 +339,6 @@ export const UserMenu = React.memo(() => {
       <SwitchAccountDrawer
         onClose={() => setIsDrawerOpen(false)}
         open={isDrawerOpen}
-        proxyToken={pendingRevocationToken}
         userType={profile?.user_type}
       />
     </>

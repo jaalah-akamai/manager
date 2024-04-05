@@ -8,7 +8,7 @@ import { useCreateChildAccountPersonalAccessTokenMutation } from 'src/queries/ac
 import { useRevokePersonalAccessTokenMutation } from 'src/queries/tokens';
 import { getStorage } from 'src/utilities/storage';
 
-import type { UserType } from '@linode/api-v4';
+import type { Token, UserType } from '@linode/api-v4';
 
 interface useAuthenticationProps {
   tokenIdToRevoke: number;
@@ -24,35 +24,31 @@ export const useParentChildAuthentication = ({
 
   const {
     error: createTokenError,
+    isLoading: createTokenLoading,
     mutateAsync: createProxyToken,
   } = useCreateChildAccountPersonalAccessTokenMutation();
 
   const createToken = useCallback(
-    async (euuid: string) => {
-      try {
-        return await createProxyToken({
-          euuid,
-          headers: {
-            Authorization: getStorage('authentication/parent_token/token'),
-          },
-        });
-      } catch (error) {
-        // Swallow error
-        return null;
-      }
+    async (euuid: string): Promise<Token> => {
+      return createProxyToken({
+        euuid,
+        headers: {
+          /**
+           * Headers are required for proxy users when obtaining a proxy token.
+           * For 'proxy' userType, use the stored parent token in the request.
+           */
+          Authorization: getStorage('authentication/parent_token/token'),
+        },
+      });
     },
     [createProxyToken]
   );
 
-  const revokeToken = useCallback(async () => {
-    try {
-      await revokeAccessToken();
-    } catch (error) {
-      // Swallow error
-    }
+  const revokeToken = useCallback(async (): Promise<{}> => {
+    return revokeAccessToken();
   }, [revokeAccessToken]);
 
-  const updateToken = useCallback(
+  const updateCurrentToken = useCallback(
     ({ userType }: { userType: Extract<UserType, 'parent' | 'proxy'> }) => {
       updateCurrentTokenBasedOnUserType({ userType });
     },
@@ -66,9 +62,10 @@ export const useParentChildAuthentication = ({
   return {
     createToken,
     createTokenError,
+    createTokenLoading,
     revokeToken,
     revokeTokenError,
-    updateToken,
+    updateCurrentToken,
     validateParentToken,
   };
 };
