@@ -34,6 +34,8 @@ export interface User {
   verified_phone_number: string | null;
 }
 
+export type TaxStatus = 'valid' | 'validating' | 'invalid';
+
 export interface Account {
   active_since: string;
   address_2: string;
@@ -55,6 +57,7 @@ export interface Account {
   active_promotions: ActivePromotion[];
   capabilities: AccountCapability[];
   euuid: string;
+  tax_status: TaxStatus | null;
 }
 
 export type BillingSource = 'linode' | 'akamai';

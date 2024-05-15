@@ -1,6 +1,7 @@
 import Grid from '@mui/material/Unstable_Grid2';
 import countryData, { Region } from 'country-region-data';
 import { useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
 import { pathOr } from 'ramda';
 import * as React from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -10,6 +11,7 @@ import EnhancedSelect, { Item } from 'src/components/EnhancedSelect/Select';
 import { Notice } from 'src/components/Notice/Notice';
 import { TextField } from 'src/components/TextField';
 import { getRestrictedResourceText } from 'src/features/Account/utils';
+import { TAX_ID_HELPER_TEXT } from 'src/features/Billing/constants';
 import { useRestrictedGlobalGrantCheck } from 'src/hooks/useRestrictedGlobalGrantCheck';
 import { useAccount, useMutateAccount } from 'src/queries/account/account';
 import { useNotificationsQuery } from 'src/queries/account/notifications';
@@ -29,6 +31,7 @@ const UpdateContactInformationForm = ({ focusEmail, onClose }: Props) => {
   const { data: account } = useAccount();
   const { error, isLoading, mutateAsync } = useMutateAccount();
   const { data: notifications, refetch } = useNotificationsQuery();
+  const { enqueueSnackbar } = useSnackbar();
   const { classes } = useStyles();
   const emailRef = React.useRef<HTMLInputElement>();
   const { data: profile } = useProfile();
@@ -65,6 +68,11 @@ const UpdateContactInformationForm = ({ focusEmail, onClose }: Props) => {
       }
 
       await mutateAsync(clonedValues);
+
+      enqueueSnackbar(
+        "You edited the Tax Identification Number. It's being verified. You'll get an email with the verification result.",
+        { hideIconVariant: false, variant: 'info' }
+      );
 
       // If there's a "billing_email_bounce" notification on the account, and
       // the user has just updated their email, re-request notifications to
@@ -357,6 +365,7 @@ const UpdateContactInformationForm = ({ focusEmail, onClose }: Props) => {
             data-qa-contact-tax-id
             disabled={isReadOnly}
             errorText={errorMap.tax_id}
+            helperText={formik.values.country !== 'US' && TAX_ID_HELPER_TEXT}
             label="Tax ID"
             name="tax_id"
             onChange={formik.handleChange}
