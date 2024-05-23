@@ -66,10 +66,20 @@ const UpdateContactInformationForm = ({ focusEmail, onClose }: Props) => {
 
       await mutateAsync(clonedValues);
 
-      enqueueSnackbar(
-        "You edited the Tax Identification Number. It's being verified. You'll get an email with the verification result.",
-        { hideIconVariant: false, variant: 'info' }
-      );
+      if (account?.tax_id !== values.tax_id) {
+        enqueueSnackbar(
+          "You edited the Tax Identification Number. It's being verified. You'll get an email with the verification result.",
+          {
+            hideIconVariant: false,
+            style: {
+              display: 'flex',
+              flexWrap: 'nowrap',
+              width: '372px',
+            },
+            variant: 'info',
+          }
+        );
+      }
 
       // If there's a "billing_email_bounce" notification on the account, and
       // the user has just updated their email, re-request notifications to
