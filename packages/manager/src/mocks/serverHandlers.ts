@@ -33,6 +33,7 @@ import {
   eventFactory,
   firewallDeviceFactory,
   firewallFactory,
+  getObjectStorageEndpointsFactory,
   imageFactory,
   incidentResponseFactory,
   invoiceFactory,
@@ -103,8 +104,8 @@ import { pickRandom } from 'src/utilities/random';
 import { getStorage } from 'src/utilities/storage';
 
 import type {
-  NotificationType,
   CreateObjectStorageKeyPayload,
+  NotificationType,
   SecurityQuestionsPayload,
   TokenRequest,
   UpdateImageRegionsPayload,
@@ -1004,6 +1005,10 @@ export const handlers = [
       objectStorageOverageTypeFactory.build(),
     ];
     return HttpResponse.json(makeResourcePage(objectStorageTypes));
+  }),
+  http.get('*/v4/object-storage/endpoints', ({}) => {
+    const endpoint = getObjectStorageEndpointsFactory.build();
+    return HttpResponse.json(endpoint);
   }),
   http.get('*object-storage/buckets/*/*/access', async () => {
     await sleep(2000);
