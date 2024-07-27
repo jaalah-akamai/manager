@@ -1,13 +1,19 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CreateBucketSchema } from '@linode/validation';
+import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { ActionsPanel } from 'src/components/ActionsPanel/ActionsPanel';
+import { Autocomplete } from 'src/components/Autocomplete/Autocomplete';
+import { Box } from 'src/components/Box';
 import { Drawer } from 'src/components/Drawer';
+import { FormLabel } from 'src/components/FormLabel';
+import { Link } from 'src/components/Link';
 import { Notice } from 'src/components/Notice/Notice';
 import { TextField } from 'src/components/TextField';
+import { TextFieldHelperText } from 'src/components/TextField/TextFieldHelperText';
 import { EUAgreementCheckbox } from 'src/features/Account/Agreements/EUAgreementCheckbox';
 import { useAccountManagement } from 'src/hooks/useAccountManagement';
 import { useFlags } from 'src/hooks/useFlags';
@@ -53,6 +59,12 @@ export const CreateBucketDrawer = (props: Props) => {
   const isObjMultiClusterEnabled = isFeatureEnabledV2(
     'Object Storage Access Key Regions',
     Boolean(flags.objMultiCluster),
+    account?.capabilities ?? []
+  );
+
+  const isObjectStorageGen2Enabled = isFeatureEnabledV2(
+    'Object Storage Endpoint Types',
+    Boolean(flags.objectStorageGen2?.enabled),
     account?.capabilities ?? []
   );
 
@@ -223,6 +235,58 @@ export const CreateBucketDrawer = (props: Props) => {
           rules={{ required: 'Cluster is required' }}
         />
         {clusterRegion?.id && <OveragePricing regionId={clusterRegion.id} />}
+        {isObjectStorageGen2Enabled && (
+          <>
+            <Autocomplete
+              options={[
+                {
+                  label: 'Legacy (E0)',
+                  value: 'E0',
+                },
+                {
+                  label: 'Legacy (E0) ap-south-1.linodeobjects.com',
+                  value: 'E0',
+                },
+                {
+                  label: 'Standard (E1)',
+                  value: 'E1',
+                },
+                {
+                  label: 'Standard (E2)',
+                  value: 'E2',
+                },
+                {
+                  label: 'Standard (E3)',
+                  value: 'E3',
+                },
+              ]}
+              textFieldProps={{
+                helperText: (
+                  <TextFieldHelperText
+                    linkText="endpoint types"
+                    textAfter="."
+                    textBefore="Endpoint types impact the performance, capacity, and rate limits for your bucket. Understand"
+                    to="https://www.cloud.linode.com/"
+                  />
+                ),
+                helperTextPosition: 'top',
+              }}
+              label="Object Storage Endpoint Type"
+              placeholder="Object Storage Endpoint Type"
+            />
+            <Box marginBottom={3}>
+              <FormLabel>
+                <Typography marginBottom={1} marginTop={2} variant="inherit">
+                  Bucket Rate Limits
+                </Typography>
+              </FormLabel>
+              <Typography variant="body1">
+                This endpoint type supports up to 750 Requests Per Second (RPS).
+                Understand <Link to="#">bucket rate limits</Link>.
+              </Typography>
+            </Box>
+          </>
+        )}
         {showGDPRCheckbox && (
           <StyledEUAgreementCheckbox
             checked={hasSignedAgreement}
