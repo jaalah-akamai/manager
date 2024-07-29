@@ -11,53 +11,40 @@ const TEXT_BEFORE = 'Understand';
 const TEXT_AFTER = 'for better performance.';
 
 describe('TextFieldHelperText', () => {
-  test('renders the component with textBefore, linkText, and textAfter', () => {
+  test('renders the component with textBefore, link, and textAfter', () => {
     const handleClick = vi.fn();
 
     renderWithTheme(
       <TextFieldHelperText
-        linkText={LINK_TEXT}
-        onClick={handleClick}
-        textAfter={TEXT_AFTER}
-        textBefore={TEXT_BEFORE}
-        to={URL}
+        content={[
+          TEXT_BEFORE + ' ',
+          { onClick: handleClick, text: LINK_TEXT, to: URL },
+          ' ' + TEXT_AFTER,
+        ]}
       />
     );
 
-    expect(
-      screen.getByText((content, element) => {
-        return (
-          element?.tagName.toLowerCase() === 'p' &&
-          content.startsWith(TEXT_BEFORE)
-        );
-      })
-    ).toBeInTheDocument();
+    expect(screen.getByText(TEXT_BEFORE, { exact: false })).toBeInTheDocument();
 
     const linkElement = screen.getByText(LINK_TEXT);
 
     expect(linkElement).toBeInTheDocument();
     expect(linkElement.closest('a')).toHaveAttribute('href', URL);
-    expect(
-      screen.getByText((content, element) => {
-        return (
-          element?.tagName.toLowerCase() === 'p' && content.endsWith(TEXT_AFTER)
-        );
-      })
-    ).toBeInTheDocument();
+    expect(screen.getByText(TEXT_AFTER, { exact: false })).toBeInTheDocument();
 
     fireEvent.click(linkElement);
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  test('renders the component with linkText and textAfter', () => {
+  test('renders the component with link and textAfter', () => {
     const handleClick = vi.fn();
 
     renderWithTheme(
       <TextFieldHelperText
-        linkText={LINK_TEXT}
-        onClick={handleClick}
-        textAfter={TEXT_AFTER}
-        to={URL}
+        content={[
+          { onClick: handleClick, text: LINK_TEXT, to: URL },
+          ' ' + TEXT_AFTER,
+        ]}
       />
     );
 
@@ -65,26 +52,18 @@ describe('TextFieldHelperText', () => {
 
     expect(linkElement).toBeInTheDocument();
     expect(linkElement.closest('a')).toHaveAttribute('href', URL);
-    expect(
-      screen.getByText((content, element) => {
-        return (
-          element?.tagName.toLowerCase() === 'p' && content.includes(TEXT_AFTER)
-        );
-      })
-    ).toBeInTheDocument();
+    expect(screen.getByText(TEXT_AFTER, { exact: false })).toBeInTheDocument();
 
     fireEvent.click(linkElement);
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  test('renders the component with only linkText', () => {
+  test('renders the component with only link', () => {
     const handleClick = vi.fn();
 
     renderWithTheme(
       <TextFieldHelperText
-        linkText={LINK_TEXT}
-        onClick={handleClick}
-        to={URL}
+        content={[{ onClick: handleClick, text: LINK_TEXT, to: URL }]}
       />
     );
 
@@ -95,5 +74,36 @@ describe('TextFieldHelperText', () => {
 
     fireEvent.click(linkElement);
     expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  test('renders multiple links', () => {
+    const handleClick1 = vi.fn();
+    const handleClick2 = vi.fn();
+
+    renderWithTheme(
+      <TextFieldHelperText
+        content={[
+          'Text before ',
+          { onClick: handleClick1, text: 'Link 1', to: '/link1' },
+          ' text between ',
+          { onClick: handleClick2, text: 'Link 2', to: '/link2' },
+          ' text after',
+        ]}
+      />
+    );
+
+    const link1 = screen.getByText('Link 1');
+    const link2 = screen.getByText('Link 2');
+
+    expect(link1).toBeInTheDocument();
+    expect(link2).toBeInTheDocument();
+    expect(link1.closest('a')).toHaveAttribute('href', '/link1');
+    expect(link2.closest('a')).toHaveAttribute('href', '/link2');
+
+    fireEvent.click(link1);
+    expect(handleClick1).toHaveBeenCalledTimes(1);
+
+    fireEvent.click(link2);
+    expect(handleClick2).toHaveBeenCalledTimes(1);
   });
 });

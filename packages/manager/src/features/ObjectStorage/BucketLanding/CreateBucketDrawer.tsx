@@ -259,14 +259,15 @@ export const CreateBucketDrawer = (props: Props) => {
                   label: 'Standard (E3)',
                   value: 'E3',
                 },
-              ]}
+              ]} // TODO: OBJ Gen2: Add endpoint types
               textFieldProps={{
                 helperText: (
                   <TextFieldHelperText
-                    linkText="endpoint types"
-                    textAfter="."
-                    textBefore="Endpoint types impact the performance, capacity, and rate limits for your bucket. Understand"
-                    to="https://www.cloud.linode.com/"
+                    content={[
+                      'Endpoint types impact the performance, capacity, and rate limits for your bucket. Understand ',
+                      { text: 'endpoint types', to: '#' }, // TODO: OBJ Gen2: Add link to endpoint types documentation
+                      '.',
+                    ]}
                   />
                 ),
                 helperTextPosition: 'top',

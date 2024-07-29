@@ -6,49 +6,49 @@ import { Typography } from 'src/components/Typography';
 
 import type { BoxProps } from 'src/components/Box';
 
-export interface TextFieldHelperTextProps extends BoxProps {
-  /**
-   * The text to be displayed as the link.
-   */
-  linkText: string;
-
+export interface LinkItem {
   /**
    * Callback function to be called when the link is clicked.
    */
   onClick?: () => void;
-
   /**
-   * Text to be displayed after the link. Optional.
+   * The text to be displayed as the link.
    */
-  textAfter?: React.ReactNode;
-
-  /**
-   * Text to be displayed before the link. Optional.
-   */
-  textBefore?: React.ReactNode;
-
+  text: string;
   /**
    * The URL to which the link points.
    */
   to: string;
 }
 
+export interface TextFieldHelperTextOwnProps {
+  /**
+   * An array of content items. Each item can be a string or a LinkItem.
+   */
+  content: (LinkItem | string)[];
+}
+
+export type TextFieldHelperTextProps = TextFieldHelperTextOwnProps &
+  Omit<BoxProps, keyof TextFieldHelperTextOwnProps>;
+
 export const TextFieldHelperText = ({
-  linkText,
-  onClick,
-  textAfter,
-  textBefore,
-  to,
+  content,
   ...rest
 }: TextFieldHelperTextProps) => {
   return (
     <Box {...rest}>
       <Typography variant="body1">
-        {textBefore && <>{textBefore} </>}
-        <Link onClick={onClick} to={to}>
-          {linkText}
-        </Link>
-        {textAfter && <> {textAfter}</>}
+        {content.map((item, index) => {
+          if (typeof item === 'string') {
+            return <React.Fragment key={index}>{item}</React.Fragment>;
+          } else {
+            return (
+              <Link key={index} onClick={item.onClick} to={item.to}>
+                {item.text}
+              </Link>
+            );
+          }
+        })}
       </Typography>
     </Box>
   );
