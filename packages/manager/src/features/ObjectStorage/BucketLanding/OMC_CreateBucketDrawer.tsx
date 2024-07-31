@@ -4,9 +4,15 @@ import * as React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { ActionsPanel } from 'src/components/ActionsPanel/ActionsPanel';
+import { Autocomplete } from 'src/components/Autocomplete/Autocomplete';
+import { Box } from 'src/components/Box';
 import { Drawer } from 'src/components/Drawer';
+import { FormLabel } from 'src/components/FormLabel';
+import { Link } from 'src/components/Link';
 import { Notice } from 'src/components/Notice/Notice';
 import { TextField } from 'src/components/TextField';
+import { TextFieldHelperText } from 'src/components/TextField/TextFieldHelperText';
+import { Typography } from 'src/components/Typography';
 import { useAccountManagement } from 'src/hooks/useAccountManagement';
 import { useFlags } from 'src/hooks/useFlags';
 import {
@@ -52,6 +58,14 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
     Boolean(flags.objMultiCluster),
     account?.capabilities ?? []
   );
+
+  const isObjectStorageGen2Enabled = true;
+
+  // const isObjectStorageGen2Enabled = isFeatureEnabledV2(
+  //   'Object Storage Endpoint Types',
+  //   Boolean(flags.objectStorageGen2?.enabled),
+  //   account?.capabilities ?? []
+  // );
 
   const { data: regions } = useRegionsQuery();
 
@@ -205,6 +219,59 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
           rules={{ required: 'Region is required' }}
         />
         {region?.id && <OveragePricing regionId={region.id} />}
+        {isObjectStorageGen2Enabled && (
+          <>
+            <Autocomplete
+              options={[
+                {
+                  label: 'Legacy (E0)',
+                  value: 'E0',
+                },
+                {
+                  label: 'Legacy (E0) ap-south-1.linodeobjects.com',
+                  value: 'E0',
+                },
+                {
+                  label: 'Standard (E1)',
+                  value: 'E1',
+                },
+                {
+                  label: 'Standard (E2)',
+                  value: 'E2',
+                },
+                {
+                  label: 'Standard (E3)',
+                  value: 'E3',
+                },
+              ]} // TODO: OBJ Gen2: Add endpoint types
+              textFieldProps={{
+                helperText: (
+                  <TextFieldHelperText
+                    content={[
+                      'Endpoint types impact the performance, capacity, and rate limits for your bucket. Understand ',
+                      { text: 'endpoint types', to: '#' }, // TODO: OBJ Gen2: Add link to endpoint types documentation
+                      '.',
+                    ]}
+                  />
+                ),
+                helperTextPosition: 'top',
+              }}
+              label="Object Storage Endpoint Type"
+              placeholder="Object Storage Endpoint Type"
+            />
+            <Box marginBottom={3}>
+              <FormLabel>
+                <Typography marginBottom={1} marginTop={2} variant="inherit">
+                  Bucket Rate Limits
+                </Typography>
+              </FormLabel>
+              <Typography variant="body1">
+                This endpoint type supports up to 750 Requests Per Second (RPS).
+                Understand <Link to="#">bucket rate limits</Link>.
+              </Typography>
+            </Box>
+          </>
+        )}
         {showGDPRCheckbox ? (
           <StyledEUAgreementCheckbox
             checked={hasSignedAgreement}
