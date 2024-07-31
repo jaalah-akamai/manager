@@ -26,7 +26,7 @@ import {
   useCreateBucketMutation,
   useObjectStorageBuckets,
   useObjectStorageTypesQuery,
-} from 'src/queries/objectStorage';
+} from 'src/queries/object-storage/queries';
 import { useProfile } from 'src/queries/profile/profile';
 import { useRegionsQuery } from 'src/queries/regions/regions';
 import { isFeatureEnabledV2 } from 'src/utilities/accountCapabilities';
@@ -53,12 +53,6 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
   const { account } = useAccountManagement();
   const flags = useFlags();
 
-  const isObjMultiClusterEnabled = isFeatureEnabledV2(
-    'Object Storage Access Key Regions',
-    Boolean(flags.objMultiCluster),
-    account?.capabilities ?? []
-  );
-
   const isObjectStorageGen2Enabled = true;
 
   // const isObjectStorageGen2Enabled = isFeatureEnabledV2(
@@ -69,14 +63,7 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
 
   const { data: regions } = useRegionsQuery();
 
-  const regionsSupportingObjectStorage = regions?.filter((region) =>
-    region.capabilities.includes('Object Storage')
-  );
-
-  const { data: bucketsData } = useObjectStorageBuckets({
-    isObjMultiClusterEnabled,
-    regions: regionsSupportingObjectStorage,
-  });
+  const { data: bucketsData } = useObjectStorageBuckets();
 
   const {
     data: objTypes,

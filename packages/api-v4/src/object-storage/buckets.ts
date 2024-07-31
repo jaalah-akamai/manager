@@ -255,3 +255,11 @@ export const updateBucketAccess = (
     ),
     setData(params, UpdateBucketAccessSchema)
   );
+
+export const getObjectStorageEndpoints = ({ filter, params }: RequestOptions) =>
+  Request<ResourcePage<ObjectStorageEndpoint>>(
+    setMethod('GET'),
+    setURL(`${API_ROOT}/object-storage/endpoints`),
+    setParams(params),
+    setXFilter(filter)
+  );
