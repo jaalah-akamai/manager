@@ -11,9 +11,15 @@ import Request, {
   setURL,
   setXFilter,
 } from '../request';
-import { Filter, Params, ResourcePage as Page } from '../types';
-import {
+import type {
+  Filter,
+  Params,
+  ResourcePage as Page,
+  RequestOptions,
+} from '../types';
+import type {
   ObjectStorageBucket,
+  ObjectStorageEndpoint,
   UpdateObjectStorageBucketAccessPayload,
   ObjectStorageBucketAccess,
   CreateObjectStorageBucketPayload,
@@ -257,7 +263,7 @@ export const updateBucketAccess = (
   );
 
 export const getObjectStorageEndpoints = ({ filter, params }: RequestOptions) =>
-  Request<ResourcePage<ObjectStorageEndpoint>>(
+  Request<Page<ObjectStorageEndpoint>>(
     setMethod('GET'),
     setURL(`${API_ROOT}/object-storage/endpoints`),
     setParams(params),

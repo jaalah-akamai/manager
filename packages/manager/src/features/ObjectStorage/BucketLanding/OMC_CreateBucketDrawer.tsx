@@ -25,6 +25,7 @@ import { useNetworkTransferPricesQuery } from 'src/queries/networkTransfer';
 import {
   useCreateBucketMutation,
   useObjectStorageBuckets,
+  useObjectStorageEndpoints,
   useObjectStorageTypesQuery,
 } from 'src/queries/object-storage/queries';
 import { useProfile } from 'src/queries/profile/profile';
@@ -52,6 +53,7 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
   const isRestrictedUser = profile?.restricted;
   const { account } = useAccountManagement();
   const flags = useFlags();
+  const { data: endpoints } = useObjectStorageEndpoints();
 
   const isObjectStorageGen2Enabled = true;
 
@@ -149,6 +151,15 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
     ? regions?.find((region) => watchRegion.includes(region.id))
     : undefined;
 
+  const filteredEndpoints = endpoints?.filter(
+    (endpoint) => region?.id === endpoint.region
+  );
+
+  const endpointOptions = filteredEndpoints?.map((endpoint) => ({
+    label: endpoint.endpoint_type,
+    value: endpoint.endpoint_type,
+  }));
+
   const { showGDPRCheckbox } = getGDPRDetails({
     agreements,
     profile,
@@ -209,28 +220,6 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
         {isObjectStorageGen2Enabled && (
           <>
             <Autocomplete
-              options={[
-                {
-                  label: 'Legacy (E0)',
-                  value: 'E0',
-                },
-                {
-                  label: 'Legacy (E0) ap-south-1.linodeobjects.com',
-                  value: 'E0',
-                },
-                {
-                  label: 'Standard (E1)',
-                  value: 'E1',
-                },
-                {
-                  label: 'Standard (E2)',
-                  value: 'E2',
-                },
-                {
-                  label: 'Standard (E3)',
-                  value: 'E3',
-                },
-              ]} // TODO: OBJ Gen2: Add endpoint types
               textFieldProps={{
                 helperText: (
                   <TextFieldHelperText
@@ -244,6 +233,7 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
                 helperTextPosition: 'top',
               }}
               label="Object Storage Endpoint Type"
+              options={endpointOptions ?? []} // TODO: OBJ Gen2: Add endpoint types
               placeholder="Object Storage Endpoint Type"
             />
             <Box marginBottom={3}>
