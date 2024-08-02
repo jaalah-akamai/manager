@@ -5,20 +5,13 @@ import { Controller, useForm } from 'react-hook-form';
 
 import { ActionsPanel } from 'src/components/ActionsPanel/ActionsPanel';
 import { Autocomplete } from 'src/components/Autocomplete/Autocomplete';
-import { Box } from 'src/components/Box';
-import { Column } from 'src/components/DescriptionList/DescriptionList.stories';
 import { Drawer } from 'src/components/Drawer';
 import { FormLabel } from 'src/components/FormLabel';
 import { Link } from 'src/components/Link';
 import { Notice } from 'src/components/Notice/Notice';
-import { Radio } from 'src/components/Radio/Radio';
-import { Table } from 'src/components/Table';
-import { TableBody } from 'src/components/TableBody';
-import { TableCell } from 'src/components/TableCell';
-import { TableHead } from 'src/components/TableHead';
-import { TableRow } from 'src/components/TableRow';
 import { TextField } from 'src/components/TextField';
 import { Typography } from 'src/components/Typography';
+import { BucketRateLimitTable } from 'src/features/ObjectStorage/BucketLanding/BucketRateLimitTable';
 import { useAccountManagement } from 'src/hooks/useAccountManagement';
 import { useFlags } from 'src/hooks/useFlags';
 import {
@@ -64,13 +57,11 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
     isFetching: isEndpointLoading,
   } = useObjectStorageEndpoints();
 
-  const isObjectStorageGen2Enabled = true;
-
-  // const isObjectStorageGen2Enabled = isFeatureEnabledV2(
-  //   'Object Storage Endpoint Types',
-  //   Boolean(flags.objectStorageGen2?.enabled),
-  //   account?.capabilities ?? []
-  // );
+  const isObjectStorageGen2Enabled = isFeatureEnabledV2(
+    'Object Storage Endpoint Types',
+    Boolean(flags.objectStorageGen2?.enabled),
+    account?.capabilities ?? []
+  );
 
   const { data: regions } = useRegionsQuery();
 
@@ -122,6 +113,7 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
   });
 
   const watchRegion = watch('region');
+  const watchEndpointType = watch('endpoint_type');
 
   const onSubmit = async (data: CreateObjectStorageBucketPayload) => {
     try {
@@ -156,20 +148,32 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
     }
   };
 
-  const region = watchRegion
+  const selectedRegion = watchRegion
     ? regions?.find((region) => watchRegion.includes(region.id))
     : undefined;
 
-  console.log({ endpoints, region, watchRegion });
+  /**
+   * In rare cases, the dropdown must display a specific endpoint hostname along with the endpoint type
+   * to distinguish between two assigned endpoints of the same type.
+   * This is necessary for multiple gen1 (E1) assignments in the same region.
+   */
+  const existingEndpointType = bucketsData?.buckets.find(
+    (bucket) => bucket.endpoint_type
+  )?.endpoint_type;
 
   const filteredEndpointOptions = endpoints
-    ?.filter((endpoint) => region?.id === endpoint.region)
-    ?.map((endpoint) => ({
-      label: endpoint.endpoint_type,
-      value: endpoint.endpoint_type,
-    }));
+    ?.filter((endpoint) => selectedRegion?.id === endpoint.region)
+    ?.map((endpoint) => {
+      const shouldShowHostname =
+        existingEndpointType === endpoint.endpoint_type;
+      return {
+        label: shouldShowHostname
+          ? `${endpoint.endpoint_type} (${endpoint.s3_endpoint})`
+          : endpoint.endpoint_type,
+        value: endpoint.endpoint_type,
+      };
+    });
 
-  const watchEndpointType = watch('endpoint_type');
   const selectedEndpointType =
     filteredEndpointOptions?.find(
       (endpoint) => endpoint.value === watchEndpointType
@@ -179,24 +183,13 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
     agreements,
     profile,
     regions,
-    selectedRegionId: region?.id ?? '',
+    selectedRegionId: selectedRegion?.id ?? '',
   });
 
-  const gen2EndpointTypes =
-    selectedEndpointType?.value !== 'E0' &&
-    selectedEndpointType?.value !== 'E1';
-
-  const bucketRateText = (
-    <Typography
-      marginBottom={gen2EndpointTypes ? 2 : 3}
-      sx={(theme) => ({ color: theme.color.label })}
-    >
-      {gen2EndpointTypes
-        ? 'Specifies the maximum Requests Per Second (RPS) for a bucket. To increase it to High, open a support ticket. '
-        : 'This endpoint type supports up to 750 Requests Per Second (RPS).'}
-      Understand <Link to="#">bucket rate limits</Link>.
-    </Typography>
-  );
+  const isGen2EndpointType =
+    selectedEndpointType &&
+    selectedEndpointType.value !== 'E0' &&
+    selectedEndpointType.value !== 'E1';
 
   return (
     <Drawer
@@ -247,22 +240,22 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
           name="region"
           rules={{ required: 'Region is required' }}
         />
-        {region?.id && <OveragePricing regionId={region.id} />}
+        {selectedRegion?.id && <OveragePricing regionId={selectedRegion.id} />}
         {isObjectStorageGen2Enabled && (
           <>
             <Controller
               render={({ field, fieldState }) => (
                 <Autocomplete
                   onChange={(e, endpoint) =>
-                    field.onChange(endpoint?.value ?? null)
+                    field.onChange(endpoint?.value ?? '')
                   }
                   textFieldProps={{
                     helperText: (
-                      <>
+                      <Typography marginBottom={2} marginTop={1}>
                         Endpoint types impact the performance, capacity, and
                         rate limits for your bucket. Understand{' '}
                         <Link to="#">endpoint types</Link>.
-                      </>
+                      </Typography>
                     ),
                     helperTextPosition: 'top',
                   }}
@@ -270,7 +263,7 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
                   label="Object Storage Endpoint Type"
                   loading={isEndpointLoading}
                   onBlur={field.onBlur}
-                  options={filteredEndpointOptions ?? []} // TODO: OBJ Gen2: Add endpoint types
+                  options={filteredEndpointOptions ?? []}
                   placeholder="Object Storage Endpoint Type"
                   value={selectedEndpointType}
                 />
@@ -279,61 +272,25 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
               name="endpoint_type"
               rules={{ required: 'Endpoint Type is required' }}
             />
-            <FormLabel>
-              <Typography marginBottom={1} marginTop={2} variant="inherit">
-                Bucket Rate Limits
-              </Typography>
-            </FormLabel>
-            {bucketRateText}
-            {gen2EndpointTypes && (
-              <Box marginBottom={3} marginTop={2}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Limits</TableCell>
-                      <TableCell>GET</TableCell>
-                      <TableCell>PUT</TableCell>
-                      <TableCell>LIST</TableCell>
-                      <TableCell>DELETE</TableCell>
-                      <TableCell>OTHER</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>
-                        <Radio
-                          checked={true}
-                          disabled
-                          name="limit-selection"
-                          onChange={() => {}}
-                          value="2"
-                        />
-                      </TableCell>
-                      <TableCell>1000</TableCell>
-                      <TableCell>000</TableCell>
-                      <TableCell>000</TableCell>
-                      <TableCell>000</TableCell>
-                      <TableCell>000</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>
-                        <Radio
-                          checked={false}
-                          disabled
-                          name="limit-selection"
-                          onChange={() => {}}
-                          value="2"
-                        />
-                      </TableCell>
-                      <TableCell>5000</TableCell>
-                      <TableCell>000</TableCell>
-                      <TableCell>000</TableCell>
-                      <TableCell>000</TableCell>
-                      <TableCell>000</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </Box>
+            {selectedEndpointType && (
+              <>
+                <FormLabel>
+                  <Typography marginBottom={1} marginTop={2} variant="inherit">
+                    Bucket Rate Limits
+                  </Typography>
+                </FormLabel>
+                <Typography marginBottom={isGen2EndpointType ? 2 : 3}>
+                  {isGen2EndpointType
+                    ? 'Specifies the maximum Requests Per Second (RPS) for a bucket. To increase it to High, open a support ticket. '
+                    : 'This endpoint type supports up to 750 Requests Per Second (RPS).'}
+                  Understand <Link to="#">bucket rate limits</Link>.
+                </Typography>
+              </>
+            )}
+            {isGen2EndpointType && (
+              <BucketRateLimitTable
+                selectedEndpointType={selectedEndpointType}
+              />
             )}
           </>
         )}
@@ -348,7 +305,7 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
             'data-testid': 'create-bucket-button',
             disabled: (showGDPRCheckbox && !hasSignedAgreement) || isErrorTypes,
             label: 'Create Bucket',
-            loading: isLoading || Boolean(region?.id && isLoadingTypes),
+            loading: isLoading || Boolean(selectedRegion?.id && isLoadingTypes),
             tooltipText:
               !isLoadingTypes && isInvalidPrice
                 ? PRICES_RELOAD_ERROR_NOTICE_TEXT
@@ -361,7 +318,7 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
           handleSubmit={handleSubmit(onSubmit)}
           onClose={() => setIsEnableObjDialogOpen(false)}
           open={isEnableObjDialogOpen}
-          regionId={region?.id}
+          regionId={selectedRegion?.id}
         />
       </form>
     </Drawer>

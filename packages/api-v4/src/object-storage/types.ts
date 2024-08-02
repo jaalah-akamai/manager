@@ -1,18 +1,48 @@
-type ObjectStorageEndpointTypes = 'E0' | 'E1' | 'E2' | 'E3';
+export type ObjectStorageEndpointTypes = 'E0' | 'E1' | 'E2' | 'E3';
 
 export interface ObjectStorageKeyRegions {
+  /**
+   * Region ID (e.g. 'us-east')
+   */
   id: string;
+  /**
+   * The hostname prefix for the region (e.g. 'us-east-1.linodeobjects.com')
+   */
   s3_endpoint: string;
+  /**
+   * The type specifying which generation of endpoint this is.
+   */
   endpoint_type?: ObjectStorageEndpointTypes;
 }
 
 export interface ObjectStorageKey {
+  /**
+   * A unique string assigned by the API to identify this key, used as a username for S3 API requests.
+   */
   access_key: string;
+  /**
+   * Settings that restrict access to specific buckets, each with defined permission levels.
+   */
   bucket_access: ObjectStorageKeyBucketAccess[] | null;
+  /**
+   * This Object Storage key's unique ID.
+   */
   id: number;
+  /**
+   * The label given to this key. For display purposes only.
+   */
   label: string;
+  /**
+   * Indicates if this Object Storage key restricts access to specific buckets and permissions.
+   */
   limited: boolean;
+  /**
+   * Each region where this key is valid.
+   */
   regions: ObjectStorageKeyRegions[];
+  /**
+   * The secret key used to authenticate this Object Storage key with the S3 API.
+   */
   secret_key: string;
 }
 
