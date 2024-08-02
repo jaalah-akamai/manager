@@ -847,7 +847,7 @@ export const handlers = [
       objectStorageEndpointsFactory.build({
         endpoint_type: 'E0',
         region: 'us-sea',
-        s3_endpoint: 'us-sea-1.linodeobjects.com',
+        s3_endpoint: null,
       }),
       objectStorageEndpointsFactory.build({
         endpoint_type: 'E1',
@@ -855,14 +855,19 @@ export const handlers = [
         s3_endpoint: 'us-sea-1.linodeobjects.com',
       }),
       objectStorageEndpointsFactory.build({
+        endpoint_type: 'E1',
+        region: 'us-sea',
+        s3_endpoint: 'us-sea-5.linodeobjects.com',
+      }),
+      objectStorageEndpointsFactory.build({
         endpoint_type: 'E2',
         region: 'us-sea',
-        s3_endpoint: 'us-sea-2.linodeobjects.com',
+        s3_endpoint: null,
       }),
       objectStorageEndpointsFactory.build({
         endpoint_type: 'E3',
         region: 'us-sea',
-        s3_endpoint: 'us-sea-3.linodeobjects.com',
+        s3_endpoint: null,
       }),
     ];
     return HttpResponse.json(makeResourcePage(endpoints));

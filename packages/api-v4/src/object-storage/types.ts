@@ -75,7 +75,14 @@ export interface CreateObjectStorageBucketPayload {
   cors_enabled?: boolean;
   label: string;
   region?: string;
+  /**
+   * To explicitly create a bucket on a specific endpoint type.
+   */
   endpoint_type?: ObjectStorageEndpointTypes;
+  /**
+   * Used to create a bucket on a specific already-assigned S3 endpoint.
+   */
+  s3_endpoint?: string;
   /*
    @TODO OBJ Multicluster: 'region' will become required, and the 'cluster' field will be deprecated
    once the feature is fully rolled out in production as part of the process of cleaning up the 'objMultiCluster'

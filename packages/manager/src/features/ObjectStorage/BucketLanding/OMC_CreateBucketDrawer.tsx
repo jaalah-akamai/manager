@@ -100,6 +100,7 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
     handleSubmit,
     reset,
     setError,
+    setValue,
     watch,
   } = useForm<CreateObjectStorageBucketPayload>({
     context: { buckets: bucketsData?.buckets ?? [] },
@@ -152,25 +153,26 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
     ? regions?.find((region) => watchRegion.includes(region.id))
     : undefined;
 
-  /**
-   * In rare cases, the dropdown must display a specific endpoint hostname along with the endpoint type
-   * to distinguish between two assigned endpoints of the same type.
-   * This is necessary for multiple gen1 (E1) assignments in the same region.
-   */
-  const existingEndpointType = bucketsData?.buckets.find(
-    (bucket) => bucket.endpoint_type
-  )?.endpoint_type;
-
   const filteredEndpointOptions = endpoints
     ?.filter((endpoint) => selectedRegion?.id === endpoint.region)
     ?.map((endpoint) => {
-      const shouldShowHostname =
-        existingEndpointType === endpoint.endpoint_type;
+      const { endpoint_type, s3_endpoint } = endpoint;
+      const isLegacy = endpoint_type === 'E0';
+      const typeLabel = isLegacy ? 'Legacy' : 'Standard';
+
+      /**
+       * In rare cases, the dropdown must display a specific endpoint hostname (s3_endpoint) along with
+       * the endpoint type to distinguish between two assigned endpoints of the same type.
+       * This is necessary for multiple gen1 (E1) assignments in the same region.
+       */
+      const label = s3_endpoint
+        ? `${typeLabel} (${endpoint_type}) ${s3_endpoint}`
+        : `${typeLabel} (${endpoint_type})`;
+
       return {
-        label: shouldShowHostname
-          ? `${endpoint.endpoint_type} (${endpoint.s3_endpoint})`
-          : endpoint.endpoint_type,
-        value: endpoint.endpoint_type,
+        label,
+        s3_endpoint: s3_endpoint ?? undefined,
+        value: endpoint_type,
       };
     });
 
@@ -190,6 +192,22 @@ export const OMC_CreateBucketDrawer = (props: Props) => {
     selectedEndpointType &&
     selectedEndpointType.value !== 'E0' &&
     selectedEndpointType.value !== 'E1';
+
+  React.useEffect(() => {
+    if (selectedEndpointType) {
+      const { s3_endpoint, value } = selectedEndpointType;
+
+      // For endpoints with multiple assignments, add s3_endpoint to the payload.
+      if (s3_endpoint) {
+        setValue('s3_endpoint', s3_endpoint);
+      }
+
+      // CORS is not supported for E2 and E3 endpoint types
+      if (['E2', 'E3'].includes(value)) {
+        setValue('cors_enabled', false);
+      }
+    }
+  }, [selectedEndpointType, setValue]);
 
   return (
     <Drawer
