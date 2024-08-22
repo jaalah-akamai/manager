@@ -58,7 +58,9 @@ export const AccessSelect = React.memo((props: Props) => {
   const { close: closeDialog, isOpen, open: openDialog } = useOpenClose();
   const label = capitalize(variant);
   const isCorsEnabled =
-    variant === 'bucket' && endpointType !== 'E2' && endpointType !== 'E3';
+    (variant === 'bucket' || variant === 'object') &&
+    endpointType !== 'E2' &&
+    endpointType !== 'E3';
 
   React.useEffect(() => {
     setUpdateAccessError('');
