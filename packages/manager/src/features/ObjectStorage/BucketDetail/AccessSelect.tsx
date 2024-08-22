@@ -23,6 +23,7 @@ import type {
   ObjectStorageBucketAccess,
   ObjectStorageEndpointTypes,
   ObjectStorageObjectACL,
+  UpdateObjectStorageBucketAccessPayload,
 } from '@linode/api-v4/lib/object-storage';
 import type { Theme } from '@mui/material/styles';
 
@@ -32,11 +33,6 @@ export interface Props {
   name: string;
   updateAccess: (acl: ACLType, cors_enabled?: boolean) => Promise<{}>;
   variant: 'bucket' | 'object';
-}
-
-interface FormValues {
-  acl: ACLType;
-  cors_enabled: boolean;
 }
 
 function isUpdateObjectStorageBucketAccessPayload(
@@ -58,7 +54,7 @@ export const AccessSelect = React.memo((props: Props) => {
     handleSubmit,
     reset,
     watch,
-  } = useForm<FormValues>({
+  } = useForm<Required<UpdateObjectStorageBucketAccessPayload>>({
     defaultValues: {
       acl: 'private',
       cors_enabled: true,
@@ -83,7 +79,7 @@ export const AccessSelect = React.memo((props: Props) => {
         const cors_enabled = isUpdateObjectStorageBucketAccessPayload(response)
           ? response.cors_enabled
           : true;
-        reset({ acl: _acl, cors_enabled });
+        reset({ acl: _acl || undefined, cors_enabled: cors_enabled || true });
         setAccessLoading(false);
       })
       .catch((err) => {
