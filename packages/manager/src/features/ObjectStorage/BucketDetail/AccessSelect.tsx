@@ -88,6 +88,10 @@ export const AccessSelect = React.memo((props: Props) => {
       });
   }, [getAccess, variant, reset]);
 
+  const handleAccessControlListChange = () => {
+    setUpdateAccessSuccess(false);
+  };
+
   const onSubmit = handleSubmit((data) => {
     setUpdateAccessSuccess(false);
     setAccessError('');
@@ -114,6 +118,8 @@ export const AccessSelect = React.memo((props: Props) => {
 
   const errorText = accessError || errors.acl?.message;
 
+
+
   return (
     <form onSubmit={onSubmit}>
       {updateAccessSuccess && (
@@ -132,7 +138,7 @@ export const AccessSelect = React.memo((props: Props) => {
             onChange={(_, selected) => {
               if (selected) {
                 field.onChange(selected.value);
-                setUpdateAccessSuccess(false);
+                handleAccessControlListChange();
               }
             }}
             placeholder={

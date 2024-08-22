@@ -4,6 +4,7 @@ import {
   deleteBucket,
   deleteBucketWithRegion,
   deleteSSLCert,
+  getBucketAccess,
   getObjectList,
   getObjectStorageKeys,
   getObjectURL,
@@ -43,6 +44,7 @@ import type {
   CreateObjectStorageBucketPayload,
   CreateObjectStorageBucketSSLPayload,
   CreateObjectStorageObjectURLPayload,
+  GetObjectStorageBucketAccessPayload,
   ObjectStorageBucket,
   ObjectStorageBucketSSL,
   ObjectStorageCluster,
@@ -62,6 +64,10 @@ export const objectStorageQueries = createQueryKeys('object-storage', {
   }),
   bucket: (clusterOrRegion: string, bucketName: string) => ({
     contextQueries: {
+      access: {
+        queryFn: () => getBucketAccess(clusterOrRegion, bucketName),
+        queryKey: null,
+      },
       objects: {
         // This is a placeholder queryFn and QueryKey. View the `useObjectBucketObjectsInfiniteQuery` implementation for details.
         queryFn: null,
@@ -91,6 +97,21 @@ export const objectStorageQueries = createQueryKeys('object-storage', {
     queryKey: null,
   },
 });
+
+export const useObjectStorageBucketAccess = ({
+  bucketName,
+  enabled = true,
+  regionId,
+}: {
+  bucketName: string;
+  enabled: boolean;
+  regionId: string;
+}) => {
+  return useQuery<GetObjectStorageBucketAccessPayload, APIError[]>({
+    ...objectStorageQueries.bucket(regionId, bucketName)._ctx.access.queryFn,
+    enabled,
+  });
+};
 
 export const useObjectStorageEndpoints = (enabled = true) => {
   const flags = useFlags();

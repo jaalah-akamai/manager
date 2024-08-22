@@ -200,6 +200,11 @@ export interface UpdateObjectStorageBucketAccessPayload {
   cors_enabled?: boolean;
 }
 
+export interface GetObjectStorageBucketAccessPayload {
+  regionId: string;
+  bucket: string;
+}
+
 export interface GetObjectStorageACLPayload {
   clusterId: string;
   bucket: string;
