@@ -8,6 +8,7 @@
   "bugs": {
     "url": "https://github.com/Linode/manager/issues"
   },
+  "packageManager": "yarn@1.22.22",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
