@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import { EditableText } from './EditableText';
 
+import type { BaseLinkProps } from './EditableText';
 import type { Meta, StoryObj } from '@storybook/react';
 
 type Story = StoryObj<typeof EditableText>;
@@ -44,9 +45,9 @@ export const WithSuffix: Story = {
 
 export const WithLink: Story = {
   args: {
+    labelLink: 'https://linode.com',
     onCancel: action('onCancel'),
     text: 'I have a link',
-    labelLink: "https://linode.com"
   },
   render: (args) => <EditableText {...args} />,
 };
@@ -55,16 +56,27 @@ export const WithLink: Story = {
  * Pretend this is `react-router-dom`'s Link component.
  * This is just an example to show usage with `EditableText`
  */
-const Link = (props: React.PropsWithChildren<{ to: string, className: string }>) => {
-  return <a {...props} href={props.to} />;
+const Link = ({ children, className, to }: BaseLinkProps) => {
+  return (
+    <a
+      onClick={(e) => {
+        e.preventDefault();
+        action('link clicked')(to);
+      }}
+      className={className}
+      href={to}
+    >
+      {children}
+    </a>
+  );
 };
 
 export const WithCustomLinkComponent: Story = {
   args: {
+    labelLink: 'https://linode.com',
+    linkComponent: Link,
     onCancel: action('onCancel'),
     text: 'I have a link',
-    labelLink: "https://linode.com",
-    LinkComponent: Link
   },
   render: (args) => <EditableText {...args} />,
 };

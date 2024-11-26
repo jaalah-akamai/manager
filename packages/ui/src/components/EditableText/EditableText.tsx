@@ -101,7 +101,31 @@ const useStyles = makeStyles<void, 'editIcon' | 'icon'>()(
   })
 );
 
-interface Props {
+// =============== Move into a separate file ===============
+export interface BaseLinkProps
+  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  children: React.ReactNode;
+  className?: string;
+  to: string;
+}
+
+const DefaultLink = ({ to, ...props }: BaseLinkProps) => (
+  <a href={to} {...props} data-test="JAALAH" />
+);
+
+export interface LinkComponentProps {
+  linkComponent?: React.ComponentType<BaseLinkProps>;
+}
+
+export const Link = ({
+  linkComponent: LinkComponent = DefaultLink,
+  ...props
+}: BaseLinkProps & LinkComponentProps) => {
+  return <LinkComponent {...props} />;
+};
+// =========================================================
+
+interface Props extends LinkComponentProps {
   className?: string;
   disabledBreadcrumbEditButton?: boolean;
   errorText?: string;
@@ -129,17 +153,6 @@ interface Props {
    * Optional suffix to append to the text when it is not in editing mode
    */
   textSuffix?: string;
-  /**
-   * An optional custom Link component used when `labelLink` is passed via props
-   * 
-   * The component you pass must accept `className`, `to`, and `children` as props
-   * - `to` is just the `labelLink` prop forwarded to this Link component
-   * - `className` should be passed to your Link so that it has the correct styles
-   * - `children` contains the link's text/children
-   * 
-   * @default 'a' - A basic HTML anchor will be used by default if no LinkComponent is passed.
-   */
-  LinkComponent?: React.ComponentType<React.PropsWithChildren<{ className: string, to: string }>>;
 }
 
 interface PassThroughProps extends Props, Omit<TextFieldProps, 'label'> {}
@@ -155,17 +168,13 @@ export const EditableText = (props: PassThroughProps) => {
     errorText,
     handleAnalyticsEvent,
     labelLink,
+    linkComponent,
     onCancel,
     onEdit,
     text: propText,
     textSuffix,
-    LinkComponent,
     ...rest
   } = props;
-
-  const DefaultLink = (props: React.AnchorHTMLAttributes<HTMLAnchorElement> & { to: string }) => <a href={props.to} {...props} />
-
-  const Link = LinkComponent ?? DefaultLink;
 
   React.useEffect(() => {
     setText(propText);
@@ -235,7 +244,11 @@ export const EditableText = (props: PassThroughProps) => {
       data-testid={'editable-text'}
     >
       {!!labelLink ? (
-        <Link className={classes.underlineOnHover} to={labelLink}>
+        <Link
+          className={classes.underlineOnHover}
+          linkComponent={linkComponent}
+          to={labelLink}
+        >
           {labelText}
         </Link>
       ) : (
