@@ -34,8 +34,8 @@ export const UserDetailsLanding = () => {
       title: 'Assigned Roles',
     },
     {
-      routeName: `/iam/users/${username}/resources`,
-      title: 'Assigned Resources',
+      routeName: `/iam/users/${username}/entities`,
+      title: 'Assigned Entities',
     },
   ];
 
@@ -44,9 +44,17 @@ export const UserDetailsLanding = () => {
   };
 
   const getDefaultTabIndex = () => {
-    return tabs.findIndex((tab) =>
+    const tabChoice = tabs.findIndex((tab) =>
       Boolean(matchPath(tab.routeName, { path: location.pathname }))
     );
+
+    if (tabChoice < 0) {
+      history.push(`/iam/users/${username}/details`);
+
+      return 0;
+    } else {
+      return tabChoice;
+    }
   };
 
   let idx = 0;
