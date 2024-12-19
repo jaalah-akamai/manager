@@ -24,9 +24,9 @@ const UserRoles = React.lazy(() =>
   }))
 );
 
-const UserResources = React.lazy(() =>
-  import('./Users/UserResources/UserResources').then((module) => ({
-    default: module.UserResources,
+const UserEntities = React.lazy(() =>
+  import('./Users/UserEntities/UserEntities').then((module) => ({
+    default: module.UserEntities,
   }))
 );
 
@@ -48,9 +48,9 @@ export const IdentityAccessManagement = (props: RouteComponentProps) => {
           path={`${path}/users/:username/roles`}
         />
         <Route
-          component={UserResources}
+          component={UserEntities}
           exact
-          path={`${path}/users/:username/resources`}
+          path={`${path}/users/:username/entities`}
         />
         <Route component={IAMLanding} exact path={`${path}/users`} />
 

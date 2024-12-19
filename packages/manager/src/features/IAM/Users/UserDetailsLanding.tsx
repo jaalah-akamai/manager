@@ -14,7 +14,7 @@ import { Tabs } from 'src/components/Tabs/Tabs';
 import { useAccountUserPermissions } from 'src/queries/iam/iam';
 
 import { IAM_LABEL } from '../Shared/constants';
-import { UserResources } from './UserResources/UserResources';
+import { UserEntities } from './UserEntities/UserEntities';
 import { UserRoles } from './UserRoles/UserRoles';
 
 export const UserDetailsLanding = () => {
@@ -87,7 +87,7 @@ export const UserDetailsLanding = () => {
             <UserRoles assignedRoles={assignedRoles} />
           </SafeTabPanel>
           <SafeTabPanel index={++idx}>
-            <UserResources assignedRoles={assignedRoles} />
+            <UserEntities assignedRoles={assignedRoles} />
           </SafeTabPanel>
         </TabPanels>
       </Tabs>
