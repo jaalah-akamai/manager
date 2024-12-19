@@ -18,6 +18,18 @@ const UserDetails = React.lazy(() =>
   }))
 );
 
+const UserRoles = React.lazy(() =>
+  import('./Users/UserRoles/UserRoles').then((module) => ({
+    default: module.UserRoles,
+  }))
+);
+
+const UserResources = React.lazy(() =>
+  import('./Users/UserResources/UserResources').then((module) => ({
+    default: module.UserResources,
+  }))
+);
+
 export const IdentityAccessManagement = (props: RouteComponentProps) => {
   const path = props.match.path;
 
@@ -25,14 +37,34 @@ export const IdentityAccessManagement = (props: RouteComponentProps) => {
     <React.Suspense fallback={<SuspenseLoader />}>
       <ProductInformationBanner bannerLocation="Identity and Access" />
       <Switch>
-        <Redirect
+        <Route
+          component={UserDetails}
           exact
-          from={`${path}/users/:username/`}
+          path={`${path}/users/:username/details`}
+        />
+        <Route
+          component={UserRoles}
+          exact
+          path={`${path}/users/:username/roles`}
+        />
+        <Route
+          component={UserResources}
+          exact
+          path={`${path}/users/:username/resources`}
+        />
+        <Route component={IAMLanding} exact path={`${path}/users`} />
+
+        {/* Default redirects */}
+        <Redirect exact from={path} to={`${path}/users`} />
+        <Redirect
+          from={`${path}/users/roles/*`}
+          to={`${path}/users/roles/details`}
+        />
+        <Redirect
+          from={`${path}/users/:username/*`}
           to={`${path}/users/:username/details`}
         />
-        <Route component={UserDetails} path={`${path}/users/:username/`} />
-        <Redirect exact from={path} to={`${path}/users`} />
-        <Route component={IAMLanding} path={path} />
+        <Redirect from={`${path}/*`} to={`${path}/users`} />
       </Switch>
     </React.Suspense>
   );
