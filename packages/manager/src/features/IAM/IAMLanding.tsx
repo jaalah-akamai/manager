@@ -24,7 +24,7 @@ const Roles = React.lazy(() =>
   }))
 );
 
-export const IdentityAccessManagementLanding = React.memo((props: Props) => {
+export const IdentityAccessLanding = React.memo((props: Props) => {
   const location = useLocation();
 
   const tabs = [

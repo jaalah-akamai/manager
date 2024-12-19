@@ -12,6 +12,12 @@ const IAMLanding = React.lazy(() =>
   }))
 );
 
+const RolesLanding = React.lazy(() =>
+  import('./Roles/Roles').then((module) => ({
+    default: module.RolesLanding,
+  }))
+);
+
 const UserDetails = React.lazy(() =>
   import('./Users/UserDetailsLanding').then((module) => ({
     default: module.UserDetailsLanding,
@@ -52,6 +58,7 @@ export const IdentityAccessManagement = (props: RouteComponentProps) => {
           exact
           path={`${path}/users/:username/entities`}
         />
+        <Route component={RolesLanding} exact path={`${path}/roles`} />
         <Route component={IAMLanding} exact path={`${path}/users`} />
 
         {/* Default redirects */}
