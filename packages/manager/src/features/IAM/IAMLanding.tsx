@@ -9,9 +9,6 @@ import { TabLinkList } from 'src/components/Tabs/TabLinkList';
 import { TabPanels } from 'src/components/Tabs/TabPanels';
 import { Tabs } from 'src/components/Tabs/Tabs';
 
-import type { RouteComponentProps } from 'react-router-dom';
-type Props = RouteComponentProps<{}>;
-
 const Users = React.lazy(() =>
   import('./Users/UsersTable/Users').then((module) => ({
     default: module.UsersLanding,
@@ -24,16 +21,16 @@ const Roles = React.lazy(() =>
   }))
 );
 
-export const IdentityAccessLanding = React.memo((props: Props) => {
+export const IdentityAccessLanding = React.memo(() => {
   const location = useLocation();
 
   const tabs = [
     {
-      routeName: `${props.match.url}/users`,
+      routeName: `/iam/users`,
       title: 'Users',
     },
     {
-      routeName: `${props.match.url}/roles`,
+      routeName: `/iam/roles`,
       title: 'Roles',
     },
   ];

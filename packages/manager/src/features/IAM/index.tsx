@@ -61,16 +61,12 @@ export const IdentityAccessManagement = (props: RouteComponentProps) => {
         <Route component={RolesLanding} exact path={`${path}/roles`} />
         <Route component={IAMLanding} exact path={`${path}/users`} />
 
-        {/* Default redirects */}
         <Redirect exact from={path} to={`${path}/users`} />
-        <Redirect
-          from={`${path}/users/roles/*`}
-          to={`${path}/users/roles/details`}
-        />
         <Redirect
           from={`${path}/users/:username/*`}
           to={`${path}/users/:username/details`}
         />
+        <Redirect from={`${path}/roles/*`} to={`${path}/roles`} />
         <Redirect from={`${path}/*`} to={`${path}/users`} />
       </Switch>
     </React.Suspense>
