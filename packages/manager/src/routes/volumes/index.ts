@@ -45,6 +45,13 @@ const volumesCreateRoute = createRoute({
   import('./volumesLazyRoutes').then((m) => m.volumeCreateLazyRoute)
 );
 
+const volumesCreateMFERoute = createRoute({
+  getParentRoute: () => volumesRoute,
+  path: 'create-mfe',
+}).lazy(() =>
+  import('./volumesLazyRoutes').then((m) => m.volumeCreateMFELazyRoute)
+);
+
 type VolumeActionRouteParams<P = number | string> = {
   action: VolumeAction;
   volumeId: P;
@@ -92,5 +99,6 @@ const volumesCatchAllRoute = createRoute({
 export const volumesRouteTree = volumesRoute.addChildren([
   volumesIndexRoute.addChildren([volumeActionRoute]),
   volumesCreateRoute,
+  volumesCreateMFERoute,
   volumesCatchAllRoute,
 ]);

@@ -117,6 +117,7 @@
     ]
   },
   "devDependencies": {
+    "@module-federation/vite": "^1.1.6",
     "@linode/eslint-plugin-cloud-manager": "^0.0.5",
     "@storybook/addon-a11y": "^8.3.0",
     "@storybook/addon-actions": "^8.3.0",
