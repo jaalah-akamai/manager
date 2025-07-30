@@ -2,6 +2,7 @@ name: Auto-label PR with next release date
 
 permissions:
   pull-requests: write
+  issues: write
 
 on:
   pull_request:
@@ -94,19 +95,7 @@ jobs:
           echo "date=$NEXT_RELEASE_DATE" >> $GITHUB_OUTPUT
 
       - name: Add release label to PR
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const nextReleaseDate = "${{ steps.calculate_date.outputs.date }}";
-
-            // Validate date format
-            if (!/^\d{4}-\d{2}-\d{2}$/.test(nextReleaseDate)) {
-              throw new Error('Invalid date format received');
-            }
-
-            await github.rest.issues.addLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
-              labels: [`release:${nextReleaseDate}`]
-            });
+        run: |
+          gh issue add-labels ${{ github.event.pull_request.number }} "release:${{ steps.calculate_date.outputs.date }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
