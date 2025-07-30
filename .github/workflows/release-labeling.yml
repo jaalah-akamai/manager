@@ -3,37 +3,18 @@ name: Auto-label PR with next release date
 permissions:
   pull-requests: write
   issues: write
-  contents: read
 
 on:
   pull_request:
     types: [opened, synchronize]
     branches:
       - develop
-  workflow_dispatch:
-    inputs:
-      pr_number:
-        description: 'PR number to add label to (optional)'
-        required: false
-        type: string
 
 jobs:
   add-release-label:
     name: Add Release Label
     runs-on: ubuntu-latest
     steps:
-      - name: Debug workflow context
-        run: |
-          echo "Event name: ${{ github.event_name }}"
-          echo "Repository: ${{ github.repository }}"
-          echo "PR number: ${{ github.event.pull_request.number }}"
-          echo "PR title: ${{ github.event.pull_request.title }}"
-          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
-          echo "Head branch: ${{ github.event.pull_request.head.ref }}"
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Calculate next release date
         id: calculate_date
         run: |
@@ -113,19 +94,8 @@ jobs:
 
           echo "date=$NEXT_RELEASE_DATE" >> $GITHUB_OUTPUT
 
-                  - name: Add release label to PR
+      - name: Add release label to PR
         run: |
-          # Determine PR number from context or input
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            PR_NUMBER="${{ github.event.inputs.pr_number }}"
-          else
-            PR_NUMBER="${{ github.event.pull_request.number }}"
-          fi
-
-          echo "Adding label to PR: $PR_NUMBER"
-
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/issues/$PR_NUMBER/labels \
-            -d '{"labels":["release:${{ steps.calculate_date.outputs.date }}"]}'
+          gh issue add-labels ${{ github.event.pull_request.number }} "release:${{ steps.calculate_date.outputs.date }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
