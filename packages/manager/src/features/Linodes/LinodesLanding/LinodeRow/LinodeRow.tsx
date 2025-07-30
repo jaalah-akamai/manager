@@ -142,7 +142,7 @@ export const LinodeRow = (props: Props) => {
             sx={{ tooltip: { maxWidth: 300 } }}
             text={
               maintenance?.status === 'pending' ? (
-                "This Linode's maintenance window is pending."
+                "This Linode's maintenance window is pending. Testing."
               ) : (
                 <LinodeMaintenanceText
                   isOpened={false}
