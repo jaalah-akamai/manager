@@ -94,6 +94,9 @@ jobs:
 
           echo "date=$NEXT_RELEASE_DATE" >> $GITHUB_OUTPUT
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Add release label to PR
         run: |
           gh pr edit ${{ github.event.pull_request.number }} --add-label "release:${{ steps.calculate_date.outputs.date }}"
