@@ -3,6 +3,7 @@ name: Auto-label PR with next release date
 permissions:
   pull-requests: write
   issues: write
+  contents: read
 
 on:
   pull_request:
@@ -15,6 +16,9 @@ jobs:
     name: Add Release Label
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Calculate next release date
         id: calculate_date
         run: |
@@ -95,7 +99,13 @@ jobs:
           echo "date=$NEXT_RELEASE_DATE" >> $GITHUB_OUTPUT
 
       - name: Add release label to PR
-        run: |
-          gh api repos/{owner}/{repo}/issues/${{ github.event.pull_request.number }}/labels --method POST -f 'labels[]=release:${{ steps.calculate_date.outputs.date }}'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              labels: [`release:${{ steps.calculate_date.outputs.date }}`]
+            });
