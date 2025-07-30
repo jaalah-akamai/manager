@@ -1,4 +1,4 @@
-name: Auto-label PR with next release date
+name: Release Labeler
 
 permissions:
   pull-requests: write
