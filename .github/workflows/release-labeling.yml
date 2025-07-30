@@ -96,6 +96,6 @@ jobs:
 
       - name: Add release label to PR
         run: |
-          gh issue add-labels ${{ github.event.pull_request.number }} "release:${{ steps.calculate_date.outputs.date }}"
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "release:${{ steps.calculate_date.outputs.date }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
