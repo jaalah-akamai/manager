@@ -1,9 +1,8 @@
-name: Auto-label PR with next release date
+name: Release Labeler
 
 permissions:
   pull-requests: write
   issues: write
-  contents: read
 
 on:
   pull_request:
@@ -16,9 +15,6 @@ jobs:
     name: Add Release Label
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Calculate next release date
         id: calculate_date
         run: |
@@ -98,10 +94,17 @@ jobs:
 
           echo "date=$NEXT_RELEASE_DATE" >> $GITHUB_OUTPUT
 
-                  - name: Add release label to PR
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create and add release label to PR
         run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels \
-            -d '{"labels":["release:${{ steps.calculate_date.outputs.date }}"]}'
+          LABEL_NAME="release:${{ steps.calculate_date.outputs.date }}"
+
+          # Create label if it doesn't exist (will fail silently if it already exists)
+          gh label create "$LABEL_NAME" --description "Release scheduled for ${{ steps.calculate_date.outputs.date }}" --color "0e8a16" || true
+
+          # Add label to PR
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "$LABEL_NAME"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
