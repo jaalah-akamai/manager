@@ -38,7 +38,7 @@ export const PlatformMaintenanceBanner = () => {
             {' '}
             See which Linodes are <strong>scheduled</strong> for reboot on the{' '}
             <Link pendoId="platform-maintenance-banner-link" to="/maintenance">
-              Account Maintenance
+              Account Maintenance Update
             </Link>{' '}
             page.
           </span>
