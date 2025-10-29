@@ -1,0 +1,8 @@
+{
+  "codeConnect": {
+    "include": ["src/**/*.{tsx,jsx}"],
+    "parser": "react",
+    "label": "React",
+    "interactiveSetupFigmaFileUrl": "https://www.figma.com/design/P4R6fxBCbRMz3ohoSfbt7X/Core-Components-Akamai-DS?node-id=23-5559&t=kO1USzVeq34AY509-1"
+  }
+}
