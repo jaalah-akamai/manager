@@ -1,4 +1,5 @@
 import figma from '@figma/code-connect';
+import IconAdd from '@linode/ui/assets/icons/add.svg';
 import React from 'react';
 
 import { Button } from './Button';
@@ -9,6 +10,13 @@ import { Button } from './Button';
  * You should check this is correct, and update the `example` function
  * to return the code example you'd like to see in Figma
  */
+
+figma.connect(
+  'https://www.figma.com/design/D1kkLnJBPHsZWxooDE18HW/Icons-Akamai-DS?node-id=1-3136',
+  {
+    example: () => <IconAdd />,
+  },
+);
 
 figma.connect(
   Button,
@@ -37,6 +45,10 @@ figma.connect(
         // "Link": "link",
         // "Launch": "launch",
         // "Tertiary": "tertiary"
+        // "Danger": "danger"
+      }),
+      loading: figma.enum('State', {
+        Loading: true,
       }),
       color: figma.enum('Type', {
         Danger: 'error',
@@ -48,6 +60,7 @@ figma.connect(
         color={props.color}
         disabled={props.disabled}
         endIcon={props.endIcon}
+        loading={props.loading}
         size={props.size}
         startIcon={props.startIcon}
       >
