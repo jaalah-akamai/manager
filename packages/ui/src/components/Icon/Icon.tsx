@@ -1,6 +1,9 @@
+import { styled, useThemeProps } from '@mui/material/styles';
 import * as React from 'react';
 
 import * as Icons from '../../assets/iconsV2';
+
+import type { SxProps, Theme } from '@mui/material/styles';
 
 type IconSize = 12 | 16 | 20 | 24;
 type IconState = 'filled' | 'outlined';
@@ -35,6 +38,7 @@ export interface IconProps extends React.SVGProps<SVGSVGElement> {
   name: IconName; // real icon name or family alias
   size?: IconSize; // px applied in code; default 20
   state?: IconState; // required for family: caret, flag/star/... groups
+  sx?: SxProps<Theme>; // MUI system styles
 }
 
 const arrowByDirection: Record<IconDirection, RealIconName> = {
@@ -223,29 +227,42 @@ function resolveComponent(
  * (e.g., 'IconArrow', 'IconCaret', 'IconChevron', ...). For families, provide
  * the required disambiguating props (direction/state). Applies size (px) and color.
  */
-export const Icon: React.FC<IconProps> = ({
-  name,
-  size = 20,
-  state,
-  direction,
-  color,
-  style,
-  ...svgProps
-}) => {
+export const Icon = (inProps: IconProps) => {
+  const {
+    name,
+    size = 20,
+    state,
+    direction,
+    color,
+    sx,
+    ...svgProps
+  } = useThemeProps({ props: inProps, name: 'MuiLinodeIcon' });
+
   enforceRequirements(name, direction, state);
   const Comp = resolveComponent(name, direction, state);
 
   const pixel = `${size}px`;
-  const mergedStyle: React.CSSProperties = {
-    width: pixel,
-    height: pixel,
-    color,
-    ...style,
-  };
+  const computedSx: SxProps<Theme> = [
+    { width: pixel, height: pixel, ...(color ? { color } : {}) },
+    ...(Array.isArray(sx) ? sx : sx ? [sx] : []),
+  ];
 
   return (
-    <Comp height={pixel} style={mergedStyle} width={pixel} {...svgProps} />
+    <IconRoot
+      as={Comp}
+      height={pixel}
+      sx={computedSx}
+      width={pixel}
+      {...svgProps}
+    />
   );
 };
 
-export default Icon;
+export const IconRoot = styled('svg', {
+  name: 'MuiLinodeIcon',
+  slot: 'Root',
+  overridesResolver: (props, styles) => styles.root,
+})({
+  display: 'inline-block',
+  flex: '0 0 auto',
+});

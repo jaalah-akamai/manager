@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as Icons from '../../assets/iconsV2';
-import Icon from './Icon';
+import { Icon } from './Icon';
 
 import type { IconName } from './Icon';
 import type { Meta, StoryObj } from '@storybook/react-vite';
@@ -78,12 +78,20 @@ export const ArrowDirections: Story = {
 
 export const CaretStates: Story = {
   render: (args) => (
-    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <Icon {...args} direction="down" name={'IconCaret'} state="outlined" />
-      <Icon {...args} direction="down" name={'IconCaret'} state="filled" />
-      <Icon {...args} direction="up" name={'IconCaret'} state="outlined" />
-      <Icon {...args} direction="up" name={'IconCaret'} state="filled" />
-    </div>
+    <>
+      <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+        <Icon {...args} direction="up" name={'IconCaret'} state="outlined" />
+        <Icon {...args} direction="right" name={'IconCaret'} state="outlined" />
+        <Icon {...args} direction="down" name={'IconCaret'} state="outlined" />
+        <Icon {...args} direction="left" name={'IconCaret'} state="outlined" />
+      </div>
+      <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+        <Icon {...args} direction="up" name={'IconCaret'} state="filled" />
+        <Icon {...args} direction="right" name={'IconCaret'} state="filled" />
+        <Icon {...args} direction="down" name={'IconCaret'} state="filled" />
+        <Icon {...args} direction="left" name={'IconCaret'} state="filled" />
+      </div>
+    </>
   ),
   args: { size: 20 },
 };
@@ -118,6 +126,12 @@ export const StatefulExamples: Story = {
       <Icon {...args} name={'IconInfo'} state="filled" />
       <Icon {...args} name={'IconPin'} state="outlined" />
       <Icon {...args} name={'IconPin'} state="filled" />
+      <Icon {...args} name={'IconHelpCircle'} state="outlined" />
+      <Icon {...args} name={'IconHelpCircle'} state="filled" />
+      <Icon {...args} name={'IconCloudOutline'} />
+      <Icon {...args} name={'IconCloudFilled'} />
+      <Icon {...args} name={'IconFolderClosedOutline'} />
+      <Icon {...args} name={'IconFolderClosedFilled'} />
     </div>
   ),
   args: { size: 20 },
